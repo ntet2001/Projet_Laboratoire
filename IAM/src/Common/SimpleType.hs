@@ -22,3 +22,10 @@ module Common.SimpleType where
     data Patient = MkPatient {nameOf :: Nom , postNameOf :: Nom , 
                 emailOf :: Email, photoOf :: Photo, code :: Int } deriving (Show , Read , Eq)
     
+    data User = Operateur | Patient deriving (Show, Read, Eq)
+
+    data Role = MkRole {nameRole :: NomRole, roleUserList :: Access } deriving (Show, Read, Eq)
+    type ListMatricule = [Matricule] 
+    type ListAccessCode = [Int] 
+    data Access = ListMatricule | ListAccessCode deriving (Show, Read, Eq)
+    data NomRole = Admin | Laborantain | Secretaire | SimplePatient  deriving (Show, Read, Eq)
