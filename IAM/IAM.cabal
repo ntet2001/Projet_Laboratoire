@@ -25,6 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      Common.SimpleType
+      Infra.Connexion
       Lib
   other-modules:
       Paths_IAM
