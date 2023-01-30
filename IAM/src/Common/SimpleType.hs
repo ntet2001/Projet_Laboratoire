@@ -16,10 +16,10 @@ module Common.SimpleType where
     type PasswordOp = String
     type Photo = C.ByteString
     data Operateur = MKOperateur { nomOp :: NomOp, prenomOp :: PrenomOp, matricule::Matricule, 
-        email :: Email, passwordOp :: PasswordOp, photo :: Photo, statut :: Statut } deriving (Show,Read) 
+        email :: Email, passwordOp :: PasswordOp, photo :: Photo, statutOp :: Statut } deriving (Show,Read) 
     
     data Patient = MkPatient {nameOf :: Nom , postNameOf :: Nom , 
-                emailOf :: Email, photoOf :: Photo, code :: Int, statut :: Statut } deriving (Show , Read , Eq)
+                emailOf :: Email, photoOf :: Photo, code :: Int, statutP :: Statut } deriving (Show , Read , Eq)
     
     data User = Operateur | Patient deriving (Show, Read, Eq)
 
