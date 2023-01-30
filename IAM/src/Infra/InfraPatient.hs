@@ -6,7 +6,7 @@ module Infrastructure.InfraPatient where
 
 import Types.MesTypes
 import App.AppPatient
-import Domaine.DomPatient
+import Domain.DomPatient
 import Data.List
 import System.IO
 
@@ -19,42 +19,43 @@ savePatient pt = do
     case var of 
         Right something -> appendFile "patient.txt" (show something ++ "\n")
         Left _ -> return ()
+
 -- fonction pour lire un patient, dans un fichier   
 readPatient :: Int -> String -> IO Patient
 readPatient codeAccess fileName = do
-    let checkedCode = verifCode codeAccess 
-    case checkedCode of 
-        Right someStuff -> do 
-            contenuFichier <- readFile fileName
-            let ligneParLigne = Data.List.lines contenuFichier
-                convertToPatient = fmap read ligneParLigne :: [Patient]
-                liste = [x | x <- convertToPatient,  Data.List.length (Data.List.filter (== someStuff) [code x]) == 1]
-            if Data.List.null liste then fail "le code ne correspond à aucun patient"
-            else return $ Data.List.head liste 
-        Left _ -> fail  "le code n'est pas valide"
+    --let checkedCode = verifCode codeAccess 
+    --case checkedCode of 
+        --Right someStuff -> do 
+    contenuFichier <- readFile fileName
+    let ligneParLigne = lines contenuFichier
+        convertToPatient = fmap read ligneParLigne :: [Patient]
+        liste = [x | x <- convertToPatient,  length (filter (== someStuff) [code x]) == 1]
+    if null liste then fail "le code ne correspond à aucun patient"
+    else return $ head liste 
+        --Left _ -> fail  "le code n'est pas valide"
 
 -- fonction supprimer un patient, dans un fichier
 
 deletePatient :: Int -> String -> IO ()
 deletePatient accessCode fileName = do
-    let codeVerifie = verifCode accessCode 
-    case codeVerifie of 
-        Right someCode -> do
-            fileContent <- readFile fileName
-            let linePerline = Data.List.lines fileContent
-                toPatient = fmap read linePerline :: [Patient]
-                updateListOfPatient = f someCode toPatient
-            if Data.List.null updateListOfPatient then fail "ce code ne correspond à aucun patient"
-            else  do 
-                let  mapShow = fmap show updateListOfPatient 
-                     var = Data.List.unlines mapShow
-                writeFile fileName var 
-        Left _ -> fail "le code d'acces n'est pas valide"  
-        where f :: Int -> [Patient] -> [Patient]
-              f _ [] = []
-              f patientCode (x:xs)
-                | code x == patientCode = xs 
-                | otherwise = x : f patientCode xs 
+    -- let codeVerifie = verifCode accessCode 
+    --case codeVerifie of 
+        --Right someCode -> do
+    fileContent <- readFile fileName
+    let linePerline = lines fileContent
+        toPatient = fmap read linePerline :: [Patient]
+        updateListOfPatient = f accesscode toPatient
+    if null updateListOfPatient then fail "ce code ne correspond à aucun patient"
+    else  do 
+        let mapShow = fmap show updateListOfPatient 
+            var = unlines mapShow
+        writeFile fileName var 
+        --Left _ -> fail "le code d'acces n'est pas valide"  
+    where f :: Int -> [Patient] -> [Patient]
+          f _ [] = []
+          f patientCode (x:xs)
+            | code x == patientCode = xs 
+            | otherwise = x : f patientCode xs 
 
 
 -- fonction pour mettre a jour un patient 

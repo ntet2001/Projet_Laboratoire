@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -Wno-missing-export-lists #-}
-module Domaine.DomPatient where 
+module Domain.DomPatient where 
 
 import App.AppPatient 
 import Common.SimpleType
