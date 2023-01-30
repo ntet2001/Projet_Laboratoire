@@ -18,7 +18,7 @@ module Common.SimpleType where
     data Operateur = MKOperateur { nomOp :: NomOp, prenomOp :: PrenomOp, matricule::Matricule, 
         email :: Email, passwordOp :: PasswordOp, photo :: Photo, statutOp :: Statut } deriving (Show,Read) 
     
-    data Patient = MkPatient {nameOf :: Nom , postNameOf :: Nom , 
+    data Patient = MkPatient {nameOf :: Nom , firstNameOf :: Nom , 
                 emailOf :: Email, photoOf :: Photo, code :: Int, statutP :: Statut } deriving (Show , Read , Eq)
     
     data User = Operateur | Patient deriving (Show, Read, Eq)
@@ -27,4 +27,4 @@ module Common.SimpleType where
     type ListMatricule = [Matricule] 
     type ListAccessCode = [Int] 
     data Access = ListMatricule | ListAccessCode deriving (Show, Read, Eq)
-    data NomRole = Admin | Laborantain | Secretaire | SimplePatient  deriving (Show, Read, Eq)
+    data NomRole = Admin | Laborantin | Secretaire | SimplePatient  deriving (Show, Read, Eq)
