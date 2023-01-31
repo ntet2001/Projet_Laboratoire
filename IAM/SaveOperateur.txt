@@ -1,0 +1,1 @@
+MKOperateur {nomOp = "Noumedem", prenomOp = "Borice", matricule = "Valdes9de", email = MkEmail {identifiant = "boricenoumedem4", domaine = "gmail", extension = "com"}, passwordOp = "Valdes99##", photo = "ddddddddddddddddddddddddddddd", statutOp = Aucun}

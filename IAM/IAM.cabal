@@ -32,6 +32,7 @@ library
       Domain.CrudRole
       Domain.DomPatient
       Infra.Connexion
+      Infra.Deconnexion
       Infra.DeleteOperateur
       Infra.InfraPatient
       Infra.ReadOperateur
