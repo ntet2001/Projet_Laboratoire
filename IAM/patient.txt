@@ -1,0 +1,2 @@
+MkPatient {nameOf = "ntet", firstNameOf = "igor", emailOf = MkEmail {identifiant = "manyama", domaine = "gmail", extension = "com"}, photoOf = "111111111111111", code = 4305, statutP = Aucun}
+MkPatient {nameOf = "raoul", firstNameOf = "gonzalez", emailOf = MkEmail {identifiant = "elie", domaine = "gmail", extension = "com"}, photoOf = "10000011000000000", code = 1794, statutP = Aucun}

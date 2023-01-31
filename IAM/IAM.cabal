@@ -25,8 +25,17 @@ source-repository head
 
 library
   exposed-modules:
+      App.AppPatient
+      App.VerificationOperateur
       Common.SimpleType
+      Domain.CreationOperateur
+      Domain.DomPatient
       Infra.Connexion
+      Infra.DeleteOperateur
+      Infra.InfraPatient
+      Infra.ReadOperateur
+      Infra.SaveOperateur
+      Infra.UpdateOperateur
       Lib
   other-modules:
       Paths_IAM
@@ -35,6 +44,9 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , parsec
+    , random
   default-language: Haskell2010
 
 executable IAM-exe
@@ -47,6 +59,9 @@ executable IAM-exe
   build-depends:
       IAM
     , base >=4.7 && <5
+    , bytestring
+    , parsec
+    , random
   default-language: Haskell2010
 
 test-suite IAM-test
@@ -60,4 +75,7 @@ test-suite IAM-test
   build-depends:
       IAM
     , base >=4.7 && <5
+    , bytestring
+    , parsec
+    , random
   default-language: Haskell2010
