@@ -29,6 +29,7 @@ library
       App.VerificationOperateur
       Common.SimpleType
       Domain.CreationOperateur
+      Domain.CrudRole
       Domain.DomPatient
       Infra.Connexion
       Infra.DeleteOperateur
