@@ -6,7 +6,7 @@ import Domain.CreationOperateur
 
 
        
-connectUser :: Matricule -> PasswordOp ->IO Operateur
+connectUser ::  Matricule -> PasswordOp ->IO Operateur
 connectUser mat passe = do
     let mat1 = verificationMatricule mat
     case mat1 of
