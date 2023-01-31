@@ -11,16 +11,15 @@ module Common.SimpleType where
     type PrenomPatient = Nom
     type Matricule = String
     type Identifiant = String
-    data Statut = Connecter | Deconnecter deriving (Show,Read)
-    data Visibilite = Oui | Non deriving (Show,Read,Eq)
+    data Statut = Connecter | Deconnecter | Supprimer | Bloquer | Aucun deriving (Show,Read,Eq) 
     data Email = MkEmail { identifiant :: Identifiant, domaine :: String, extension :: String } deriving (Show ,Read, Eq)
     type PasswordOp = String
     type Photo = C.ByteString
     data Operateur = MKOperateur { nomOp :: NomOp, prenomOp :: PrenomOp, matricule::Matricule, 
-        email :: Email, passwordOp :: PasswordOp, photo :: Photo, visibilite :: Visibilite, statut :: Statut } deriving (Show,Read) 
+        email :: Email, passwordOp :: PasswordOp, photo :: Photo, statutOp :: Statut } deriving (Show,Read) 
     
-    data Patient = MkPatient {nameOf :: Nom , postNameOf :: Nom , 
-                emailOf :: Email, photoOf :: Photo, code :: Int } deriving (Show , Read , Eq)
+    data Patient = MkPatient {nameOf :: Nom , firstNameOf :: Nom , 
+                emailOf :: Email, photoOf :: Photo, code :: Int, statutP :: Statut } deriving (Show , Read , Eq)
     
     data User = Operateur | Patient deriving (Show, Read, Eq)
 
@@ -28,4 +27,4 @@ module Common.SimpleType where
     type ListMatricule = [Matricule] 
     type ListAccessCode = [Int] 
     data Access = ListMatricule | ListAccessCode deriving (Show, Read, Eq)
-    data NomRole = Admin | Laborantain | Secretaire | SimplePatient  deriving (Show, Read, Eq)
+    data NomRole = Admin | Laborantin | Secretaire | SimplePatient  deriving (Show, Read, Eq)
