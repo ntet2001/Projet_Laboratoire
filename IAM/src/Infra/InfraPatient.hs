@@ -2,9 +2,9 @@
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# OPTIONS_GHC -Wno-unused-local-binds #-}
 
-module Infrastructure.InfraPatient where 
+module Infra.InfraPatient where 
 
-import Types.MesTypes
+import Common.SimpleType
 import App.AppPatient
 import Domain.DomPatient
 import Data.List
@@ -29,7 +29,7 @@ readPatient codeAccess fileName = do
     contenuFichier <- readFile fileName
     let ligneParLigne = lines contenuFichier
         convertToPatient = fmap read ligneParLigne :: [Patient]
-        liste = [x | x <- convertToPatient,  length (filter (== someStuff) [code x]) == 1]
+        liste = [x | x <- convertToPatient,  length (filter (== codeAccess) [code x]) == 1]
     if null liste then fail "le code ne correspond à aucun patient"
     else return $ head liste 
         --Left _ -> fail  "le code n'est pas valide"
@@ -44,7 +44,7 @@ deletePatient accessCode fileName = do
     fileContent <- readFile fileName
     let linePerline = lines fileContent
         toPatient = fmap read linePerline :: [Patient]
-        updateListOfPatient = f accesscode toPatient
+        updateListOfPatient = f accessCode toPatient
     if null updateListOfPatient then fail "ce code ne correspond à aucun patient"
     else  do 
         let mapShow = fmap show updateListOfPatient 

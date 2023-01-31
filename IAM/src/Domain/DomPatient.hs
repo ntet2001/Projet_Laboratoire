@@ -3,7 +3,7 @@ module Domain.DomPatient where
 
 import App.AppPatient 
 import Common.SimpleType
-import App.AppFile (verifEmail, verifNomEtPrenom, verifEmail, verifPhoto) 
+--import App.AppFile (verifEmail, verifNomEtPrenom, verifEmail, verifPhoto) 
 import Text.ParserCombinators.Parsec
 
 
@@ -17,14 +17,24 @@ createPatient x y k j = do
         Right someStuff -> return someStuff
         Left erreur -> error $ show erreur 
 
+ {--------------------------==== Function to validated Statut ====----------------------------------}
+verificationStatut :: String -> Either ParseError Statut 
+verificationStatut = parse parserStatut "" 
+    where parserStatut = do
+                        statut <- many letter
+                        case statut of
+                            "Aucun" -> return Aucun
+                            "Connecter" -> return Connecter
+
 -- fonction d'aide a la fonction pour creer un patient 
 createHelper :: NomPatient -> PrenomPatient -> String -> String -> Int -> Either ParseError Patient 
 createHelper nom prenom email tof val = do  
-    MkPatient <$> verifNomEtPrenom nom
-              <*> verifNomEtPrenom prenom
-              <*> verifEmail email
-              <*> verifPhoto tof 
+    MkPatient <$> verificationNom nom
+              <*> verificationNom prenom
+              <*> verificationEmail email
+              <*> verificationPhoto tof 
               <*> verifCode val
+              <*> verificationStatut "Aucun"
 
 -- verifier si un patient existe deja avant de l'enregistrer 
 
