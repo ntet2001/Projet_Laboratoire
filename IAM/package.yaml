@@ -24,6 +24,11 @@ dependencies:
 - parsec
 - bytestring
 - random
+- servant-server
+- wai
+- warp
+- aeson
+- text
 
 ghc-options:
 - -Wall

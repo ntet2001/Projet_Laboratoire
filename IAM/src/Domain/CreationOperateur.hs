@@ -5,8 +5,9 @@ module Domain.CreationOperateur where
     import Text.ParserCombinators.Parsec
     import Text.ParserCombinators.Parsec.Language()
     import Common.SimpleType 
-    import qualified App.VerificationOperateur as VO
+    import App.CommonVerification 
     import Data.Char
+    import Infra.SaveOperateur
 
     {--------------------------==== Function to validated a Matricule ====----------------------------------}
     verificationMatricule :: String -> Either ParseError Matricule -- a Refaire
@@ -35,23 +36,13 @@ module Domain.CreationOperateur where
     verificationPassword :: String -> Either ParseError  PasswordOp
     verificationPassword mdp = parse parserPassword "" mdp
 
-    {--------------------------==== Function to validated Statut ====----------------------------------}
-    verificationStatut :: String -> Either ParseError Statut 
-    verificationStatut = parse parserStatut "" 
-        where parserStatut = do
-                            statut <- many letter
-                            case statut of
-                                "Aucun" -> return Aucun
-                                "Connecter" -> return Connecter
-
-
     {---------------------===== Function to Create an Operator =====----------}
-    creerOperateur :: NomOp -> PrenomOp -> Matricule -> String -> PasswordOp -> String -> Either ParseError Operateur
-    creerOperateur nom prenom matricule email password photo = MKOperateur <$> 
-        VO.verificationNom nom <*> 
-        VO.verificationNom prenom<*> 
-        verificationMatricule matricule<*> 
-        VO.verificationEmail email<*> 
-        verificationPassword password<*> 
-        VO.verificationPhoto photo <*>
+    createOperator :: NomOp -> PrenomOp -> Matricule -> String -> PasswordOp -> String -> Either ParseError Operateur
+    createOperator nom prenom matricule email password photo = MKOperateur <$> 
+        verificationNom nom <*> 
+        verificationNom prenom <*> 
+        verificationMatricule matricule <*> 
+        verificationEmail email <*> 
+        verificationPassword password <*> 
+        verificationPhoto photo <*>
         verificationStatut "Aucun"
