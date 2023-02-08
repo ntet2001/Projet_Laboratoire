@@ -35,7 +35,9 @@ module Common.SimpleType where
 
     -- instance Show Email where
     --     show email = (identifiant email) ++ "@" ++ (domaine email) ++ "." ++ (extension email)
-
+    type AccessCode = Int 
+    data Statut = Connecter | Deconnecter | Supprimer | Bloquer | Aucun deriving (Show,Read,Eq) 
+    data Email = MkEmail { identifiant :: Identifiant, domaine :: String, extension :: String } deriving (Show ,Read, Eq)
     type PasswordOp = String
     type Photo = C.Text
     data Operateur = MKOperateur 
@@ -61,11 +63,7 @@ module Common.SimpleType where
     
     data User a b  = Operateur a   | Patient b  deriving (Show , Read , Eq)
 
-    data Role = MkRole {nameRole :: NomRole, roleUserList :: Access ListMatricule ListAccessCode } deriving (Show, Read, Eq)
+    data Role = MkRole {nameRole :: NomRole, roleUserList :: [Access Matricule AccessCode] } deriving (Show, Read, Eq)
 
-    type ListMatricule = [Matricule]
-
-    type ListAccessCode = [Int] 
-    
-    data Access e f = ListMatricule e | ListAccessCode  f deriving (Show, Read, Eq)
-    data NomRole = Admin | Laborantain | Secretaire | SimplePatient  deriving (Show, Read, Eq)
+    data Access e f = ConsMatricule e | ConsAccessCode  f deriving (Show, Read, Eq)
+    newtype NomRole = MkNom {getNom :: String}  deriving (Show, Read, Eq)
