@@ -26,18 +26,24 @@ source-repository head
 library
   exposed-modules:
       App.AppPatient
-      App.VerificationOperateur
+      App.CommonVerification
       Common.SimpleType
+      Domain.ConnexionOperateur
+      Domain.ConnexionPatient
       Domain.CreationOperateur
       Domain.CrudRole
+      Domain.DeconnexionOperateur
+      Domain.DeconnexionPatient
       Domain.DomPatient
-      Infra.Connexion
-      Infra.Deconnexion
       Infra.DeleteOperateur
-      Infra.InfraPatient
+      Infra.DeletePatient
+      Infra.FunctionsInfra
       Infra.ReadOperateur
+      Infra.ReadPatient
       Infra.SaveOperateur
+      Infra.SavePatient
       Infra.UpdateOperateur
+      Infra.UpdatePatient
       Lib
   other-modules:
       Paths_IAM
@@ -45,10 +51,15 @@ library
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , bytestring
     , parsec
     , random
+    , servant-server
+    , text
+    , wai
+    , warp
   default-language: Haskell2010
 
 executable IAM-exe
@@ -60,10 +71,15 @@ executable IAM-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       IAM
+    , aeson
     , base >=4.7 && <5
     , bytestring
     , parsec
     , random
+    , servant-server
+    , text
+    , wai
+    , warp
   default-language: Haskell2010
 
 test-suite IAM-test
@@ -76,8 +92,13 @@ test-suite IAM-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       IAM
+    , aeson
     , base >=4.7 && <5
     , bytestring
     , parsec
     , random
+    , servant-server
+    , text
+    , wai
+    , warp
   default-language: Haskell2010

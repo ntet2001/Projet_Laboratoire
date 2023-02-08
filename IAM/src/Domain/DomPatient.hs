@@ -2,31 +2,25 @@
 module Domain.DomPatient where 
 
 import App.AppPatient 
+import App.CommonVerification
+import Infra.SavePatient
 import Common.SimpleType
---import App.AppFile (verifEmail, verifNomEtPrenom, verifEmail, verifPhoto) 
 import Text.ParserCombinators.Parsec
 
 
 
--- fonction pour creer un patient, le refactoring se fera avec le monad tranformer 
-createPatient :: NomPatient -> PrenomPatient -> String -> String  -> IO Patient 
+-- function to create patient 
+createPatient :: NomPatient -> PrenomPatient -> String -> String  -> IO ()
 createPatient x y k j = do 
     code <- genCode
     let var = createHelper x y k j code 
     case var of 
-        Right someStuff -> return someStuff
-        Left erreur -> error $ show erreur 
+        Right someStuff -> do
+            savePatient someStuff
+            putStrLn "Patient enregistrer"
+        Left erreur -> putStrLn $ show erreur 
 
- {--------------------------==== Function to validated Statut ====----------------------------------}
-verificationStatut :: String -> Either ParseError Statut 
-verificationStatut = parse parserStatut "" 
-    where parserStatut = do
-                        statut <- many letter
-                        case statut of
-                            "Aucun" -> return Aucun
-                            "Connecter" -> return Connecter
-
--- fonction d'aide a la fonction pour creer un patient 
+-- function helper to create patient
 createHelper :: NomPatient -> PrenomPatient -> String -> String -> Int -> Either ParseError Patient 
 createHelper nom prenom email tof val = do  
     MkPatient <$> verificationNom nom
@@ -35,20 +29,6 @@ createHelper nom prenom email tof val = do
               <*> verificationPhoto tof 
               <*> verifCode val
               <*> verificationStatut "Aucun"
-
--- verifier si un patient existe deja avant de l'enregistrer 
-
-verifPatient :: Patient -> String -> IO (Either String Patient) 
-verifPatient inputPatient nameFile = do
-    contient <- readFile nameFile 
-    let ligneParligne = lines contient
-        convertToPatient = fmap read ligneParligne :: [Patient]
-        --listInfosPatient = map infos convertToPatient :: [InfoPatient]
-        var = emailOf inputPatient 
-        emailOfPatient = fmap emailOf convertToPatient
-        listeEmail = filter (== var)  emailOfPatient
-    if null listeEmail then return $ Right inputPatient
-      else return $ Left "ce patient existe deja !!"
 
 
 
