@@ -15,6 +15,7 @@ module Infra.FunctionsInfra where
             else do
                 pa <- hGetLine h
                 rest <- contenuOp h
+                hClose h
                 return (pa : rest)
 
     {--------------------------==== Function to resave operators ====-----------------------}

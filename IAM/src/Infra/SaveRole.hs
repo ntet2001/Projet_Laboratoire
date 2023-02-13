@@ -11,7 +11,7 @@ saveRole role file = do
     let ligneParligne = lines filecontent 
         toRole = fmap read ligneParligne :: [Role]
         filtredList = filter (role == ) toRole 
-    if null filtredList then appendFile file (show role)  
+    if null filtredList then appendFile file (show role ++ "\n")  
     else do 
         print "le role existe deja"
         return ()

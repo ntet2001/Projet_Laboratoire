@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.0.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -28,23 +28,28 @@ library
       App.AppPatient
       App.CommonVerification
       Common.SimpleType
+      Domain.AssignRole
       Domain.ConnexionOperateur
       Domain.ConnexionPatient
+      Domain.CreateRole
       Domain.CreationOperateur
-      Domain.CrudRole
       Domain.DeconnexionOperateur
       Domain.DeconnexionPatient
       Domain.DomPatient
       Infra.DeleteOperateur
       Infra.DeletePatient
       Infra.FunctionsInfra
+      Infra.HelperRole
       Infra.ReadOperateur
       Infra.ReadPatient
       Infra.SaveOperateur
       Infra.SavePatient
+      Infra.SaveRole
+      Infra.SearchRole
       Infra.UpdateOperateur
       Infra.UpdatePatient
       Lib
+      MonLib
   other-modules:
       Paths_IAM
   hs-source-dirs:

@@ -1,6 +1,8 @@
 module Infra.HelperRole where 
 
 import Common.SimpleType
+import System.IO
+import Infra.FunctionsInfra
 
 
 
@@ -40,14 +42,18 @@ paSearchRoleHelper y file = do
                 then return $ nameRole role
             else []
 
-
     
 -- fonction qui ressort le role correspondant à un nom de role donné 
 
 matchRole :: NomRole -> FilePath -> IO Role
 matchRole nom file = do
-    lectureFichier <- readFile file 
-    let linePerline = lines lectureFichier
-        toRole = fmap read linePerline :: [Role]
-        liste = [role | role <- toRole, nameRole role == nom]
-    if null liste then fail "ce nom ne correspond à aucun role" else return $ head liste 
+    handle <- openFile file ReadMode
+    lectureFichier <- contenuOp handle
+    let toRole = fmap read lectureFichier :: [Role]
+        liste =  filter (\r -> (getNom $ nameRole r) == (getNom nom)) toRole--[role | role <- toRole, nameRole role == nom]
+    --print liste
+    if null liste
+        then fail "ce nom ne correspond a aucun role" 
+        else do 
+            hClose handle
+            return $ head liste 

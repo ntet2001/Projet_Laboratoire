@@ -1,8 +1,13 @@
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DataKinds       #-}
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Common.SimpleType where
 
@@ -36,8 +41,8 @@ module Common.SimpleType where
     -- instance Show Email where
     --     show email = (identifiant email) ++ "@" ++ (domaine email) ++ "." ++ (extension email)
     type AccessCode = Int 
-    data Statut = Connecter | Deconnecter | Supprimer | Bloquer | Aucun deriving (Show,Read,Eq) 
-    data Email = MkEmail { identifiant :: Identifiant, domaine :: String, extension :: String } deriving (Show ,Read, Eq)
+    -- data Statut = Connecter | Deconnecter | Supprimer | Bloquer | Aucun deriving (Show,Read,Eq) 
+    -- data Email = MkEmail { identifiant :: Identifiant, domaine :: String, extension :: String } deriving (Show ,Read, Eq)
     type PasswordOp = String
     type Photo = C.Text
     data Operateur = MKOperateur 
@@ -61,9 +66,21 @@ module Common.SimpleType where
         } deriving (Show, Read,Eq,Generic)
     $(deriveJSON defaultOptions ''Patient)
     
-    data User a b  = Operateur a   | Patient b  deriving (Show , Read , Eq)
+    data Access e f = ConsMatricule e | ConsAccessCode  f deriving (Show, Read, Eq, Generic)
+    $(deriveJSON defaultOptions ''Access)
+    
+    newtype NomRole = MkNom {getNom :: String}  deriving (Show, Read, Eq, Generic)
+    $(deriveJSON defaultOptions ''NomRole)
+    data User a b  = Operateur a   | Patient b  deriving (Show , Read , Eq, Generic)
 
-    data Role = MkRole {nameRole :: NomRole, roleUserList :: [Access Matricule AccessCode] } deriving (Show, Read, Eq)
+    data Role = MkRole {nameRole :: NomRole, roleUserList :: [Access Matricule AccessCode] } deriving (Show, Read, Eq, Generic)
+    $(deriveJSON defaultOptions ''Role)
 
-    data Access e f = ConsMatricule e | ConsAccessCode  f deriving (Show, Read, Eq)
-    newtype NomRole = MkNom {getNom :: String}  deriving (Show, Read, Eq)
+    
+
+    --instance ToJSON Role
+    --instance ToJSON NomRole
+    --instance ToJSON (Access Matricule AccessCode) 
+    instance FromHttpApiData NomRole
+
+
