@@ -29,6 +29,10 @@ import Domain.DeconnexionOperateur
 import Domain.ConnexionPatient
 import Domain.DeconnexionPatient
 import Control.Monad.IO.Class
+import Domain.AssignRole
+import Domain.CreateRole
+import Infra.SearchRole
+import Infra.SaveRole
 import qualified Data.Text as T
 
 type API = "operators" :> Get '[JSON] [Operateur] 
@@ -78,7 +82,7 @@ server = operators
     :<|> deconnectpatient
     :<|> roles 
     :<|> operateurs
-    :<|> patients
+    :<|> patients'
     :<|> opList
     :<|> paList
 
@@ -228,8 +232,8 @@ operateurs  mat nom = do
             ++  mat ++ " " ++ "have the role " ++  nom
     
 -- assign a role to a patient, given his access's code
-patients :: Int -> String -> Handler String
-patients someCode someName = do
+patients' :: Int -> String -> Handler String
+patients' someCode someName = do
     let nomrole = MkNom someName
     patientFounded <- liftIO $ foundPatient someCode
         --liftIO $ print patientFounded

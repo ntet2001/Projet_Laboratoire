@@ -37,3 +37,16 @@ module Infra.ReadOperateur where
                 else do
                     hClose handle
                     return contenu3
+
+
+    -- function to found an operator with the given matricule
+
+    foundOperator :: Matricule -> IO Operateur 
+    foundOperator mat = do
+        fileContent <- readFile "SaveOperateur.txt"
+        let linePerline = lines fileContent
+            toOp = fmap read linePerline :: [Operateur]
+            liste = [operator | operator <- toOp, matricule operator == mat]
+        if null liste then fail "cet matricule ne correspond a aucun operateur enregistré"
+        else return $ head liste 
+

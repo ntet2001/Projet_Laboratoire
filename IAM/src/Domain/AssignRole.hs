@@ -3,41 +3,60 @@ module Domain.AssignRole where
 
 import Common.SimpleType
 import Infra.HelperRole
+import Infra.FunctionsInfra (contenuOp)
+import System.IO
 
 
 -- fonction qui assigne un role a un utilisateur connecté
 
-asignRole :: NomRole -> User Operateur Patient -> IO (Either String Role)
+asignRole :: NomRole -> User Operateur Patient -> IO Role
 asignRole someName  (Operateur op) = do  
+    print someName
+    handle <- openFile "roles.txt" ReadMode
+    fileContent <- contenuOp handle
+    hClose handle
     checkRole <- matchRole someName "roles.txt"
-    case checkRole of 
-        fail -> return $ Left "ce nom ne correspond à un aucun role"
-        theRole -> 
-            if statutOp op == Connecter 
-                then return $ Right $ opRole checkRole (matricule op) 
-            else  return $ Left "cet utilisateur n'est pas connecté"
+    let assignedRole = opRole checkRole (matricule op)
+        toRole = fmap read fileContent :: [Role]
+        updateFile = f assignedRole toRole
+    writeFile  "roles.txt" $ unlines $ fmap show updateFile 
+    --putStrLn $ show checkRole
+    return assignedRole
 asignRole someName (Patient pa ) = do 
-    checkRole <- matchRole someName "roles.txt"
-    case checkRole of 
-        fail -> return $ Left "ce nom ne correspond à aucun role"
-        theRole -> 
-            if statutP pa == Connecter  
-                then return $ Right $ paRole checkRole (code pa) 
-            else return $ Left "cet utilisateur n'est pas connecté"
+    handle1 <- openFile "roles.txt" ReadMode
+    contenu <- contenuOp handle1
+    hClose handle1
+    checkRole' <- matchRole someName "roles.txt"
+    let assignedRolePa = paRole checkRole' (code pa)
+        toRole' = fmap read contenu :: [Role]
+        updateFile' = f assignedRolePa toRole'
+    print updateFile'
+    writeFile "roles.txt" $ unlines $ fmap show updateFile'
+    return assignedRolePa
+         
 
     -- fonction qui donne un role a un utilisateur type Operateur 
-
 opRole :: Role -> Matricule -> Role
-opRole r m =
-    let var = ConsMatricule m : roleUserList r 
-    in MkRole {nameRole = nameRole r , roleUserList =  var }
+opRole r m = if  ConsMatricule m `elem` roleUserList r 
+                then r
+             else MkRole {nameRole = nameRole r , roleUserList =  ConsMatricule m : roleUserList r }
     
 --fonction qui donne un role a un utilisateur type Patient 
 
 paRole :: Role -> AccessCode -> Role
-paRole role code =  
-    let sortie = ConsAccessCode code  : roleUserList role   
-    in MkRole {nameRole = nameRole role , roleUserList = sortie }
+paRole role code =  if ConsAccessCode code `elem` roleUserList role  
+                        then role  
+                    else MkRole {nameRole = nameRole role , roleUserList = ConsAccessCode code : roleUserList role}
+
+
+--fonction qui met a jour le contenu du fichier 
+
+f :: Role -> [Role] -> [Role]
+f unRole [] = []
+f unRole (x:xs) = if nameRole unRole == nameRole x 
+                        then unRole:xs
+                  else x : f unRole xs
+
  
 
 

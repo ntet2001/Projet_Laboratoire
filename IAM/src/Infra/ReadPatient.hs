@@ -40,3 +40,16 @@ module Infra.ReadPatient where
                 else do
                     hClose handle
                     return contenu3
+
+   
+
+    -- found a patient with the access code given 
+
+    foundPatient :: AccessCode -> IO Patient 
+    foundPatient someCode = do
+        fileContent <- readFile "patient.txt"
+        let linePerline = lines fileContent
+            toPa = fmap read linePerline :: [Patient]
+            liste = [patient | patient <- toPa, code patient == someCode]
+        if null liste then fail "ce code ne correspond a aucun patient enregistré"
+        else return $ head liste 

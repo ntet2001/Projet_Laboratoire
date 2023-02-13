@@ -1,4 +1,4 @@
-MKOperateur {nomOp = "Nkalla", prenomOp = "EhaweJunior", matricule = "MOIMEME", email = MkEmail {identifiant = "nkalla", domaine = "wada", extension = "org"}, passwordOp = "Nkalla001w!", photo = "1100000000000000000", statutOp = Aucun}
+MKOperateur {nomOp = "Nkalla", prenomOp = "EhaweJunior", matricule = "MOIMEME", email = MkEmail {identifiant = "nkalla", domaine = "wada", extension = "org"}, passwordOp = "Nkalla001w!", photo = "1100000000000000000", statutOp = Connecter}
 MKOperateur {nomOp = "ntet", prenomOp = "igor", matricule = "IUC1000", email = MkEmail {identifiant = "igor", domaine = "wada", extension = "org"}, passwordOp = "Ntet3000$igor", photo = "1000000000000000", statutOp = Supprimer}
 MKOperateur {nomOp = "raoul", prenomOp = "tsague", matricule = "UU6667UU", email = MkEmail {identifiant = "raoul", domaine = "wada", extension = "org"}, passwordOp = "Raoul2000$", photo = "11111111111111", statutOp = Aucun}
 MKOperateur {nomOp = "Senga", prenomOp = "Andy", matricule = "IUC1008", email = MkEmail {identifiant = "senga", domaine = "wada", extension = "org"}, passwordOp = "Nkalla001w$", photo = "1100000000000000000", statutOp = Deconnecter}
