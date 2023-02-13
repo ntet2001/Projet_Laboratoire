@@ -30,18 +30,22 @@ library
       Common.SimpleType
       Domain.ConnexionOperateur
       Domain.ConnexionPatient
+      Domain.CreateRole
       Domain.CreationOperateur
-      Domain.CrudRole
       Domain.DeconnexionOperateur
       Domain.DeconnexionPatient
       Domain.DomPatient
+      Infra.AssignRole
       Infra.DeleteOperateur
       Infra.DeletePatient
       Infra.FunctionsInfra
+      Infra.HelperRole
       Infra.ReadOperateur
       Infra.ReadPatient
       Infra.SaveOperateur
       Infra.SavePatient
+      Infra.SaveRole
+      Infra.SearchRole
       Infra.UpdateOperateur
       Infra.UpdatePatient
       Lib

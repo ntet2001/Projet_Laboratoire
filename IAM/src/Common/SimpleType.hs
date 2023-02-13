@@ -33,11 +33,7 @@ module Common.SimpleType where
         } deriving (Show,Eq,Read,Generic)
     $(deriveJSON defaultOptions ''Email)
 
-    -- instance Show Email where
-    --     show email = (identifiant email) ++ "@" ++ (domaine email) ++ "." ++ (extension email)
     type AccessCode = Int 
-    data Statut = Connecter | Deconnecter | Supprimer | Bloquer | Aucun deriving (Show,Read,Eq) 
-    data Email = MkEmail { identifiant :: Identifiant, domaine :: String, extension :: String } deriving (Show ,Read, Eq)
     type PasswordOp = String
     type Photo = C.Text
     data Operateur = MKOperateur 
@@ -67,3 +63,4 @@ module Common.SimpleType where
 
     data Access e f = ConsMatricule e | ConsAccessCode  f deriving (Show, Read, Eq)
     newtype NomRole = MkNom {getNom :: String}  deriving (Show, Read, Eq)
+    

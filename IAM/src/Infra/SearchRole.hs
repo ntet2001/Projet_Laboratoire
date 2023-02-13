@@ -1,4 +1,4 @@
-module Domain.SearchRole where 
+module Infra.SearchRole where 
 
 
 import Common.SimpleType 

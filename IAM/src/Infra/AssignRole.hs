@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
-module Domain.AssignRole where 
+module Infra.AssignRole where 
 
 import Common.SimpleType
 import Infra.HelperRole
