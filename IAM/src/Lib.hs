@@ -29,7 +29,7 @@ import Domain.DeconnexionOperateur
 import Domain.ConnexionPatient
 import Domain.DeconnexionPatient
 import Control.Monad.IO.Class
-import Domain.AssignRole
+import Infra.AssignRole
 import Domain.CreateRole
 import Infra.SearchRole
 import Infra.SaveRole
