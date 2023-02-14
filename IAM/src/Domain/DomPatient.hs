@@ -10,15 +10,15 @@ import Text.ParserCombinators.Parsec
 
 
 -- function to create patient 
-createPatient :: NomPatient -> PrenomPatient -> String -> String  -> IO ()
+createPatient :: NomPatient -> PrenomPatient -> String -> String  -> IO Int
 createPatient x y k j = do 
     code <- genCode
     let var = createHelper x y k j code 
     case var of 
         Right someStuff -> do
             savePatient someStuff
-            putStrLn "Patient enregistrer"
-        Left erreur -> putStrLn $ show erreur 
+            return code
+        Left erreur -> fail ""
 
 -- function helper to create patient
 createHelper :: NomPatient -> PrenomPatient -> String -> String -> Int -> Either ParseError Patient 
