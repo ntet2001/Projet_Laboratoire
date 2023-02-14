@@ -44,7 +44,7 @@ type API = "operators" :> Get '[JSON] [Operateur]
     :<|> "operators" :> ReqBody '[JSON] Operateur :> Put '[JSON] Operateur
     :<|> "patients" :> ReqBody '[JSON] Patient :> Put '[JSON] Patient
     :<|> "operators" :> Capture "nom" String :> Capture "prenom" String :> Capture "matricule" String :> Capture "email" String :> Capture "password" String :> Capture "photo" String :> Post '[JSON] String
-    :<|> "patients" :> Capture "nom" String :> Capture "prenom" String :> Capture "email" String :> Capture "photo" String :> Capture "code" Int :> Post '[JSON] String
+    :<|> "patients" :> Capture "nom" String :> Capture "prenom" String :> Capture "email" String :> Capture "photo" String :> Post '[JSON] Int
     :<|> "connexionoperators" :> ReqBody '[JSON] Operateur :> Post '[JSON] Operateur
     :<|> "connexionpatients" :> ReqBody '[JSON] Patient :> Post '[JSON] Patient
     :<|> "deconnexionoperators" :> ReqBody '[JSON] Operateur :> Post '[JSON] Operateur
@@ -187,17 +187,10 @@ updatepatient pat = do
     return pat
 
 {-========= CREATE A PATIENT ======-}
-createpatient :: NomOp -> PrenomOp -> String -> String -> Int -> Handler String
-createpatient nom prenom email photo code = do 
-    let pat = createHelper nom prenom email photo code
-    case pat of
-        Right a -> do 
-            liftIO $ print a
-            sav <- liftIO $ savePatient a
-            return "saved"
-        Left b -> do 
-            sav <- liftIO $ putStrLn "Register Failed"
-            return "not saved"
+createpatient :: NomOp -> PrenomOp -> String -> String -> Handler Int
+createpatient nom prenom email photo = do 
+    pat <- liftIO $ createPatient nom prenom email photo
+    return pat 
 
 {-======== CONNECT A PATIENT =======-}
 connectpatient :: Patient -> Handler Patient
