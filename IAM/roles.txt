@@ -1,2 +1,1 @@
-MkRole {nameRole = MkNom {getNom = "controleur"}, roleUserList = [ConsMatricule "IUC1009"]}
-MkRole {nameRole = MkNom {getNom = "simple"}, roleUserList = [ConsAccessCode 2020]}
+MkRole {nameRole = MkNom {getNom = "Administrateur"}, roleUserList = [ConsMatricule "MOIIGOR",ConsMatricule "MOIMEME"]}

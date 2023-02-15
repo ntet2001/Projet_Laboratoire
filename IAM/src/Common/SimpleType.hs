@@ -38,6 +38,16 @@ module Common.SimpleType where
         } deriving (Show,Eq,Read,Generic)
     $(deriveJSON defaultOptions ''Email)
 
+    data Email2 = MkEmail2 
+        {identifiant2 :: Identifiant
+        ,domaine2 :: String
+        ,extension2 :: String 
+        } deriving (Eq,Read,Generic)
+    $(deriveJSON defaultOptions ''Email2)
+
+    instance Show Email2 where
+        show email = (identifiant2 email) ++ "@" ++ (domaine2 email) ++ "." ++ (extension2 email)
+
     type AccessCode = Int 
     type PasswordOp = String
     type Photo = C.Text
@@ -51,6 +61,17 @@ module Common.SimpleType where
         ,statutOp :: Statut 
         } deriving (Show,Eq,Read,Generic)
     $(deriveJSON defaultOptions ''Operateur)
+
+    data Operateur2 = MKOperateur2 
+        { nomOp2 :: NomOp
+        ,prenomOp2 ::  PrenomOp
+        ,matricule2 :: Matricule
+        ,email2 :: Email2
+        ,passwordOp2 :: PasswordOp
+        ,photo2 :: Photo
+        ,statutOp2 :: Statut 
+        } deriving (Show,Eq,Read,Generic)
+    $(deriveJSON defaultOptions ''Operateur2)
     
     data Patient = MkPatient 
         {nameOf :: Nom
@@ -61,6 +82,16 @@ module Common.SimpleType where
         ,statutP :: Statut
         } deriving (Show, Read,Eq,Generic)
     $(deriveJSON defaultOptions ''Patient)
+
+    data Patient2 = MkPatient2 
+        {nameOf2 :: Nom
+        ,firstNameOf2 :: Nom
+        ,emailOf2 :: Email2
+        ,photoOf2 :: Photo
+        ,code2 :: Int
+        ,statutP2 :: Statut
+        } deriving (Show, Read,Eq,Generic)
+    $(deriveJSON defaultOptions ''Patient2)
     
     data Access e f = ConsMatricule e | ConsAccessCode  f deriving (Show, Read, Eq, Generic)
     $(deriveJSON defaultOptions ''Access)
