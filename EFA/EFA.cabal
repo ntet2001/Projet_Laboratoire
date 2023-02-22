@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Common.SimpleTypes
       Lib
   other-modules:
       Paths_EFA
@@ -35,6 +36,8 @@ library
       aeson
     , base >=4.7 && <5
     , servant-server
+    , text
+    , time
     , wai
     , warp
   default-language: Haskell2010
@@ -51,6 +54,8 @@ executable EFA-exe
     , aeson
     , base
     , servant-server
+    , text
+    , time
     , wai
     , warp
   default-language: Haskell2010
@@ -71,6 +76,8 @@ test-suite EFA-test
     , hspec-wai
     , hspec-wai-json
     , servant-server
+    , text
+    , time
     , wai
     , warp
   default-language: Haskell2010
