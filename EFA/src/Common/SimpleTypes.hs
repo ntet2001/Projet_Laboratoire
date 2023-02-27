@@ -19,7 +19,7 @@ module Common.SimpleTypes where
 
     data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving (Show, Eq, Read)
 
-    data Analyse a = MkAnalyse {idAnalyse :: String,
+    data Analyse a = MkAnalyse {idAnalyse :: Int,
         nomAnalyse :: String,
         valUsuel :: ValUsuel a,
         categorie :: Categorie
@@ -29,26 +29,22 @@ module Common.SimpleTypes where
     data ValUsuel a  = Vide | UneVal a  | Interval Float Float deriving (Show, Eq, Read)
 
 
-    data Fiche = MkFIche { idFiche::String,
+    data Fiche = MkFIche { 
+        idFiche :: Int,
         infoPatient :: InfoPatient,
         analyses :: [String],
         prescripteur :: String,
         date :: UTCTime 
     } deriving (Show, Eq, Read, Generic)
 
-    instance ToJSON Fiche 
-    instance FromJSON Fiche 
- 
 
     data InfoPatient = MkPatient { nom :: String,
         prenom :: String,
-        datenaissance :: UTCTime,
+        datenaissance :: Year,
         genre :: String, 
         email :: String
     } deriving (Show, Eq, Read, Generic)
 
-    instance ToJSON InfoPatient
-    instance FromJSON InfoPatient
 
 
 
