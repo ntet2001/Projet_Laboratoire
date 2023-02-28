@@ -3,7 +3,14 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: email-validate-2.3.2.18@sha256:5a5320eefeb069f8145d1acb5bd6281eaa175a71255572a84ed2201dc5e1ef31,1620
+    pantry-tree:
+      sha256: 47d2b7b57c79a936f74f733a7e2f2bee4ad9cc0b44a603f7fa4c9c32e576129f
+      size: 476
+  original:
+    hackage: email-validate-2.3.2.18
 snapshots:
 - completed:
     sha256: adbc602422dde10cc330175da7de8609e70afc41449a7e2d6e8b1827aa0e5008

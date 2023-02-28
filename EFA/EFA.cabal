@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.0.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -25,7 +25,13 @@ source-repository head
 
 library
   exposed-modules:
+      App.CommonVerification
       Common.SimpleTypes
+      Domain.CreateAnalyse
+      Infra.DeleteAnalyse
+      Infra.ReadAnalyse
+      Infra.SaveAnalyse
+      Infra.UpdateAnalyse
       Lib
   other-modules:
       Paths_EFA
@@ -35,6 +41,10 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
+    , email-validate
+    , mysql
+    , mysql-simple
     , servant-server
     , text
     , time
@@ -53,6 +63,10 @@ executable EFA-exe
       EFA
     , aeson
     , base
+    , bytestring
+    , email-validate
+    , mysql
+    , mysql-simple
     , servant-server
     , text
     , time
@@ -72,9 +86,13 @@ test-suite EFA-test
       EFA
     , aeson
     , base
+    , bytestring
+    , email-validate
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , mysql
+    , mysql-simple
     , servant-server
     , text
     , time

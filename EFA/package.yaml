@@ -27,6 +27,11 @@ dependencies:
 - warp
 - text
 - time
+- email-validate
+- bytestring
+- mysql-simple
+- mysql
+
 
 ghc-options:
 - -Wall
