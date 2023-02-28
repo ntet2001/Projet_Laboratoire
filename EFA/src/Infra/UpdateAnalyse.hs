@@ -5,7 +5,7 @@
 {-# LANGUAGE BlockArguments #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Infra.CreateAnalyse where
+module Infra.UpdateAnalyse where
 
 
 import Common.SimpleTypes
@@ -19,6 +19,7 @@ import Text.ParserCombinators.Parsec
 import qualified Data.List as L
 
 
+
 instance Q.QueryResults Analyse where
     convertResults [fa,fb,fc,fd] [va,vb,vc,vd] = MkAnalyse a b c d
             where !a = R.convert fa va
@@ -26,31 +27,14 @@ instance Q.QueryResults Analyse where
                   !c = R.convert fc vc
                   !d = R.convert fd vd
     convertResults fs vs  = Q.convertError fs vs 4
-    
-
-createAnalyse  :: IdAnalyse -> String -> ValUsuel -> Categorie -> IO () 
-createAnalyse someId someName someValue category = do
-    connectToDatabase <- connect defaultConnectInfo { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
-    databaseContent <- query_ connectToDatabase "SELECT * FROM analyse"
-    if L.elem someName $ fmap nomAnalyse databaseContent 
-        then fail "cette analyse existe deja"
-    else do 
-        numberofline <- execute connectToDatabase "INSERT INTO analyse (idAnalyse, nomAnalyse, valUsuel, categorie) VALUES (?,?,?,?)" 
-            (someId, someName, show someValue, show category) 
-        close connectToDatabase
-        print numberofline
 
 
-
-    
-
-
-
-
-
-
-
-
+updateAnalyse :: Analyse -> IO ()
+updateAnalyse something = do
+    connexion <- connect defaultConnectInfo  { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
+    numberline <- execute connexion "UPDATE analyse SET  nomAnalyse = ?, valUsuel = ?, categorie = ? WHERE idAnalyse = ?" 
+        (nomAnalyse something, show $ valUsuel something, show $ categorie something, idAnalyse something )
+    print numberline
 
 
 
