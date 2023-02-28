@@ -26,6 +26,10 @@ source-repository head
 library
   exposed-modules:
       Common.SimpleTypes
+      Infra.DeleteFiche
+      Infra.ReadFiche
+      Infra.SaveFiche
+      Infra.UpdateFiche
       Lib
   other-modules:
       Paths_EFA
@@ -35,6 +39,9 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
+    , mysql
+    , mysql-simple
     , servant-server
     , text
     , time
@@ -53,6 +60,9 @@ executable EFA-exe
       EFA
     , aeson
     , base
+    , bytestring
+    , mysql
+    , mysql-simple
     , servant-server
     , text
     , time
@@ -72,9 +82,12 @@ test-suite EFA-test
       EFA
     , aeson
     , base
+    , bytestring
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , mysql
+    , mysql-simple
     , servant-server
     , text
     , time
