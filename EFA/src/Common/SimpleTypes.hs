@@ -1,27 +1,28 @@
-{-# LANGUAGE DataKinds       #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
-{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE BlockArguments #-}
 {-# OPTIONS_GHC -Wno-unused-do-bind #-}
---{-# MINIMAL convertResluts #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts, FlexibleInstances #-}
+{-# LANGUAGE CPP, BangPatterns, ScopedTypeVariables #-}
 
 module Common.SimpleTypes where
 
     {-======================== Modules Importations ==========================-}
-    import GHC.Generics
-    import Data.Aeson
     import Data.Aeson.TH
     import Data.Time
     import Data.Aeson 
-    import Database.MySQL.Simple.QueryResults 
-    import qualified Database.MySQL.Simple.Result as R
-    import Data.ByteString.Char8 
-    import Database.MySQL.Simple.Types
-    import Database.MySQL.Base.Types
     import Text.ParserCombinators.Parsec
-
+    import GHC.Generics
+    import Database.MySQL.Simple
+    import Database.MySQL.Simple.QueryResults
+    import Database.MySQL.Simple.Result as R
+    import Database.MySQL.Base.Types
+    import qualified Data.ByteString.Char8 as C
+    import Data.Time (UTCTime, Day)
     {-======================== Types Definitions =============================-}
 
 
@@ -38,21 +39,55 @@ module Common.SimpleTypes where
     } deriving (Show, Eq, Read)
 
 
-    data Fiche = MkFIche { 
-        idFiche :: Int,
-        infoPatient :: InfoPatient,
-        analyses :: [String],
-        prescripteur :: String,
-        date :: UTCTime 
-    } deriving (Show, Eq, Read)
-
-
     data InfoPatient = MkPatient { nom :: String,
         prenom :: String,
-        datenaissance :: Year,
+        datenaissance :: Int,
         genre :: String, 
         email :: String
-    } deriving (Show, Eq, Read)
+    } deriving (Show, Eq, Read, Generic)
+    $(deriveJSON defaultOptions ''InfoPatient)
+
+    instance FromField InfoPatient where
+        fromField = ([VarString], \xs -> do
+            let xs' = C.unpack xs
+            case xs' of
+                ys -> Right (read ys :: InfoPatient)
+                _ -> Left "erreur de Convertion sql d'analyse"
+            )
+
+    instance R.Result InfoPatient where
+        convert f Nothing =  error "erreur de Convertion sql d'analyse"
+        convert f (Just xs) = let xs' = C.unpack xs
+            in case xs' of
+                ys -> read ys :: InfoPatient
+                _ -> error "erreur de Convertion sql d'analyse"
+
+    instance QueryResults InfoPatient where
+        convertResults [fa,fb,fc,fd,fe] [va,vb,vc,vd,ve] = MkPatient a b c d e
+            where   !a = R.convert fa va
+                    !b = R.convert fb vb 
+                    !c = R.convert fc vc
+                    !d = R.convert fd vd
+                    !e = R.convert fe ve
+        convertResults fs vs = convertError fs vs 5
+
+    data Fiche = MkFIche { 
+        idFiche :: Int,
+        analyses :: [String],
+        prescripteur :: String,
+        date :: UTCTime,
+        infoPatient :: InfoPatient,
+        dateUpdate :: UTCTime
+    } deriving (Show, Eq, Read, Generic)
+    $(deriveJSON defaultOptions ''Fiche)
+
+    instance FromField [String] where
+        fromField = ([VarChar], \xs -> do
+            let xs1 = C.unpack xs
+            case xs1 of
+                [] -> Left "erreur de Convertion sql d'analyse"
+                ys -> Right (read ys :: [String])
+            )
 
 
     data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
@@ -85,12 +120,6 @@ module Common.SimpleTypes where
 
     fInterval :: String -> Either ParseError (Float,Float)
     fInterval = parse parserInterval "ce n'est pas un element de type ValUsuel"
-
-
-    -- instance Show ValUsuel where
-    --     show Vide = "Vide"
-    --     show (UneVal a) = "UneVal " ++ show a 
-    --     show (Interval b c) = "Interval " ++ show c ++ " " ++ show b 
     
     instance R.Result ValUsuel
     instance R.Result Categorie
@@ -119,34 +148,22 @@ module Common.SimpleTypes where
                 "Serologie" -> Right Serologie
                 "Parasitologie" -> Right Parasitologie
                 _ -> Left "Categorie incorrecte")
-    
 
-    -- instance  QueryResults Analyse where
-    -- convertResults :: [Field] -> [Maybe ByteString] -> Analyse
-    -- convertResults [fa,fb,fc,fd] [va,vb,vc,vd] = MkAnalyse a b c d
-    --     where !a = R.convert fa va
-    --           !b = R.convert fb vb
-    --           !c = R.convert fc vc
-    --           !d = R.convert fd vd
-    -- convertResults fs vs  = convertError fs vs 4
+    instance R.Result [String] where
+        convert f Nothing = error" erreur de Convertion sql d'analyse"
+        convert f (Just xs) = let xs1 = C.unpack xs
+            in case xs1 of
+                [] -> error "erreur de Convertion sql d'analyse"
+                ys -> read ys :: [String]
 
-
-    -- instance  Q.QueryResults (Only Categorie) where
-    -- convertResults' [fa] [va] = Only a
-    --     where !a = R.convert fa va
-    -- convertResults' fs vs  = Q.convertError fs vs 1
-
-    -- instance Q.QueryResults (Only ValUsuel) where
-    -- convertResults1 [fa] [va] = Only a
-    --     where !a = R.convert fa va
-    -- convertResults1 fs vs  = Q.convertError fs vs 1
+    instance QueryResults Fiche where
+        convertResults [fa,fb,fc,fd,fe,fg] [va,vb,vc,vd,ve,vg] = MkFIche a b c d e g
+            where   !a = R.convert fa va
+                    !b = R.convert fb vb 
+                    !c = R.convert fc vc
+                    !d = R.convert fd vd
+                    !e = R.convert fe ve
+                    !g = R.convert fg vg
+        convertResults fs vs = convertError fs vs 6
 
 
-    
-    -- instance R.Result Categorie
-    -- -- instance QueryResults (Only Categorie)
-    -- -- instance QueryResults (Only ValUsuel) 
-
-    
-    
-    -- 

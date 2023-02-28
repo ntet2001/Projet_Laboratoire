@@ -27,6 +27,9 @@ dependencies:
 - warp
 - text
 - time
+- mysql-simple
+- mysql
+- bytestring
 
 ghc-options:
 - -Wall
