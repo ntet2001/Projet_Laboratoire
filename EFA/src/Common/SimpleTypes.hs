@@ -2,19 +2,20 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE BlockArguments #-}
+{-# OPTIONS_GHC -Wno-unused-do-bind #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts, FlexibleInstances #-}
 {-# LANGUAGE CPP, BangPatterns, ScopedTypeVariables #-}
+
 module Common.SimpleTypes where
 
     {-======================== Modules Importations ==========================-}
     import Data.Aeson.TH
-    import Network.Wai
-    import Network.Wai.Handler.Warp
-    import Servant
-    import qualified Data.Text as T 
     import Data.Time
     import Data.Aeson 
+    import Text.ParserCombinators.Parsec
     import GHC.Generics
     import Database.MySQL.Simple
     import Database.MySQL.Simple.QueryResults
@@ -24,16 +25,19 @@ module Common.SimpleTypes where
     import Data.Time (UTCTime, Day)
     {-======================== Types Definitions =============================-}
 
-    data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving (Show, Eq, Read)
 
-    data Analyse a = MkAnalyse {idAnalyse :: Int,
+    type IdAnalyse = String 
+
+    data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving ( Eq, Read, Show)
+
+
+    data Analyse  = MkAnalyse {
+        idAnalyse :: IdAnalyse,
         nomAnalyse :: String,
-        valUsuel :: ValUsuel a,
+        valUsuel :: ValUsuel,
         categorie :: Categorie
     } deriving (Show, Eq, Read)
 
-
-    data ValUsuel a  = Vide | UneVal a  | Interval Float Float deriving (Show, Eq, Read)
 
     data InfoPatient = MkPatient { nom :: String,
         prenom :: String,
@@ -85,6 +89,66 @@ module Common.SimpleTypes where
                 ys -> Right (read ys :: [String])
             )
 
+
+    data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
+
+
+    -- parser d'une valeur usuelle
+
+    parserUneVal :: Parser Float
+    parserUneVal = do
+        char 'U' >> char 'n' >> char 'e' >> char 'V' >> char 'a' >> char 'l' >> space
+        valeurUsuelle <- many (digit <|> char '.')
+        let sortie = read valeurUsuelle :: Float
+        return sortie
+
+    parserInterval :: Parser (Float, Float)
+    parserInterval = do
+        char 'I' >> char 'n' >> char 't' >> char 'e' >> char 'r' >> char 'v' >> 
+         char 'a' >> char 'l' >> space 
+        min' <- many (digit <|> char '.')
+        space 
+        max' <- many (digit <|> char '.')
+        let sortie = (read min' :: Float, read max' :: Float)
+        return sortie
+
+    
+    -- -- fonction qui fait le parsing
+    fUneVal :: String -> Either ParseError Float
+    fUneVal = parse parserUneVal "ce n'est pas un element de type ValUsuel"
+
+
+    fInterval :: String -> Either ParseError (Float,Float)
+    fInterval = parse parserInterval "ce n'est pas un element de type ValUsuel"
+    
+    instance R.Result ValUsuel
+    instance R.Result Categorie
+
+    instance  R.FromField ValUsuel  where
+       fromField = ([VarString], \someval -> do
+            let tostring = unpack someval
+            case tostring of 
+                "Vide" -> Right Vide
+                someString -> do
+                    let parsing = fUneVal someString
+                    case parsing of
+                        Right someFloat -> Right $ UneVal someFloat
+                        Left _ -> do 
+                                let otherparsing = fInterval someString
+                                case otherparsing of
+                                    Right (x,y) -> Right $ Interval x y
+                                    Left _ -> Left "cette valeur n'est pas du type ValUsuel" )
+
+    instance R.FromField Categorie where
+        fromField = ([VarString], \cat -> do
+            let act1 = unpack cat
+            case act1 of
+                "Biochimie" -> Right Biochimie
+                "Hematologie" -> Right Hematologie
+                "Serologie" -> Right Serologie
+                "Parasitologie" -> Right Parasitologie
+                _ -> Left "Categorie incorrecte")
+
     instance R.Result [String] where
         convert f Nothing = error" erreur de Convertion sql d'analyse"
         convert f (Just xs) = let xs1 = C.unpack xs
@@ -101,8 +165,5 @@ module Common.SimpleTypes where
                     !e = R.convert fe ve
                     !g = R.convert fg vg
         convertResults fs vs = convertError fs vs 6
-
-
-
 
 
