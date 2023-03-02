@@ -30,7 +30,7 @@ catchIO :: IO a -> (Exception.IOException -> IO a) -> IO a
 catchIO = Exception.catch
 
 version :: Version
-version = Version [0,1,0,0] []
+version = Version [0,1,0,1] []
 
 getDataFileName :: FilePath -> IO FilePath
 getDataFileName name = do
@@ -43,10 +43,10 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 bindir     = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/bin"
-libdir     = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/lib/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.0-1fL2Up6Ys7QF4mXEhchtcn"
+libdir     = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/lib/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.1-D60c2ukRSDz8rb2ZJsrOwK"
 dynlibdir  = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/lib/x86_64-linux-ghc-9.2.5"
-datadir    = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/share/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.0"
-libexecdir = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/libexec/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.0"
+datadir    = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/share/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.1"
+libexecdir = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/libexec/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.1"
 sysconfdir = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/etc"
 
 getBinDir     = catchIO (getEnv "LaboNotification_bindir")     (\_ -> return bindir)
