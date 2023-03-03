@@ -28,6 +28,8 @@ module Common.SimpleTypes where
 
     type IdAnalyse = String 
 
+    data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
+
     data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving ( Eq, Read, Show)
 
 
@@ -38,14 +40,25 @@ module Common.SimpleTypes where
         categorie :: Categorie
     } deriving (Show, Eq, Read)
 
-
-    data InfoPatient = MkPatient { nom :: String,
+    
+    data InfoPatient = MkPatient { 
+        nom :: String,
         prenom :: String,
         datenaissance :: Int,
         genre :: String, 
         email :: String
     } deriving (Show, Eq, Read, Generic)
     $(deriveJSON defaultOptions ''InfoPatient)
+
+    data Fiche = MkFIche { 
+        idFiche :: Int,
+        analyses :: [String],
+        prescripteur :: String,
+        date :: UTCTime,
+        infoPatient :: InfoPatient,
+        dateUpdate :: UTCTime
+    } deriving (Show, Eq, Read, Generic)
+    $(deriveJSON defaultOptions ''Fiche)
 
     instance FromField InfoPatient where
         fromField = ([VarString], \xs -> do
@@ -71,15 +84,7 @@ module Common.SimpleTypes where
                     !e = R.convert fe ve
         convertResults fs vs = convertError fs vs 5
 
-    data Fiche = MkFIche { 
-        idFiche :: Int,
-        analyses :: [String],
-        prescripteur :: String,
-        date :: UTCTime,
-        infoPatient :: InfoPatient,
-        dateUpdate :: UTCTime
-    } deriving (Show, Eq, Read, Generic)
-    $(deriveJSON defaultOptions ''Fiche)
+    
 
     instance FromField [String] where
         fromField = ([VarChar], \xs -> do
@@ -90,7 +95,7 @@ module Common.SimpleTypes where
             )
 
 
-    data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
+    
 
 
     -- parser d'une valeur usuelle
@@ -126,7 +131,7 @@ module Common.SimpleTypes where
 
     instance  R.FromField ValUsuel  where
        fromField = ([VarString], \someval -> do
-            let tostring = unpack someval
+            let tostring = C.unpack someval
             case tostring of 
                 "Vide" -> Right Vide
                 someString -> do
@@ -141,7 +146,7 @@ module Common.SimpleTypes where
 
     instance R.FromField Categorie where
         fromField = ([VarString], \cat -> do
-            let act1 = unpack cat
+            let act1 = C.unpack cat
             case act1 of
                 "Biochimie" -> Right Biochimie
                 "Hematologie" -> Right Hematologie
