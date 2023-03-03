@@ -28,6 +28,7 @@ instance Q.QueryResults Analyse where
     convertResults fs vs  = Q.convertError fs vs 4
     
 
+
 saveAnalyse  :: Analyse -> IO () 
 saveAnalyse analyse = do
     connectToDatabase <- connect defaultConnectInfo { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}

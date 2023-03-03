@@ -17,9 +17,9 @@ module Infra.UpdateFiche where
     request :: Query 
     request = "UPDATE fiche SET idAnalyses = ?, prescripteur = ?, infopatient = ? WHERE idFiche = ?"
 
-    updateFiche :: Fiche -> IO ()
-    updateFiche fiche = do 
+    updateFiche :: Int -> [String] -> String -> InfoPatient -> IO ()
+    updateFiche idFiche analyses prescripteur infoPatient = do 
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "ntet", connectPassword = "efa", connectDatabase = "haskell"}
-        res <- execute conn request (show $ analyses fiche :: String, prescripteur fiche :: String, show $ infoPatient fiche, idFiche fiche)
+        res <- execute conn request (show analyses :: String, prescripteur :: String, show infoPatient, idFiche)
         close conn 
         print res

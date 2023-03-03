@@ -51,6 +51,7 @@ library
     , http-client
     , mysql
     , mysql-simple
+    , servant-server
     , network
     , parsec
     , servant
@@ -76,8 +77,9 @@ executable EFA-exe
     , http-client
     , mysql
     , mysql-simple
-    , network
     , parsec
+    , servant-server
+    , network
     , servant
     , servant-client
     , text
@@ -105,6 +107,7 @@ test-suite EFA-test
     , http-client
     , mysql
     , mysql-simple
+    , servant-server
     , network
     , parsec
     , servant

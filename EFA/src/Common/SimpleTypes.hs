@@ -29,8 +29,11 @@ module Common.SimpleTypes where
     type IdAnalyse = String 
 
     data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
+    $(deriveJSON defaultOptions ''ValUsuel)
+
 
     data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving ( Eq, Read, Show)
+    $(deriveJSON defaultOptions ''Categorie)
 
 
     data Analyse  = MkAnalyse {
@@ -39,6 +42,7 @@ module Common.SimpleTypes where
         valUsuel :: ValUsuel,
         categorie :: Categorie
     } deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''Analyse)
 
     
     data InfoPatient = MkPatient { 
@@ -95,7 +99,6 @@ module Common.SimpleTypes where
             )
 
 
-    
 
 
     -- parser d'une valeur usuelle
