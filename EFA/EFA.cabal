@@ -25,10 +25,18 @@ source-repository head
 
 library
   exposed-modules:
+      App.Fonction
+      App.Funzione
       Common.SimpleTypes
+      Domain.CreateAnalyse
+      Domain.CreateFiche
+      Infra.DeleteAnalyse
       Infra.DeleteFiche
+      Infra.ReadAnalyse
       Infra.ReadFiche
+      Infra.SaveAnalyse
       Infra.SaveFiche
+      Infra.UpdateAnalyse
       Infra.UpdateFiche
       Lib
   other-modules:
@@ -40,9 +48,13 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , http-client
     , mysql
     , mysql-simple
-    , servant-server
+    , network
+    , parsec
+    , servant
+    , servant-client
     , text
     , time
     , wai
@@ -61,9 +73,13 @@ executable EFA-exe
     , aeson
     , base
     , bytestring
+    , http-client
     , mysql
     , mysql-simple
-    , servant-server
+    , network
+    , parsec
+    , servant
+    , servant-client
     , text
     , time
     , wai
@@ -86,9 +102,13 @@ test-suite EFA-test
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , http-client
     , mysql
     , mysql-simple
-    , servant-server
+    , network
+    , parsec
+    , servant
+    , servant-client
     , text
     , time
     , wai
