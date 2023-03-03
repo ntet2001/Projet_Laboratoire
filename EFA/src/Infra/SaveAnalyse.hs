@@ -5,7 +5,7 @@
 {-# LANGUAGE BlockArguments #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Infra.CreateAnalyse where
+module Infra.SaveAnalyse where
 
 
 import Common.SimpleTypes

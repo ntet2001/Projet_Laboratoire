@@ -30,6 +30,7 @@ dependencies:
 - mysql-simple
 - mysql
 - bytestring
+- parsec 
 
 ghc-options:
 - -Wall

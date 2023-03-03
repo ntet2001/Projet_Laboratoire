@@ -1,2 +1,1 @@
-MkPatient {nameOf = "ntet", firstNameOf = "igor", emailOf = MkEmail {identifiant = "ntet", domaine = "wada", extension = "org"}, photoOf = "1111111111111", code = 3879, statutP = Supprimer}
-MkPatient {nameOf = "sammy", firstNameOf = "carlos", emailOf = MkEmail {identifiant = "sammy", domaine = "wada", extension = "org"}, photoOf = "1111111111111", code = 1963, statutP = Deconnecter}
+MkPatient {nameOf = "douki", firstNameOf = "ehawe", emailOf = MkEmail {identifiant = "ehawe", domaine = "wada", extension = "org"}, photoOf = "10000111000000", code = 2266, statutP = Aucun}

@@ -12,7 +12,6 @@ import Common.SimpleTypes
 import Database.MySQL.Simple
 import qualified Database.MySQL.Simple.QueryResults as Q
 import qualified Database.MySQL.Simple.Result as R
-import Data.ByteString.Char8 
 import Database.MySQL.Simple.Types
 import Database.MySQL.Base.Types
 import Text.ParserCombinators.Parsec
@@ -29,13 +28,18 @@ instance Q.QueryResults Analyse where
     convertResults fs vs  = Q.convertError fs vs 4
 
 
-readAnalyse :: IdAnalyse -> IO Analyse
-readAnalyse  someId = do
+readaAnalyse :: IdAnalyse -> IO Analyse
+readaAnalyse  someId = do
+    connexiontoDb <- connect defaultConnectInfo  { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
+    databaseContent <- query connexiontoDb "SELECT * FROM analyse WHERE id = ?" (Only someId)
+    close connexiontoDb
+    print $ head databaseContent
+    return $ head databaseContent
+
+readAnalyse :: IO [Analyse]
+readAnalyse = do
     connexiontoDb <- connect defaultConnectInfo  { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
     databaseContent <- query_ connexiontoDb "SELECT * FROM analyse"
-    let idFounded = [analyse | analyse <- databaseContent , someId == idAnalyse analyse]
-    if L.null idFounded then fail "cet analyse n'existe pas encore"
-    else do 
-        close connexiontoDb
-        return $ L.head idFounded
-
+    close connexiontoDb
+    print databaseContent
+    return databaseContent

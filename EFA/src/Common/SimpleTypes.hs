@@ -28,7 +28,11 @@ module Common.SimpleTypes where
 
     type IdAnalyse = String 
 
+    data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
+    $(deriveJSON defaultOptions ''ValUsuel)
+
     data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving ( Eq, Read, Show)
+    $(deriveJSON defaultOptions ''Categorie)
 
 
     data Analyse  = MkAnalyse {
@@ -37,6 +41,7 @@ module Common.SimpleTypes where
         valUsuel :: ValUsuel,
         categorie :: Categorie
     } deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''Analyse)
 
 
     data InfoPatient = MkPatient { nom :: String,
@@ -90,7 +95,6 @@ module Common.SimpleTypes where
             )
 
 
-    data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
 
 
     -- parser d'une valeur usuelle
@@ -126,7 +130,7 @@ module Common.SimpleTypes where
 
     instance  R.FromField ValUsuel  where
        fromField = ([VarString], \someval -> do
-            let tostring = unpack someval
+            let tostring = C.unpack someval
             case tostring of 
                 "Vide" -> Right Vide
                 someString -> do
@@ -141,7 +145,7 @@ module Common.SimpleTypes where
 
     instance R.FromField Categorie where
         fromField = ([VarString], \cat -> do
-            let act1 = unpack cat
+            let act1 = C.unpack cat
             case act1 of
                 "Biochimie" -> Right Biochimie
                 "Hematologie" -> Right Hematologie

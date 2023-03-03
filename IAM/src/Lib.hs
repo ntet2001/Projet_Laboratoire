@@ -190,8 +190,9 @@ updatepatient pat = do
 {-========= CREATE A PATIENT ======-}
 createpatient :: Patient2 -> Handler Int
 createpatient patient = do 
+    liftIO $ print $ (nameOf2 patient) ++ " " ++ (firstNameOf2 patient) ++ " " ++ (show $ emailOf2 patient) ++ " " ++ (T.unpack $ photoOf2 patient)
     pat <- liftIO $ createPatient (nameOf2 patient) (firstNameOf2 patient) (show $ emailOf2 patient) (T.unpack $ photoOf2 patient)
-    return pat 
+    return pat
 
 {-======== CONNECT A PATIENT =======-}
 connectpatient :: [String]-> Handler String

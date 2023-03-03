@@ -26,9 +26,13 @@ source-repository head
 library
   exposed-modules:
       Common.SimpleTypes
+      Infra.DeleteAnalyse
       Infra.DeleteFiche
+      Infra.ReadAnalyse
       Infra.ReadFiche
+      Infra.SaveAnalyse
       Infra.SaveFiche
+      Infra.UpdateAnalyse
       Infra.UpdateFiche
       Lib
   other-modules:
@@ -42,6 +46,7 @@ library
     , bytestring
     , mysql
     , mysql-simple
+    , parsec
     , servant-server
     , text
     , time
@@ -63,6 +68,7 @@ executable EFA-exe
     , bytestring
     , mysql
     , mysql-simple
+    , parsec
     , servant-server
     , text
     , time
@@ -88,6 +94,7 @@ test-suite EFA-test
     , hspec-wai-json
     , mysql
     , mysql-simple
+    , parsec
     , servant-server
     , text
     , time
