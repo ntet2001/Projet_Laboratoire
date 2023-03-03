@@ -22,7 +22,9 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - aeson
-- servant-server
+- servant
+- servant-client
+- http-client
 - wai
 - warp
 - text
@@ -30,7 +32,8 @@ dependencies:
 - mysql-simple
 - mysql
 - bytestring
-- parsec 
+- parsec
+- network
 
 ghc-options:
 - -Wall

@@ -31,6 +31,7 @@ module Common.SimpleTypes where
     data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
     $(deriveJSON defaultOptions ''ValUsuel)
 
+
     data Categorie = Biochimie | Hematologie | Serologie | Parasitologie deriving ( Eq, Read, Show)
     $(deriveJSON defaultOptions ''Categorie)
 
@@ -43,14 +44,25 @@ module Common.SimpleTypes where
     } deriving (Show, Eq, Read)
     $(deriveJSON defaultOptions ''Analyse)
 
-
-    data InfoPatient = MkPatient { nom :: String,
+    
+    data InfoPatient = MkPatient { 
+        nom :: String,
         prenom :: String,
         datenaissance :: Int,
         genre :: String, 
         email :: String
     } deriving (Show, Eq, Read, Generic)
     $(deriveJSON defaultOptions ''InfoPatient)
+
+    data Fiche = MkFIche { 
+        idFiche :: Int,
+        analyses :: [String],
+        prescripteur :: String,
+        date :: UTCTime,
+        infoPatient :: InfoPatient,
+        dateUpdate :: UTCTime
+    } deriving (Show, Eq, Read, Generic)
+    $(deriveJSON defaultOptions ''Fiche)
 
     instance FromField InfoPatient where
         fromField = ([VarString], \xs -> do
@@ -76,15 +88,7 @@ module Common.SimpleTypes where
                     !e = R.convert fe ve
         convertResults fs vs = convertError fs vs 5
 
-    data Fiche = MkFIche { 
-        idFiche :: Int,
-        analyses :: [String],
-        prescripteur :: String,
-        date :: UTCTime,
-        infoPatient :: InfoPatient,
-        dateUpdate :: UTCTime
-    } deriving (Show, Eq, Read, Generic)
-    $(deriveJSON defaultOptions ''Fiche)
+    
 
     instance FromField [String] where
         fromField = ([VarChar], \xs -> do

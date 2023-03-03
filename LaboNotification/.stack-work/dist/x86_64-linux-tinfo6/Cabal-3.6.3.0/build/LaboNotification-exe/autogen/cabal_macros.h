@@ -70,6 +70,26 @@
   (major1) == 0 && (major2) <  11 || \
   (major1) == 0 && (major2) == 11 && (minor) <= 3)
 #endif /* MIN_VERSION_bytestring */
+/* package faktory-1.1.2.4 */
+#ifndef VERSION_faktory
+#define VERSION_faktory "1.1.2.4"
+#endif /* VERSION_faktory */
+#ifndef MIN_VERSION_faktory
+#define MIN_VERSION_faktory(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  1 || \
+  (major1) == 1 && (major2) == 1 && (minor) <= 2)
+#endif /* MIN_VERSION_faktory */
+/* package http-client-0.7.13.1 */
+#ifndef VERSION_http_client
+#define VERSION_http_client "0.7.13.1"
+#endif /* VERSION_http_client */
+#ifndef MIN_VERSION_http_client
+#define MIN_VERSION_http_client(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  7 || \
+  (major1) == 0 && (major2) == 7 && (minor) <= 13)
+#endif /* MIN_VERSION_http_client */
 /* package hworker-0.1.0.1 */
 #ifndef VERSION_hworker
 #define VERSION_hworker "0.1.0.1"
@@ -80,6 +100,26 @@
   (major1) == 0 && (major2) <  1 || \
   (major1) == 0 && (major2) == 1 && (minor) <= 0)
 #endif /* MIN_VERSION_hworker */
+/* package network-3.1.2.7 */
+#ifndef VERSION_network
+#define VERSION_network "3.1.2.7"
+#endif /* VERSION_network */
+#ifndef MIN_VERSION_network
+#define MIN_VERSION_network(major1,major2,minor) (\
+  (major1) <  3 || \
+  (major1) == 3 && (major2) <  1 || \
+  (major1) == 3 && (major2) == 1 && (minor) <= 2)
+#endif /* MIN_VERSION_network */
+/* package servant-multipart-0.12.1 */
+#ifndef VERSION_servant_multipart
+#define VERSION_servant_multipart "0.12.1"
+#endif /* VERSION_servant_multipart */
+#ifndef MIN_VERSION_servant_multipart
+#define MIN_VERSION_servant_multipart(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  12 || \
+  (major1) == 0 && (major2) == 12 && (minor) <= 1)
+#endif /* MIN_VERSION_servant_multipart */
 /* package servant-server-0.19.2 */
 #ifndef VERSION_servant_server
 #define VERSION_servant_server "0.19.2"
@@ -90,6 +130,16 @@
   (major1) == 0 && (major2) <  19 || \
   (major1) == 0 && (major2) == 19 && (minor) <= 2)
 #endif /* MIN_VERSION_servant_server */
+/* package smtp-mail-0.3.0.0 */
+#ifndef VERSION_smtp_mail
+#define VERSION_smtp_mail "0.3.0.0"
+#endif /* VERSION_smtp_mail */
+#ifndef MIN_VERSION_smtp_mail
+#define MIN_VERSION_smtp_mail(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  3 || \
+  (major1) == 0 && (major2) == 3 && (minor) <= 0)
+#endif /* MIN_VERSION_smtp_mail */
 /* package text-1.2.5.0 */
 #ifndef VERSION_text
 #define VERSION_text "1.2.5.0"
@@ -243,7 +293,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "LaboNotification-0.1.0.0-B3ZlMFvNZ6z5zy14iHNoII-LaboNotification-exe"
+#define CURRENT_COMPONENT_ID "LaboNotification-0.1.0.0-6jc3atmmjk4L63Wk7W0Br3-LaboNotification-exe"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"

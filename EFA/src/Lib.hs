@@ -4,8 +4,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Lib
-    ( startApp
-    , app
+    ( --startApp
+    ,-- app
     ) where
 
 import Data.Aeson

@@ -28,17 +28,14 @@ instance Q.QueryResults Analyse where
     convertResults fs vs  = Q.convertError fs vs 4
     
 
-createAnalyse  :: IdAnalyse -> String -> ValUsuel -> Categorie -> IO () 
-createAnalyse someId someName someValue category = do
+
+saveAnalyse  :: Analyse -> IO () 
+saveAnalyse analyse = do
     connectToDatabase <- connect defaultConnectInfo { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
-    databaseContent <- query_ connectToDatabase "SELECT * FROM analyse"
-    if L.elem someName $ fmap nomAnalyse databaseContent 
-        then fail "cette analyse existe deja"
-    else do 
-        numberofline <- execute connectToDatabase "INSERT INTO analyse (idAnalyse, nomAnalyse, valUsuel, categorie) VALUES (?,?,?,?)" 
-            (someId, someName, show someValue, show category) 
-        close connectToDatabase
-        print numberofline
+    numberofline <- execute connectToDatabase "INSERT INTO analyse (idAnalyse, nomAnalyse, valUsuel, categorie) VALUES (?,?,?,?)" 
+            (idAnalyse analyse, nomAnalyse analyse, show $ valUsuel analyse, show $ categorie analyse) 
+    close connectToDatabase
+    print numberofline
 
 
 

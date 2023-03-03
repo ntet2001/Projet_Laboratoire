@@ -1,11 +1,11 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.0.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 
 name:           LaboNotification
-version:        0.1.0.0
+version:        0.1.0.1
 description:    Please see the README on GitHub at <https://github.com/githubuser/LaboNotification#readme>
 homepage:       https://github.com/githubuser/LaboNotification#readme
 bug-reports:    https://github.com/githubuser/LaboNotification/issues
@@ -39,8 +39,13 @@ library
     , aeson
     , base >=4.7 && <5
     , bytestring
+    , faktory
+    , http-client
     , hworker
+    , network
+    , servant-multipart
     , servant-server
+    , smtp-mail
     , text
     , wai
     , warp
@@ -60,8 +65,13 @@ executable LaboNotification-exe
     , aeson
     , base
     , bytestring
+    , faktory
+    , http-client
     , hworker
+    , network
+    , servant-multipart
     , servant-server
+    , smtp-mail
     , text
     , wai
     , warp
@@ -82,11 +92,16 @@ test-suite LaboNotification-test
     , aeson
     , base
     , bytestring
+    , faktory
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , http-client
     , hworker
+    , network
+    , servant-multipart
     , servant-server
+    , smtp-mail
     , text
     , wai
     , warp
