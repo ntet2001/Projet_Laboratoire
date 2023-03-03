@@ -24,6 +24,7 @@ dependencies:
 - aeson
 - servant
 - servant-client
+- servant-server
 - http-client
 - wai
 - warp

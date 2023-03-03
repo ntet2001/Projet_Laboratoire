@@ -51,11 +51,11 @@ library
     , http-client
     , mysql
     , mysql-simple
-    , servant-server
     , network
     , parsec
     , servant
     , servant-client
+    , servant-server
     , text
     , time
     , wai
@@ -77,11 +77,11 @@ executable EFA-exe
     , http-client
     , mysql
     , mysql-simple
-    , parsec
-    , servant-server
     , network
+    , parsec
     , servant
     , servant-client
+    , servant-server
     , text
     , time
     , wai
@@ -107,11 +107,11 @@ test-suite EFA-test
     , http-client
     , mysql
     , mysql-simple
-    , servant-server
     , network
     , parsec
     , servant
     , servant-client
+    , servant-server
     , text
     , time
     , wai

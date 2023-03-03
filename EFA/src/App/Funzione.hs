@@ -23,6 +23,7 @@ import Common.SimpleTypes
 import qualified Servant.Client.Streaming as S
 import Domain.CreateFiche (patientCheck, createFiche)
 import Infra.SaveFiche (saveFiche)
+import Control.Monad (Monad(return))
 
 
 
@@ -110,7 +111,7 @@ queries someValue = do
 -- fonction au niveau applicatif qui appelle le domaine, et l'infra pour creer une fiche 
 
 save' :: Int -> [String] -> String -> String -> String -> 
-    Int -> String -> String -> IO ()
+    Int -> String -> String -> IO Fiche
 save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
     let decodeEmail = verificationEmail email
     case decodeEmail of
@@ -127,8 +128,10 @@ save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
                 --let conversion = toJSON elementOfTypePatient2
                 res <- runClientM (queries elementOfTypePatient2) (mkClientEnv manager' (BaseUrl Http "localhost" 8080 ""))
                 case res of
-                    Left err -> putStrLn $ "Error: " ++ show err
-                    Right something -> print $ show something
+                    Left err -> fail $ show err
+                    Right something -> do 
+                        print $ show something
+                        return someFiche
             
 
 
