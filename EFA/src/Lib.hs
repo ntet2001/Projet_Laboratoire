@@ -4,8 +4,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Lib
-    ( --startApp
-    ,-- app
+    ( startApp
+    ,app
     ) where
 
 import Data.Aeson
@@ -41,7 +41,7 @@ $(deriveJSON defaultOptions ''FicheLib)
 
 type API = "Analyses" :> Get '[JSON] [Analyse]
     :<|> "Analyse" :> Capture "idAnalyse" String :> Get '[JSON] Analyse 
-    :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Post '[JSON] Analyse
+    :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Post '[JSON] String
     :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Put '[JSON] String
     :<|> "Analyse" :> Capture "idAnalyse" String :> DeleteNoContent
     :<|> "Fiches" :> Get '[JSON] [Fiche]
@@ -87,9 +87,10 @@ readanalyse identifiant = do
 
 
 {-========= function to register an analyse ==========-}
-registeranalyse :: Analyse -> Handler Analyse
+registeranalyse :: Analyse -> Handler String
 registeranalyse analyse = do
-   liftIO $ save (idAnalyse analyse) (nomAnalyse analyse) (show $ valUsuel analyse) (show $ categorie analyse) 
+  result <- liftIO $ save (idAnalyse analyse) (nomAnalyse analyse) (show $ valUsuel analyse) (show $ categorie analyse)
+  return "analyse a ete enregistré" 
 
 {-========= function to modified an analyse ==========-}
 modifiedanalyse :: Analyse -> Handler String 

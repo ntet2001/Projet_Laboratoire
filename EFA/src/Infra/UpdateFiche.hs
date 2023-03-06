@@ -19,7 +19,7 @@ module Infra.UpdateFiche where
 
     updateFiche :: Int -> [String] -> String -> InfoPatient -> IO ()
     updateFiche idFiche analyses prescripteur infoPatient = do 
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "ntet", connectPassword = "efa", connectDatabase = "haskell"}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "raoul", connectPassword = "Raoul102030!!", connectDatabase = "haskell"}
         res <- execute conn request (show analyses :: String, prescripteur :: String, show infoPatient, idFiche)
         close conn 
         print res

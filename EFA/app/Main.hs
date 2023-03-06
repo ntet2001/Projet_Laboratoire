@@ -1,6 +1,6 @@
 module Main  where
 
--- import Lib
+import Lib (startApp) 
 
 main :: IO ()
-main = putStrLn "hello EFA"
+main = startApp
