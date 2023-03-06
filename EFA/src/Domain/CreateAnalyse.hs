@@ -5,6 +5,9 @@ import Common.SimpleTypes
 
 --- verifications propres au domaine : categorie et la valeur 
 
+
+type Nom = String
+
 -- verification de la categorie
 verifCategorie :: String -> Either String Categorie
 verifCategorie something = do
@@ -14,6 +17,7 @@ verifCategorie something = do
         "Serologie" -> Right Serologie
         "Parasitologie" -> Right Parasitologie
         _ -> Left "cet valeur ne correspond pas à une categorie valide"
+
 
 -- verification de la valeur usuelle
 
@@ -33,19 +37,20 @@ verifValUsuel someValue = do
 
 -- verification generale : nomAnalyse, idAnalyse
 
-verifString :: String -> Either String String
-verifString str = 
-    if null str then Left "erreur, inserer une valeur" else return str
+-- verifString :: String -> Either String String
+-- verifString str = 
+--     if null str then Left "erreur, inserer une valeur" else return str
     
     
 -- fonction pour creer une analyse
 
-createAnalyse :: IdAnalyse -> String -> String -> String -> Either String Analyse 
-createAnalyse someId someValue category someName = 
-    MkAnalyse <$> verifString someId <*>
-                  verifString someName <*>
-                  verifValUsuel someValue <*>
-                  verifCategorie category
+-- createAnalyse :: IdAnalyse -> String -> ValUsuel -> Categorie -> Either String Analyse 
+-- createAnalyse someId someName someValue category = 
+--     MkAnalyse <$> verifString someId <*>
+--                   verifString someName <*>
+--                   verifValUsuel (show someValue) <*>
+--                   verifCategorie (show category)
 
 
-
+createAnalyse' :: IdAnalyse -> Nom -> ValUsuel -> Categorie -> Analyse 
+createAnalyse' = MkAnalyse

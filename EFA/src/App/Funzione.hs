@@ -84,7 +84,7 @@ parserEmail = do
     return (identifiant,domaine ,extension)
 
 verificationEmail :: String -> Either ParseError (Identifiant,String,String)
-verificationEmail email = parse parserEmail "email non valide" email
+verificationEmail  = parse parserEmail "email non valide" 
 
 
 -- our api type, endpoint pour acceder à ce service dans IAM
@@ -119,19 +119,23 @@ save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
         Right (x,y,z) -> 
             if L.null nom || L.null prenom then fail "l'email est juste mais le nom ou le prenom est vide"
             else do
-                let info = MkPatient nom prenom dayOfBirth genre email
-                    emailOfTypeEmail2 = MkEmail2 x y z
-                    elementOfTypePatient2 = MkPatient2 nom prenom emailOfTypeEmail2 "11200012010" 0000 Aucun
-                someFiche <- createFiche someId listAnalyse prescripteur info
-                saveFiche someFiche
-                manager' <- newManager defaultManagerSettings
+                let verifiedAboutPatient = patientCheck nom prenom dayOfBirth genre email
+                case verifiedAboutPatient of
+                    Left _ -> fail "nom et prenom doivent etre des caracteres de l'alphabet francais, la date de naissance ne doit pas etre negative"
+                    Right someInfos -> do
+                        let --info = MkPatient nom prenom dayOfBirth genre email
+                            emailOfTypeEmail2 = MkEmail2 x y z
+                            elementOfTypePatient2 = MkPatient2 nom prenom emailOfTypeEmail2 "11200012010" 0000 Aucun
+                        someFiche <- createFiche someId listAnalyse prescripteur someInfos
+                        saveFiche someFiche
+                        manager' <- newManager defaultManagerSettings
                 --let conversion = toJSON elementOfTypePatient2
-                res <- runClientM (queries elementOfTypePatient2) (mkClientEnv manager' (BaseUrl Http "localhost" 8080 ""))
-                case res of
-                    Left err -> fail $ show err
-                    Right something -> do 
-                        print $ show something
-                        return someFiche
+                        res <- runClientM (queries elementOfTypePatient2) (mkClientEnv manager' (BaseUrl Http "localhost" 8080 ""))
+                        case res of
+                            Left err -> fail $ show err
+                            Right something -> do 
+                                print $ show something
+                                return someFiche
             
 
 

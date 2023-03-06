@@ -31,7 +31,7 @@ instance Q.QueryResults Analyse where
 readaAnalyse :: IdAnalyse -> IO Analyse
 readaAnalyse  someId = do
     connexiontoDb <- connect defaultConnectInfo  { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
-    databaseContent <- query connexiontoDb "SELECT * FROM analyse WHERE id = ?" (Only someId)
+    databaseContent <- query connexiontoDb "SELECT * FROM analyse WHERE idAnalyse = ?" (Only someId)
     close connexiontoDb
     print $ head databaseContent
     return $ head databaseContent

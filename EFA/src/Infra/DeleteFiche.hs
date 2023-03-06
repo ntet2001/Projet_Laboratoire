@@ -19,6 +19,6 @@ module Infra.DeleteFiche where
 
     deleteFiche :: Int -> IO ()
     deleteFiche idFiche = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "ntet", connectPassword = "efa", connectDatabase = "haskell"}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "raoul", connectPassword = "Raoul102030!!", connectDatabase = "haskell"}
         res <- execute conn request (Only idFiche)
         close conn
