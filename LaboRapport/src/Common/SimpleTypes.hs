@@ -12,14 +12,14 @@ module Common.SimpleTypes where
     data InfoPatient = MkPatient { 
         nom :: String,
         prenom :: String,
-        datenaissance :: Int,
+        annee :: Int,
         genre :: String, 
         email :: String
     } deriving (Show, Eq, Read, Generic)
     $(deriveJSON defaultOptions ''InfoPatient)
 
     data LineResult = Negatif String | Positif String Float 
-
+    $(deriveJSON defaultOptions ''LineResult)
 
     data Rapport = MkRapport { idRapport :: Int,
         contenu :: [IdResult],
