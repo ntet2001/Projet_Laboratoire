@@ -1,0 +1,22 @@
+/home/nkalla/.stack/programs/x86_64-linux/ghc-tinfo6-9.2.5/lib/ghc-9.2.5/include/ghcversion.h:
+  hash: 8ef6e3cecb29aca3884134f57ae55f780b89ff0e4491f9e76cec81b39be34fe6
+? /home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.6.3.0/build/autogen/Paths_LaboNotification.hs
+: hash: 49c50313eba3451107078e1689365238e9930ff5d5d4487ddf6da632d3f62bf6
+? /home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.6.3.0/build/autogen/cabal_macros.h
+: hash: 4af8c8e90f9039f4c74077f7328bb7a2618043c6b0bc17e7a04fd1e06fe255bb
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/CHANGELOG.md:
+  hash: b5f76ed15ddee0e9a386e905587f3e1c4b1c7a755619e621cd7370d941e5434d
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/LaboNotification.cabal:
+  hash: 5ff71d23c36b86aeb6395e579164adad414b1b53451785bde02dba1a9c1c4b2d
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/README.md:
+  hash: ddeada3fd5417b6152ad725221d8ed23afb59928a8a61b553fe9b643518396a1
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/package.yaml:
+  hash: cb3e9e04b02d6ea0b23b9e1c49c0ca3be37011888a2f90a8fbf5b710324cc739
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/src/App/Lib.hs:
+  hash: 351f0a44861ffe7f312d5b0dde5652218265a804fad8635dafaa7e2a16714835
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/src/Domain/Domain.hs:
+  hash: 51f73bb58350fdea0ce7849a475108f9d23909febae0afa4459e58c64905e4c4
+/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/src/Infra/GmailSMTPConnect.hs:
+  hash: e8134cb2a904cdb72462f4daca4ab5f9683c9159b92d5260c3ab1606edbcad47
+/usr/include/stdc-predef.h:
+  hash: cb08cd5d4cc059a90833ac48a284d25016e8d56ded8ad4cd98d8ac59cc5053f3
