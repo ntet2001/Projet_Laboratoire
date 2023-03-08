@@ -25,6 +25,11 @@ dependencies:
 - servant-server
 - wai
 - warp
+- parsec
+- mysql-simple
+- mysql
+- bytestring
+- time
 
 ghc-options:
 - -Wall

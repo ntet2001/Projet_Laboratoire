@@ -29,6 +29,7 @@ dependencies:
 - warp
 - aeson
 - text
+- http-conduit
 
 ghc-options:
 - -Wall

@@ -161,16 +161,6 @@
   (major1) == 3 && (major2) == 3 && (minor) <= 23)
 #endif /* MIN_VERSION_warp */
 
-/* tool alex-3.2.5 */
-#ifndef TOOL_VERSION_alex
-#define TOOL_VERSION_alex "3.2.5"
-#endif /* TOOL_VERSION_alex */
-#ifndef MIN_TOOL_VERSION_alex
-#define MIN_TOOL_VERSION_alex(major1,major2,minor) (\
-  (major1) <  3 || \
-  (major1) == 3 && (major2) <  2 || \
-  (major1) == 3 && (major2) == 2 && (minor) <= 5)
-#endif /* MIN_TOOL_VERSION_alex */
 /* tool gcc-11 */
 #ifndef TOOL_VERSION_gcc
 #define TOOL_VERSION_gcc "11"
@@ -211,16 +201,6 @@
   (major1) == 2 && (major2) <  26 || \
   (major1) == 2 && (major2) == 26 && (minor) <= 0)
 #endif /* MIN_TOOL_VERSION_haddock */
-/* tool happy-1.20.0 */
-#ifndef TOOL_VERSION_happy
-#define TOOL_VERSION_happy "1.20.0"
-#endif /* TOOL_VERSION_happy */
-#ifndef MIN_TOOL_VERSION_happy
-#define MIN_TOOL_VERSION_happy(major1,major2,minor) (\
-  (major1) <  1 || \
-  (major1) == 1 && (major2) <  20 || \
-  (major1) == 1 && (major2) == 20 && (minor) <= 0)
-#endif /* MIN_TOOL_VERSION_happy */
 /* tool hpc-0.68 */
 #ifndef TOOL_VERSION_hpc
 #define TOOL_VERSION_hpc "0.68"
@@ -241,26 +221,6 @@
   (major1) == 0 && (major2) <  68 || \
   (major1) == 0 && (major2) == 68 && (minor) <= 8)
 #endif /* MIN_TOOL_VERSION_hsc2hs */
-/* tool hscolour-1.24 */
-#ifndef TOOL_VERSION_hscolour
-#define TOOL_VERSION_hscolour "1.24"
-#endif /* TOOL_VERSION_hscolour */
-#ifndef MIN_TOOL_VERSION_hscolour
-#define MIN_TOOL_VERSION_hscolour(major1,major2,minor) (\
-  (major1) <  1 || \
-  (major1) == 1 && (major2) <  24 || \
-  (major1) == 1 && (major2) == 24 && (minor) <= 0)
-#endif /* MIN_TOOL_VERSION_hscolour */
-/* tool pkg-config-0.29.2 */
-#ifndef TOOL_VERSION_pkg_config
-#define TOOL_VERSION_pkg_config "0.29.2"
-#endif /* TOOL_VERSION_pkg_config */
-#ifndef MIN_TOOL_VERSION_pkg_config
-#define MIN_TOOL_VERSION_pkg_config(major1,major2,minor) (\
-  (major1) <  0 || \
-  (major1) == 0 && (major2) <  29 || \
-  (major1) == 0 && (major2) == 29 && (minor) <= 2)
-#endif /* MIN_TOOL_VERSION_pkg_config */
 /* tool runghc-9.2.5 */
 #ifndef TOOL_VERSION_runghc
 #define TOOL_VERSION_runghc "9.2.5"
