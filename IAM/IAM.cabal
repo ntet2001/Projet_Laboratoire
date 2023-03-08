@@ -59,6 +59,7 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , http-conduit
     , parsec
     , random
     , servant-server
@@ -79,6 +80,7 @@ executable IAM-exe
     , aeson
     , base >=4.7 && <5
     , bytestring
+    , http-conduit
     , parsec
     , random
     , servant-server
@@ -100,6 +102,7 @@ test-suite IAM-test
     , aeson
     , base >=4.7 && <5
     , bytestring
+    , http-conduit
     , parsec
     , random
     , servant-server
