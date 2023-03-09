@@ -42,12 +42,12 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
-bindir     = "/home/ntetigor/Documents/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/bin"
-libdir     = "/home/ntetigor/Documents/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/lib/x86_64-linux-ghc-9.2.7/LaboRapport-0.1.0.0-7qN9JGxL768BfI8DGf98Ls"
-dynlibdir  = "/home/ntetigor/Documents/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/lib/x86_64-linux-ghc-9.2.7"
-datadir    = "/home/ntetigor/Documents/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/share/x86_64-linux-ghc-9.2.7/LaboRapport-0.1.0.0"
-libexecdir = "/home/ntetigor/Documents/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/libexec/x86_64-linux-ghc-9.2.7/LaboRapport-0.1.0.0"
-sysconfdir = "/home/ntetigor/Documents/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/etc"
+bindir     = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/bin"
+libdir     = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/lib/x86_64-linux-ghc-9.2.7/LaboRapport-0.1.0.0-7qN9JGxL768BfI8DGf98Ls"
+dynlibdir  = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/lib/x86_64-linux-ghc-9.2.7"
+datadir    = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/share/x86_64-linux-ghc-9.2.7/LaboRapport-0.1.0.0"
+libexecdir = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/libexec/x86_64-linux-ghc-9.2.7/LaboRapport-0.1.0.0"
+sysconfdir = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/install/x86_64-linux-tinfo6/b371295cb3402e546a3ba07f767aeb4cb72b279bb1996d99bbe8bb6efa117768/9.2.7/etc"
 
 getBinDir     = catchIO (getEnv "LaboRapport_bindir")     (\_ -> return bindir)
 getLibDir     = catchIO (getEnv "LaboRapport_libdir")     (\_ -> return libdir)

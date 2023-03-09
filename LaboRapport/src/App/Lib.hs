@@ -24,12 +24,18 @@ import Infra.SaveRapport
 import Infra.SaveResult
 import Infra.UpdateRapport
 import Infra.UpdateResult
+import App.VerificationRapport
 
-data Repport = MkRepport
-  { content :: [String]
-  , idFile :: Int
+data Fiche = MkFiche
+  { 
+    idFiche :: Int,
+    analyses :: [String],
+    prescripteur :: String,
+    date :: UTCTime,
+    infoPatient :: InfoPatient,
+    dateUpdate :: UTCTime
   } deriving (Eq, Show)
-$(deriveJSON defaultOptions ''Repport)
+$(deriveJSON defaultOptions ''Fiche)
 
 data Results = MkResults
   { idAnals :: Int
@@ -46,8 +52,8 @@ $(deriveJSON defaultOptions ''Results)
 
 type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> Capture "idRapport" Int :> Get '[JSON] Rapport
-  :<|> "rapports" :> ReqBody '[JSON] Repport :> Post '[JSON] String 
-  :<|> "rapports" :> ReqBody '[JSON] Repport :> Capture "idRapport" Int :> Put '[JSON] String
+  :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String 
+  :<|> "rapports" :> ReqBody '[JSON] Fiche :> Capture "idRapport" Int :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
   :<|> "results" :> Get '[JSON] [Resultat]
   :<|> "results" :> Capture "idResult" Int :> Get '[JSON] Resultat
@@ -93,9 +99,9 @@ readARapports identifiant = do
 
 
 {-========= function to register an analyse ==========-}
-registerRapports :: Repport -> Handler String
-registerRapports rapport = do
-  liftIO $ save (idFile rapport)
+registerRapports :: Fiche -> Handler String
+registerRapports fiche = do
+  liftIO $ createNewRepport (idFile fiche)
 
 {-========= function to modified a Repport ==========-}
 modifiedRapports :: Repport -> Int -> Handler String 

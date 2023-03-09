@@ -35,6 +35,7 @@ dependencies:
 - bytestring
 - parsec
 - network
+- http-conduit
 
 ghc-options:
 - -Wall

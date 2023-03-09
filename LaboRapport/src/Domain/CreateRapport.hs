@@ -10,13 +10,12 @@ module Domain.CreateRapport where
 
 
 
-    createRapport :: Int -> IO Rapport
-    createRapport idFiche =  do
+    createRapport :: Fiche -> Int -> IO Rapport
+    createRapport fiche idrapport =  do
         dateAct <- getCurrentTime
-        let idrapport = 0
-            contenu = []
-        return $ createRapportHelper idrapport contenu idFiche dateAct dateAct
+        let contenu = []
+        return $ createRapportHelper idrapport contenu fiche dateAct dateAct
               
 
-    createRapportHelper :: Int -> [Int] -> Int -> UTCTime -> UTCTime -> Rapport 
+    createRapportHelper :: Int -> [Int] -> Fiche -> UTCTime -> UTCTime -> Rapport 
     createRapportHelper = MkRapport

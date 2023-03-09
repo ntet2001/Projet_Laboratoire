@@ -17,7 +17,8 @@ import qualified Data.Text as T
 import Servant.Types.SourceT (foreach)
 import Data.ByteString.Lazy
 import Text.ParserCombinators.Parsec
-import qualified Data.List as L
+import qualified Data.List as L 
+import qualified Network.HTTP.Simple as NT
 import Common.SimpleTypes
 
 import qualified Servant.Client.Streaming as S
@@ -107,6 +108,13 @@ queries someValue = do
     patient someValue
 
 
+-- fonction d'envoie de fiche a rapport
+sendFicheRapport :: Fiche -> IO()
+sendFicheRapport fiche = do 
+    let request = NT.setRequestBodyJSON fiche "POST http://localhost:8082/rapports"
+    response <- NT.httpJSON request :: IO (NT.Response Value)
+    print $ NT.getResponseBody response
+
 
 -- fonction au niveau applicatif qui appelle le domaine, et l'infra pour creer une fiche 
 
@@ -128,6 +136,8 @@ save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
                             elementOfTypePatient2 = MkPatient2 nom prenom emailOfTypeEmail2 "11200012010" 0000 Aucun
                         someFiche <- createFiche someId listAnalyse prescripteur someInfos
                         saveFiche someFiche
+                        --envoie de la fiche au module rapport
+                        sendFicheRapport someFiche 
                         manager' <- newManager defaultManagerSettings
                 --let conversion = toJSON elementOfTypePatient2
                         res <- runClientM (queries elementOfTypePatient2) (mkClientEnv manager' (BaseUrl Http "localhost" 8080 ""))

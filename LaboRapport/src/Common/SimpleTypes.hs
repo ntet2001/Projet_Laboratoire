@@ -74,9 +74,59 @@ module Common.SimpleTypes where
                 "[]" -> error "ne correspond pas a Negatif [Char] ou Positif Float"
                 someString -> read someString :: [LineResult]
 
+    data Fiche = MkFiche{ 
+        idFiche :: Int,
+        analyses :: [String],
+        prescripteur :: String,
+        date :: UTCTime,
+        infoPatient :: InfoPatient,
+        dateUpdate :: UTCTime
+    } deriving (Eq,Read,Show)
+    $(deriveJSON defaultOptions ''Fiche)
+
+    instance R.Result [String] where
+        convert f Nothing = error" erreur de Convertion sql d'analyse"
+        convert f (Just xs) = let xs1 = C.unpack xs
+            in case xs1 of
+                [] -> error "erreur de Convertion sql d'analyse"
+                ys -> read ys :: [String]
+
+    instance R.Result Fiche where
+        convert f Nothing = error" erreur de Convertion sql d'analyse"
+        convert f (Just xs) = let xs1 = C.unpack xs
+            in case xs1 of
+                fiche -> read fiche :: Fiche 
+                _ -> error "erreur de Convertion sql d'analyse"
+
+    instance FromField [String] where
+        fromField = ([VarChar], \xs -> do
+            let xs1 = C.unpack xs
+            case xs1 of
+                [] -> Left "erreur de Convertion sql d'analyse"
+                ys -> Right (read ys :: [String])
+            )
+
+    instance FromField Fiche where
+        fromField = ([VarChar], \xs -> do
+            let xs1 = C.unpack xs
+            case xs1 of
+                fiche -> Right (read fiche :: Fiche)
+                _ -> Left "erreur de Convertion sql d'analyse" 
+            )
+
+    instance QueryResults Fiche where
+        convertResults [fa,fb,fc,fd,fe,fg] [va,vb,vc,vd,ve,vg] = MkFiche a b c d e g
+            where   !a = R.convert fa va
+                    !b = R.convert fb vb 
+                    !c = R.convert fc vc
+                    !d = R.convert fd vd
+                    !e = R.convert fe ve
+                    !g = R.convert fg vg
+        convertResults fs vs = convertError fs vs 6
+
     data Rapport = MkRapport { idRapport :: Int,
         contenu :: [IdResult],
-        idFiche :: Int,
+        fiche :: Fiche,
         dateCreatedRapport :: UTCTime,
         dateUpdatedRapport :: UTCTime
     }deriving (Show,Read,Eq,Generic)
@@ -112,7 +162,7 @@ module Common.SimpleTypes where
         conclusion :: String,
         infoPat :: InfoPatient,
         prelevement :: UTCTime,
-        prescripteur :: String,
+        prescripteurR :: String,
         numDossier :: Int,
         lineResults :: [LineResult],
         nomLaborantin :: String,

@@ -1,6 +1,10 @@
 module App.VerificationRapport where
 
-    import Domain.CreateRapport 
+    import Domain.CreateRapport
+    import Common.SimpleTypes
+    import Infra.SaveRapport
 
-    save :: Int -> IO String
-    save i
+    createNewRepport :: Fiche -> IO String
+    createNewRepport fiche = do 
+        rapport <- createRapport fiche (idFiche fiche)
+        saveRapport rapport

@@ -30,7 +30,7 @@ catchIO :: IO a -> (Exception.IOException -> IO a) -> IO a
 catchIO = Exception.catch
 
 version :: Version
-version = Version [0,1,0,1] []
+version = Version [0,0,0,2] []
 
 getDataFileName :: FilePath -> IO FilePath
 getDataFileName name = do
@@ -42,12 +42,12 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
-bindir     = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/bin"
-libdir     = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/lib/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.1-JhSIMAJkMjHB1aGfq5dJW4"
-dynlibdir  = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/lib/x86_64-linux-ghc-9.2.5"
-datadir    = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/share/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.1"
-libexecdir = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/libexec/x86_64-linux-ghc-9.2.5/LaboNotification-0.1.0.1"
-sysconfdir = "/home/nkalla/Documents/HaskellWorkSpace/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/1b41269549c09bdb0047202ba4b222c17db472c7de3bfffe8a3e90b6ce171cd4/9.2.5/etc"
+bindir     = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/c2d91e1ea4d513e418d036672f51a9e0e31a6fbbf0870d1e89c5422ed48f7bf3/9.2.5/bin"
+libdir     = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/c2d91e1ea4d513e418d036672f51a9e0e31a6fbbf0870d1e89c5422ed48f7bf3/9.2.5/lib/x86_64-linux-ghc-9.2.5/LaboNotification-0.0.0.2-2Q1W3ZVtya3LjKGcrft7k8"
+dynlibdir  = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/c2d91e1ea4d513e418d036672f51a9e0e31a6fbbf0870d1e89c5422ed48f7bf3/9.2.5/lib/x86_64-linux-ghc-9.2.5"
+datadir    = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/c2d91e1ea4d513e418d036672f51a9e0e31a6fbbf0870d1e89c5422ed48f7bf3/9.2.5/share/x86_64-linux-ghc-9.2.5/LaboNotification-0.0.0.2"
+libexecdir = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/c2d91e1ea4d513e418d036672f51a9e0e31a6fbbf0870d1e89c5422ed48f7bf3/9.2.5/libexec/x86_64-linux-ghc-9.2.5/LaboNotification-0.0.0.2"
+sysconfdir = "/home/ntetigor/Documents/labo/Projet_Laboratoire/LaboNotification/.stack-work/install/x86_64-linux-tinfo6/c2d91e1ea4d513e418d036672f51a9e0e31a6fbbf0870d1e89c5422ed48f7bf3/9.2.5/etc"
 
 getBinDir     = catchIO (getEnv "LaboNotification_bindir")     (\_ -> return bindir)
 getLibDir     = catchIO (getEnv "LaboNotification_libdir")     (\_ -> return libdir)

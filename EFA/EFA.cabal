@@ -49,6 +49,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , http-client
+    , http-conduit
     , mysql
     , mysql-simple
     , network
@@ -75,6 +76,7 @@ executable EFA-exe
     , base
     , bytestring
     , http-client
+    , http-conduit
     , mysql
     , mysql-simple
     , network
@@ -105,6 +107,7 @@ test-suite EFA-test
     , hspec-wai
     , hspec-wai-json
     , http-client
+    , http-conduit
     , mysql
     , mysql-simple
     , network
