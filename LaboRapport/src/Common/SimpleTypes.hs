@@ -28,7 +28,7 @@ module Common.SimpleTypes where
     data InfoPatient = MkPatient {
         nom :: String,
         prenom :: String,
-        annee :: Int,
+        datenaissance :: Int,
         genre :: String,
         email :: String
     } deriving (Show, Eq, Read, Generic)
@@ -76,14 +76,14 @@ module Common.SimpleTypes where
                 "[]" -> error "ne correspond pas a Negatif [Char] ou Positif Float"
                 someString -> read someString :: [LineResult]
 
-    data Fiche = MkFiche{
-        idFiche :: IdFiche,
+    data Fiche = MkFIche { 
+        idFiche :: Int,
         analyses :: [String],
         prescripteur :: String,
         date :: UTCTime,
         infoPatient :: InfoPatient,
         dateUpdate :: UTCTime
-    } deriving (Eq,Read,Show)
+    } deriving (Show, Eq, Read, Generic)
     $(deriveJSON defaultOptions ''Fiche)
 
     instance R.Result [String] where
@@ -117,7 +117,7 @@ module Common.SimpleTypes where
             )
 
     instance QueryResults Fiche where
-        convertResults [fa,fb,fc,fd,fe,fg] [va,vb,vc,vd,ve,vg] = MkFiche a b c d e g
+        convertResults [fa,fb,fc,fd,fe,fg] [va,vb,vc,vd,ve,vg] = MkFIche a b c d e g
             where   !a = R.convert fa va
                     !b = R.convert fb vb
                     !c = R.convert fc vc
@@ -190,8 +190,5 @@ module Common.SimpleTypes where
                     !k = R.convert fk vk
                     !l = R.convert fl vl
         convertResults fs vs = convertError fs vs 12
-
-    instance Param [Int]
-    instance ToField [Int]
 
     

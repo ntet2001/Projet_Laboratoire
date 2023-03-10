@@ -1,7 +1,8 @@
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
-
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 module App.Lib
     ( startApp
     , app
@@ -27,16 +28,12 @@ import Infra.UpdateRapport
 import Infra.UpdateResult
 import App.VerificationRapport
 
--- data Fiche' = MkFiche'
---   { 
---     idFiche' :: Int,
---     analyses' :: [String],
---     prescripteur' :: String,
---     date' :: UTCTime,
---     infoPatient' :: InfoPatient,
---     dateUpdate' :: UTCTime
---   } deriving (Eq, Show)
--- $(deriveJSON defaultOptions ''Fiche')
+-- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
+data Repport = MkRepport {
+    idRepport :: Int,
+    contenus :: [IdResult]
+}deriving (Show,Read,Eq,Generic)
+$(deriveJSON defaultOptions ''Repport)
 
 data Results = MkResults
   { idAnals :: Int
@@ -54,7 +51,7 @@ $(deriveJSON defaultOptions ''Results)
 type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> Capture "idRapport" Int :> Get '[JSON] Rapport
   :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String 
-  :<|> "rapports" :> ReqBody '[JSON] Rapport :> Put '[JSON] String
+  :<|> "rapports" :> ReqBody '[JSON] Repport :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
   :<|> "results" :> Get '[JSON] [Resultat]
   :<|> "results" :> Capture "idResult" Int :> Get '[JSON] Resultat
@@ -106,9 +103,9 @@ registerRapports fiche = do
   --return something
 
 {-========= function to modified a Repport ==========-}
-modifiedRapports :: Rapport -> Handler String 
+modifiedRapports :: Repport -> Handler String 
 modifiedRapports rapport  = do
-  liftIO $ updateRapport (idRapport rapport) (contenu rapport)
+  liftIO $ updateRapport (idRepport rapport) (contenus rapport)
   
 
 {-====== function to delete a Repport =======-}

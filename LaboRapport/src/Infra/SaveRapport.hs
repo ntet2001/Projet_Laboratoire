@@ -16,12 +16,12 @@ module Infra.SaveRapport where
 
 
     request :: Query 
-    request = "INSERT INTO rapport (fiche,contenu,dateCreatedRapport,dateUpdatedRapport,idRapport) VALUES (?,?,?,?,?)"
+    request = "INSERT INTO rapport (fiche,contenu,dateCreated,dateUpdated,idRapport) VALUES (?,?,?,?,?)"
 
     saveRapport :: Rapport -> IO String
     saveRapport rapport = do 
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "codeur", connectPassword = "codeur", connectDatabase = "labo_rapport"}
-        res <- execute conn request (contenu rapport :: [Int], encode $ fiche rapport, dateCreatedRapport rapport, dateUpdatedRapport rapport,idRapport rapport :: Int)
+        res <- execute conn request (show $ fiche rapport :: String, show $ contenu rapport :: String, dateCreatedRapport rapport, dateUpdatedRapport rapport,idRapport rapport :: Int)
         close conn 
         print res
         if res == 1 then 
