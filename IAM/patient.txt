@@ -1,2 +1,2 @@
-MkPatient {nameOf = "douki", firstNameOf = "ehawe", emailOf = MkEmail {identifiant = "ehawe", domaine = "wada", extension = "org"}, photoOf = "10000111000000", code = 2266, statutP = Aucun}
-MkPatient {nameOf = "NTET", firstNameOf = "Igor", emailOf = MkEmail {identifiant = "manyamaigor2001", domaine = "gmail", extension = "com"}, photoOf = "1111111", code = 7283, statutP = Aucun}
+MkPatient {nameOf = "ntet", firstNameOf = "igor", emailOf = MkEmail {identifiant = "manyamaigor2001", domaine = "gmail", extension = "com"}, photoOf = "1111111", code = 3710, statutP = Aucun}
+MkPatient {nameOf = "Kiki", firstNameOf = "Franglish", emailOf = MkEmail {identifiant = "Franglish", domaine = "wada", extension = "org"}, photoOf = "11200012010", code = 1480, statutP = Aucun}

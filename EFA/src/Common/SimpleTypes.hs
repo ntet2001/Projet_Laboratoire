@@ -51,7 +51,7 @@ module Common.SimpleTypes where
         datenaissance :: Int,
         genre :: String, 
         email :: String
-    } deriving (Show, Eq, Read, Generic)
+    } deriving (Show, Eq, Read, Generic )
     $(deriveJSON defaultOptions ''InfoPatient)
 
     data Fiche = MkFIche { 
