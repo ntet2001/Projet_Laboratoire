@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
+
 module App.Lib
     ( startApp
     , app
@@ -26,16 +27,16 @@ import Infra.UpdateRapport
 import Infra.UpdateResult
 import App.VerificationRapport
 
-data Fiche = MkFiche
-  { 
-    idFiche :: Int,
-    analyses :: [String],
-    prescripteur :: String,
-    date :: UTCTime,
-    infoPatient :: InfoPatient,
-    dateUpdate :: UTCTime
-  } deriving (Eq, Show)
-$(deriveJSON defaultOptions ''Fiche)
+-- data Fiche' = MkFiche'
+--   { 
+--     idFiche' :: Int,
+--     analyses' :: [String],
+--     prescripteur' :: String,
+--     date' :: UTCTime,
+--     infoPatient' :: InfoPatient,
+--     dateUpdate' :: UTCTime
+--   } deriving (Eq, Show)
+-- $(deriveJSON defaultOptions ''Fiche')
 
 data Results = MkResults
   { idAnals :: Int
@@ -53,7 +54,7 @@ $(deriveJSON defaultOptions ''Results)
 type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> Capture "idRapport" Int :> Get '[JSON] Rapport
   :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String 
-  :<|> "rapports" :> ReqBody '[JSON] Fiche :> Capture "idRapport" Int :> Put '[JSON] String
+  :<|> "rapports" :> ReqBody '[JSON] Rapport :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
   :<|> "results" :> Get '[JSON] [Resultat]
   :<|> "results" :> Capture "idResult" Int :> Get '[JSON] Resultat
@@ -72,7 +73,7 @@ api :: Proxy API
 api = Proxy
 
 server :: Server API
-server = return readRapports
+server = readRapports
   :<|> readARapports
   :<|> registerRapports
   :<|> modifiedRapports
@@ -101,12 +102,14 @@ readARapports identifiant = do
 {-========= function to register an analyse ==========-}
 registerRapports :: Fiche -> Handler String
 registerRapports fiche = do
-  liftIO $ createNewRepport (idFile fiche)
+  liftIO $ createNewRepport fiche
+  --return something
 
 {-========= function to modified a Repport ==========-}
-modifiedRapports :: Repport -> Int -> Handler String 
-modifiedRapports rapport idRapport = do
-  liftIO $ updateRapport idRapport (content rapport)
+modifiedRapports :: Rapport -> Handler String 
+modifiedRapports rapport  = do
+  liftIO $ updateRapport (idRapport rapport) (contenu rapport)
+  
 
 {-====== function to delete a Repport =======-}
 deleteRapports :: Int -> Handler String 
@@ -136,7 +139,10 @@ registerResults resultat = undefined
 {-======== function to modified a result =====-}
 modifiedResults :: Results -> Int -> Handler String
 modifiedResults resultat identifiant = do 
-  liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) (infoPatients resultat) (prelevements resultat) (prescripteurs resultat) (numDossiers resultat) (lineresults resultat) (nomLaborantins resultat)
+  liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) 
+    (infoPatients resultat) (prelevements resultat) (prescripteurs resultat) (numDossiers resultat) 
+      (fmap read (lineresults resultat) :: [LineResult]) (nomLaborantins resultat)
+  return "le result a ete modifie."
 
 {-====== function to delete a result =======-}
 deleteResults :: Int -> Handler String 

@@ -13,6 +13,8 @@ module Infra.SaveRapport where
     import Common.SimpleTypes
     import Data.Time
     
+
+
     request :: Query 
     request = "INSERT INTO rapport (fiche,contenu,dateCreatedRapport,dateUpdatedRapport,idRapport) VALUES (?,?,?,?,?)"
 

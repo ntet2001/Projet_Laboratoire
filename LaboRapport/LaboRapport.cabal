@@ -28,6 +28,7 @@ library
       App.Lib
       App.VerificationRapport
       Common.SimpleTypes
+      Domain.AddResultToRapport
       Domain.CreateRapport
       Domain.CreateResultat
       Infra.DeleteRapport
@@ -36,6 +37,7 @@ library
       Infra.ReadResult
       Infra.SaveRapport
       Infra.SaveResult
+      Infra.SendRapportMail
       Infra.UpdateRapport
       Infra.UpdateResult
   other-modules:
@@ -47,8 +49,11 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , http-client
+    , http-conduit
     , mysql
     , mysql-simple
+    , network
     , parsec
     , servant-server
     , time
@@ -68,8 +73,11 @@ executable LaboRapport-exe
     , aeson
     , base
     , bytestring
+    , http-client
+    , http-conduit
     , mysql
     , mysql-simple
+    , network
     , parsec
     , servant-server
     , time
@@ -93,8 +101,11 @@ test-suite LaboRapport-test
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , http-client
+    , http-conduit
     , mysql
     , mysql-simple
+    , network
     , parsec
     , servant-server
     , time

@@ -5,7 +5,7 @@ module Infra.SendRapportMail where
 
 import Data.Aeson 
 import Network.HTTP.Simple
-import Network.HTTP.Conduit.MultipartFormData
+--import Network.HTTP.Conduit.MultipartFormData
 import GHC.Generics (Generic)
 
 data SimpleMail = MkSimpleMail{

@@ -15,9 +15,10 @@ module Infra.UpdateRapport where
     request :: Query 
     request = "UPDATE rapport SET contenu = ? WHERE idRapport = ?"
 
-    updateRapport :: Int -> [Int] -> IO ()
+    updateRapport :: Int -> [Int] -> IO String
     updateRapport idRapport contenu = do 
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "codeur", connectPassword = "codeur", connectDatabase = "labo_rapport"}
         res <- execute conn request (show contenu, idRapport :: Int)
         close conn 
-        print res
+        if res == 1 then return "success"
+        else fail "failed"

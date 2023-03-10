@@ -49,7 +49,8 @@ patientCheck  name postName birthDay genre email =
 
 -- fonction qui cree un resultat
 --idR idA interpre conclu prescrip numD linesR nomLabo
-data ResultatH = MkResultH { idResultH :: IdResultat,
+data ResultatH = MkResultH { 
+    idResultH :: IdResultat,
     idAnalH :: IdAnalyse,
     interpretationH :: Interpretation,
     conclusionH :: Conclusion,

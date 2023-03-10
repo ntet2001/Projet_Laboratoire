@@ -30,6 +30,9 @@ dependencies:
 - mysql
 - bytestring
 - time
+- http-conduit
+- http-client
+- network
 
 ghc-options:
 - -Wall

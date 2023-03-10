@@ -13,12 +13,13 @@ module Infra.SaveResult where
     import Data.Time
     
     request :: Query 
-    request = "INSERT INTO resultat (idAnal,interpretation,conclusion,infoPat,prelevement,prescripteur,lineResults,nomLaborantin) VALUES (?,?,?,?,?,?,?,?)"
+    request = "INSERT INTO resultat (idAnal,interpretation,conclusion,fiche',prelevement,prescripteur,lineResults,nomLaborantin) VALUES (?,?,?,?,?,?,?,?)"
 
     saveResult :: Resultat -> IO String
     saveResult resultat = do 
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "codeur", connectPassword = "codeur", connectDatabase = "labo_rapport"}
-        res <- execute conn request (idAnal resultat :: Int, interpretation resultat :: String, conclusion resultat :: String, show $ infoPat resultat, prelevement resultat, prescripteur resultat :: String, numDossier resultat :: Int, show $ lineResults resultat, nomLaborantin resultat :: String)
+        res <- execute conn request (idAnal resultat :: Int, interpretation resultat :: String, conclusion resultat :: String, 
+            fiche' resultat , prelevement resultat, prescripteurR resultat :: String, numDossier resultat :: Int, show $ lineResults resultat, nomLaborantin resultat :: String)
         close conn 
         print res
         if res == 1 then 
