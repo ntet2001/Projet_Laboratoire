@@ -12,21 +12,28 @@ module Infra.ReadResult where
     import Common.SimpleTypes (Resultat)
     
     requestselect :: Query
-    requestselect = "SELECT * FROM resultat"
+    requestselect = "SELECT * FROM resultat WHERE fiche' = ?" 
+    -- fiche' est permet de connaitre l'id de la fiche contenue dans le resultat
 
     requestselect' :: Query
     requestselect' = "SELECT * FROM resultat WHERE idResult = ?"
 
     {-======== Function to read a list of Results =========-}
-    readResult :: IO [Resultat]
-    readResult = do
+    -- cette fonction lit la liste des resultats de quelle fiche ou de quel rapport ??
+
+    -- je fais  une fonction qui ressort la  liste des resultats des analyses d'une fiche enregistree dans la bd
+
+    readResultFiche :: Int -> IO [Resultat]
+    readResultFiche idDeLaFiche = do
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "codeur", connectUser = "codeur", connectPort = 3306}
-        res <- query_ conn requestselect
+        res <- query conn requestselect (Only idDeLaFiche)
         close conn
         print res
         return res
 
     {-======= Function to read a Result who takes an id =========-}
+    -- c'est une fonctio qui permet de retrouver un resultat a partir de son identifiant, c'est un entity
+
     readAResult:: Int -> IO Resultat
     readAResult idResult = do
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "codeur", connectUser = "codeur", connectPort = 3306}
