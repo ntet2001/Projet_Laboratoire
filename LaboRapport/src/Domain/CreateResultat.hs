@@ -2,8 +2,9 @@ module Domain.CreateResultat where
 
 import Common.SimpleTypes
 import Data.Time (UTCTime, getCurrentTime)
-import Text.ParserCombinators.Parsec
+import qualified Text.ParserCombinators.Parsec as P
 import Control.Monad.IO.Class (MonadIO(liftIO))
+import Control.Applicative 
 
 -- type du domaine : IdFiche, Prescripteur, Date, DateOfBirth... 
 
@@ -11,61 +12,51 @@ type Genre = String
 type DateOfBirth = Int
 type Nom = String
 
+type IdAnal = Int
+--stype IdResult = Int
+type Interpretation = String
+type Conclusion = String
+type Prelevement = UTCTime
+type DateCreatedResultat = UTCTime
+type DateUpdatedResultat = UTCTime
+type Prescripteur = String
+type NumDossier = Int
+type NomLaborantin = String
 
 
 {-===== verifications du domaine : -}
 
 -- verification generale des types string : ne contient que les lettres de l'alphabet francais
-someParser :: Parser String
+someParser :: P.Parser String
 someParser = do
-    many (oneOf $ mappend ['a'..'z'] ['A'..'Z'])
+    many (P.oneOf $ mappend ['a'..'z'] ['A'..'Z'])
     
-verifString :: String -> Either ParseError String
-verifString = parse someParser "ne doit contenir que des lettres de l'alphabet francais"
+verifString :: String -> Either P.ParseError String
+verifString = P.parse someParser "ne doit contenir que des lettres de l'alphabet francais"
 
 -- verification de la date de naissance et de l'id de la fiche : ne doit pas etre negatif
 
-parserInt :: Parser Int
+parserInt :: P.Parser Int
 parserInt = do
-     someVar <- many (oneOf ['0'..'9'])
+     someVar <- P.many (P.oneOf ['0'..'9'])
      return (read someVar :: Int)
 
-verifInt :: String ->  Either ParseError Int 
-verifInt = parse parserInt "une date de naissance doit etre positive"
+verifInt :: String ->  Either P.ParseError Int 
+verifInt = P.parse parserInt "une date de naissance doit etre positive"
 
+-- checking input int
+alwaysPositifs :: IdAnal -> IdResult -> NumDossier -> Either P.ParseError (IdAnal, IdResult, NumDossier)
+alwaysPositifs x y z = (, , ) <$> verifInt (show x) <*>
+                                  verifInt (show y) <*>
+                                  verifInt (show z)
 
-{-=== fonction du domaine pour creer une fiche ===-}
+-- checking input string 
+correctString :: Interpretation -> Conclusion -> Prescripteur -> NomLaborantin -> Either P.ParseError (Interpretation, Conclusion, Prescripteur, NomLaborantin)
+correctString i j k l = (, , ,)  <$> verifString i <*>
+                                     verifString j <*> 
+                                     verifString k <*> 
+                                     verifString l
 
--- fonction qui construit les informations d'un patient
-
-patientCheck  :: Nom -> Nom -> DateOfBirth -> Genre -> String -> Either ParseError InfoPatient
-patientCheck  name postName birthDay genre email =
-     MkPatient <$> verifString name <*>
-                   verifString postName <*>
-                   verifInt (show birthDay) <*>
-                   verifString genre <*>
-                   verifString email 
--- IAM se charge de verifier en profondeur l'email, EFA verifie juste si c'est une chaine non vide
-
--- fonction qui cree un resultat
---idR idA interpre conclu prescrip numD linesR nomLabo
-data ResultatH = MkResultH { 
-    idResultH :: IdResultat,
-    idAnalH :: IdAnalyse,
-    interpretationH :: Interpretation,
-    conclusionH :: Conclusion,
-    prescripteurH :: Prescripteur,
-    numDossierH :: NumDossier,
-    nomLaborantinH :: NomLaborantin
-}
-type IdAnalyse = Int
-type IdResultat = Int
-type Interpretation = String
-type Conclusion = String
-type Prelevement = UTCTime
-type Prescripteur = String
-type NumDossier = Int
-type NomLaborantin = String
 
 --data LineResult = Negatif String | Positif String Float
 checkLineResult :: String -> Either String LineResult
@@ -81,13 +72,13 @@ checkLineResult line =
         "Positif" -> Right (Positif b (read rest1 :: Float))
         _ -> Left "LineResult invalide"         
 
+createResultat :: IdResult -> IdAnal -> Interpretation -> Conclusion -> IdFiche -> Prescripteur -> NumDossier
+    -> [LineResult] -> NomLaborantin -> IO Resultat
+createResultat idR idA interpret conclusion someIdFiche  somebody somenumber xs technicienLabo  = do
+    time <- getCurrentTime
+    return $ createResultatHelper idR idA interpret conclusion someIdFiche time somebody somenumber xs technicienLabo time time
 
-createResultatH :: IdResultat -> IdAnalyse -> Interpretation -> Conclusion -> Prescripteur -> NumDossier -> NomLaborantin -> Either ParseError ResultatH 
-createResultatH idR idA interpre conclu prescrip numD nomLabo =
-    MkResultH <$> verifInt (show idR) <*>
-                  verifInt (show idA) <*>
-                  verifString interpre <*>
-                  verifString conclu <*>   
-                  verifString prescrip <*>
-                  verifInt (show numD) <*>
-                  verifString nomLabo
+
+createResultatHelper :: IdResult -> IdAnal -> Interpretation -> Conclusion -> IdFiche -> Prelevement -> Prescripteur -> NumDossier
+    -> [LineResult] -> NomLaborantin -> DateCreatedResultat -> DateUpdatedResultat -> Resultat
+createResultatHelper = MkResult
