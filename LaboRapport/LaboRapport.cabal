@@ -36,6 +36,7 @@ library
       Infra.DeleteResult
       Infra.ReadRapport
       Infra.ReadResult
+      Infra.RepportBuild
       Infra.SaveRapport
       Infra.SaveResult
       Infra.SendRapportMail
@@ -57,6 +58,7 @@ library
     , network
     , parsec
     , servant-server
+    , text
     , time
     , wai
     , warp
@@ -81,6 +83,7 @@ executable LaboRapport-exe
     , network
     , parsec
     , servant-server
+    , text
     , time
     , wai
     , warp
@@ -109,6 +112,7 @@ test-suite LaboRapport-test
     , network
     , parsec
     , servant-server
+    , text
     , time
     , wai
     , warp

@@ -43,8 +43,11 @@ module Common.SimpleTypes where
         datenaissance :: Int,
         genre :: String,
         email :: String
-    } deriving (Show, Eq, Read, Generic)
+    } deriving (Eq, Read, Generic)
     $(deriveJSON defaultOptions ''InfoPatient)
+    
+    instance Show InfoPatient where
+        show infoPat = "Nom : " ++ (nom infoPat) ++ " " ++ (prenom infoPat) ++ "   Date naissance :  " ++ (show $ datenaissance infoPat) ++ "\ngenre : " ++ (genre infoPat) ++ "  email : " ++ (email infoPat)
 
     instance FromField InfoPatient where
         fromField = ([VarString], \xs -> do
@@ -185,6 +188,11 @@ module Common.SimpleTypes where
         dateUpdatedResultat :: UTCTime
     } deriving (Show,Read,Eq,Generic)
     $(deriveJSON defaultOptions ''Resultat)
+
+    showResultat :: Resultat -> String
+    showResultat resultat = 
+        let lineresults = fmap show (lineResults resultat)
+        in (interpretation resultat) ++ " | " ++ (conclusion resultat) ++ " | " ++ (prescripteurR resultat) ++ " | " ++ (concat lineresults) ++ " | " ++ (nomLaborantin resultat) ++ "\n"
 
     instance QueryResults Resultat where
         convertResults [fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk] [va,vb,vc,vd,ve,vf,vg,vh,vi,vj,vk] = MkResult a b c d e f g h i j k 
