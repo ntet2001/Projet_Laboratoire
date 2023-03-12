@@ -30,6 +30,7 @@ dependencies:
 - mysql
 - bytestring
 - time
+- text
 - http-conduit
 - http-client
 - network

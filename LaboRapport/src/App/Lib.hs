@@ -29,6 +29,9 @@ import Infra.UpdateResult
 import App.VerificationRapport
 import Data.Time (getCurrentTime)
 import qualified App.Resultat as R
+import Control.Applicative
+import System.IO 
+import Infra.RepportBuild
 
 -- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
 data Repport = MkRepport {
@@ -39,6 +42,7 @@ $(deriveJSON defaultOptions ''Repport)
 
 type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> Capture "idRapport" Int :> Get '[JSON] Rapport
+  :<|> "rapports" :> "build" :> Capture "idRapport" Int :> Get '[JSON] String
   :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String 
   :<|> "rapports" :> ReqBody '[JSON] Repport :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
@@ -61,6 +65,7 @@ api = Proxy
 server :: Server API
 server = readRapports
   :<|> readARapports
+  :<|> buildrapport
   :<|> registerRapports
   :<|> modifiedRapports
   :<|> deleteRapports
@@ -83,6 +88,21 @@ readARapports identifiant = do
   result <- liftIO $ readARapport identifiant
   liftIO $ print result 
   return result 
+
+
+{--}
+buildrapport :: Int -> Handler String
+buildrapport idRapport = do
+  repport <- liftIO $ readARapport idRapport
+  let listeResultsIO = fmap readAResult (contenu repport)
+      patient = (infoPatient.fiche) repport
+      ficheDansRapport = show $ (infoPatient.fiche) repport
+  listeResults <-  liftIO $ sequence listeResultsIO
+  let listeResultsStr = ficheDansRapport ++ "\n" ++ (concat $ fmap showResultat listeResults)
+  -- result <- liftIO listeResults
+  chemin <- liftIO $ repportBuilding  listeResultsStr (show idRapport)
+  sendEmailRepport chemin (MkSimpleMail (email patient) (nom patient ++ " " ++ prenom patient)  "Rapport Patient" ""  "<h1> Voici le Pdf de votre rapport </h1>")
+  return chemin 
 
 
 {-========= function to register an analyse ==========-}

@@ -27,22 +27,22 @@ saveResult idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier
                     -- j'effectue les differentes verifications avant de construire le resultat
                     -- toutes les chaines de caracteres ne doivent pas etre vides
                     if null interpret || null conclusion || null prescriptor || null lineOfResult || null someName then 
-                        fail "l'interpretation, la conclusion, le prescripteur ou le nom du laborantain ne doit pas etre "
+                        return "l'interpretation, la conclusion, le prescripteur ou le nom du laborantain ne doit pas etre "
                     -- je verifie que tous les entiers sont positifs 
                     else do 
                         let checkInputInt = alwaysPositifs idOfAnalyse oneIdFiche numberDossier 
                         case checkInputInt of
-                            Left _ -> fail "l'id de l'analyse, l'id de la fiche et le numero du dossier doivent etre positifs"
+                            Left _ -> return "l'id de l'analyse, l'id de la fiche et le numero du dossier doivent etre positifs"
                             Right (x,y,z) -> do
                                 -- je verifie si les string sont corrects
                                 let checkInputString = correctString interpret conclusion prescriptor someName 
                                 case checkInputString of
-                                    Left _ -> fail "l'interpretation, la conclusion, le prescripteur, et le nom du laborantain doivent etre constitues des lettres de l'alphabet francais"
+                                    Left _ -> return "l'interpretation, la conclusion, le prescripteur, et le nom du laborantain doivent etre constitues des lettres de l'alphabet francais"
                                     Right (a,b,c,d) -> do
                                         -- je verifie les elements de type lineOfResult
                                         let checkLine = fmap checkLineResult lineOfResult
                                         case sequenceA checkLine of
-                                            Left msg -> fail msg
+                                            Left msg -> return msg
                                             Right something -> do 
                                                 -- ici il faut generer un id pour le resultat
                                                 leResultat <- createResultat 1 x a b y c z something d
@@ -52,14 +52,12 @@ saveResult idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier
                                                     "Successful" -> do
                                                         let updateContenu = idOfAnalyse : (contenu currentRapport)
                                                         updateRapport numberDossier updateContenu              
-                                                    "Failed" -> fail "le resultat n'a pas pu etre enregistré"
-                (x:_) -> do
-                    -- mis a jour du contenu : j'ajoute l'id du resultat au contenu du rapport et puis l'envoie a updateRapport
-                    let newcontenu =  (idResult x) : (contenu currentRapport)
-                    updateRapport numberDossier newcontenu
-        else fail $ "l'analyse dont l'id est : " ++ show idOfAnalyse ++ " n'est pas sur la fiche dont l'id est : " ++ show oneIdFiche
+                                                    "Failed" -> return "le resultat n'a pas pu etre enregistré"
+                _ -> do
+                    return $ "l'analyse dont l'id est : " ++ show idOfAnalyse ++ " est deja present dans le rapport"
+        else return $ "l'analyse dont l'id est : " ++ show idOfAnalyse ++ " n'est pas sur la fiche dont l'id est : " ++ show oneIdFiche
 
-    else fail $ "la fiche dont l'id est : " ++ show oneIdFiche ++ 
+    else return $ "la fiche dont l'id est : " ++ show oneIdFiche ++ 
         " ne correspond pas celle presente dans le rapport dont l'id est : " ++ show numberDossier
 
 
