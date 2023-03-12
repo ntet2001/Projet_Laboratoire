@@ -39,7 +39,7 @@ data Results = MkResults
   { idAnals :: Int
   , interpretations :: String
   , conclusions :: String
-  , infoPatients :: InfoPatient
+  , ficheId :: Int
   , prelevements :: UTCTime 
   , prescripteurs :: String
   , numDossiers :: Int 
@@ -53,7 +53,7 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String 
   :<|> "rapports" :> ReqBody '[JSON] Repport :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
-  :<|> "results" :> Get '[JSON] [Resultat]
+ -- :<|> "results" :> Get '[JSON] [Resultat] 
   :<|> "results" :> Capture "idResult" Int :> Get '[JSON] Resultat
   :<|> "results" :> ReqBody '[JSON] Results :> Post '[JSON] String 
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
@@ -75,7 +75,7 @@ server = readRapports
   :<|> registerRapports
   :<|> modifiedRapports
   :<|> deleteRapports
-  :<|> readResults
+ -- :<|> readResults
   :<|> readAResults
   :<|> registerResults
   :<|> modifiedResults
@@ -115,11 +115,11 @@ deleteRapports identifiant = do
 
 
 {-========= function to read a list of results =======-}
-readResults :: Handler [Resultat]
-readResults =  do 
-  result <- liftIO readResult
-  liftIO $ print result 
-  return result  
+-- readResults :: Handler [Resultat]
+-- readResults =  do 
+--   result <- liftIO readResult
+--   liftIO $ print result 
+--   return result  
 
 {-========= function to read a result ========-}
 readAResults :: Int -> Handler Resultat 
@@ -130,14 +130,17 @@ readAResults identifiant = do
 
 {-======== function to register a result ======-}
 registerResults :: Results -> Handler String 
-registerResults resultat = undefined
+registerResults resultat = do
+  sortie <- liftIO $ saveResult resultat
+  liftIO $ print sortie
+  return sortie
 
 
 {-======== function to modified a result =====-}
 modifiedResults :: Results -> Int -> Handler String
 modifiedResults resultat identifiant = do 
   liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) 
-    (infoPatients resultat) (prelevements resultat) (prescripteurs resultat) (numDossiers resultat) 
+    (infoPatient resultat) (prelevement resultat) (prescripteurs resultat) (numDossiers resultat) 
       (fmap read (lineresults resultat) :: [LineResult]) (nomLaborantins resultat)
   return "le result a ete modifie."
 
