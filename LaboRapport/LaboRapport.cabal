@@ -26,9 +26,9 @@ source-repository head
 library
   exposed-modules:
       App.Lib
+      App.Resultat
       App.VerificationRapport
       Common.SimpleTypes
-      Domain.AddResultToRapport
       Domain.CreateRapport
       Domain.CreateResultat
       Infra.DeleteRapport

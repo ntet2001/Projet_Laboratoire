@@ -9,8 +9,8 @@ import Domain.CreateResultat
 import qualified Infra.SaveResult as I
 
 
-saveResult :: Int -> String-> String -> Int -> String -> Int -> [String] -> String -> IO String
-saveResult idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier lineOfResult someName = do
+putResultInsideReport :: Int -> String-> String -> Int -> String -> Int -> [String] -> String -> IO String
+putResultInsideReport idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier lineOfResult someName = do
     -- je ressort d'abord le rapport dont l'id est numberDossier
     currentRapport <- readARapport numberDossier
     -- je verifie si oneIdFiche correspond a l'id de la fiche presente dans le rapport
@@ -50,7 +50,7 @@ saveResult idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier
                                                 isGood <- I.saveResult leResultat
                                                 case isGood of
                                                     "Successful" -> do
-                                                        let updateContenu = 1 : (contenu currentRapport)
+                                                        let updateContenu = idOfAnalyse : (contenu currentRapport)
                                                         updateRapport numberDossier updateContenu              
                                                     "Failed" -> fail "le resultat n'a pas pu etre enregistré"
                 (x:_) -> do

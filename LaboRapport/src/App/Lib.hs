@@ -143,7 +143,7 @@ registerResults resultat = do
 modifiedResults :: Results -> Int -> Handler String
 modifiedResults resultat identifiant = do 
   liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) 
-    (infoPatient resultat) (prelevement resultat) (prescripteurs resultat) (numDossiers resultat) 
+    (ficheId resultat) (prelevements resultat) (prescripteurs resultat) (numDossiers resultat) 
       (fmap read (lineresults resultat) :: [LineResult]) (nomLaborantins resultat)
   return "le result a ete modifie."
 
