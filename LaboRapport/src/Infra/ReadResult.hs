@@ -12,15 +12,13 @@ module Infra.ReadResult where
     import Common.SimpleTypes (Resultat)
     
     requestselect :: Query
-    requestselect = "SELECT * FROM resultat WHERE fiche' = ?" 
+    requestselect = "SELECT * FROM resultat WHERE fiche = ?" 
     -- fiche' est permet de connaitre l'id de la fiche contenue dans le resultat
 
     requestselect' :: Query
     requestselect' = "SELECT * FROM resultat WHERE idResult = ?"
 
     {-======== Function to read a list of Results =========-}
-    -- cette fonction lit la liste des resultats de quelle fiche ou de quel rapport ??
-
     -- je fais  une fonction qui ressort la  liste des resultats des analyses d'une fiche enregistree dans la bd
 
     readResultFiche :: Int -> IO [Resultat]

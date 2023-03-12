@@ -76,9 +76,9 @@ createResultat :: IdResult -> IdAnal -> Interpretation -> Conclusion -> IdFiche 
     -> [LineResult] -> NomLaborantin -> IO Resultat
 createResultat idR idA interpret conclusion someIdFiche  somebody somenumber xs technicienLabo  = do
     time <- getCurrentTime
-    return $ createResultatHelper idR idA interpret conclusion someIdFiche time somebody somenumber xs technicienLabo time time
+    return $ createResultatHelper idR idA interpret conclusion someIdFiche somebody somenumber xs technicienLabo time time
 
 
-createResultatHelper :: IdResult -> IdAnal -> Interpretation -> Conclusion -> IdFiche -> Prelevement -> Prescripteur -> NumDossier
+createResultatHelper :: IdResult -> IdAnal -> Interpretation -> Conclusion -> IdFiche -> Prescripteur -> NumDossier
     -> [LineResult] -> NomLaborantin -> DateCreatedResultat -> DateUpdatedResultat -> Resultat
 createResultatHelper = MkResult

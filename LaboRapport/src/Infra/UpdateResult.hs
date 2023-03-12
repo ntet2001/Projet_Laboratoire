@@ -13,11 +13,11 @@ module Infra.UpdateResult where
     import Data.Time
 
     request :: Query 
-    request = "UPDATE resultat SET idAnal = ?, interpretation = ?, conclusion = ?, infoPat = ?, prelevement = ?,   prescripteur = ?, numDossier = ?, lineResults = ?, nomLaborantin = ? WHERE idResult = ?"
+    request = "UPDATE resultat SET idAnal = ?, interpretation = ?, conclusion = ?, fiche = ?, prescripteur = ?, numDossier = ?, lineResults = ?, nomLaborantin = ? WHERE idResult = ?"
 
-    updateResult :: Int -> Int -> String -> String -> InfoPatient -> UTCTime -> String -> Int -> [LineResult] -> String -> IO ()
-    updateResult idResult idAnal interpretation conclusion infoPat prelevement prescripteur numDossier lineResults nomLaborantin = do 
+    updateResult :: Int -> Int -> String -> String -> IdFiche -> UTCTime -> String -> Int -> [LineResult] -> String -> IO ()
+    updateResult idResult idAnal interpretation conclusion idfiche prelevement prescripteur numDossier lineResults nomLaborantin = do 
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "codeur", connectPassword = "codeur", connectDatabase = "labo_rapport"}
-        res <- execute conn request (idAnal :: Int, interpretation :: String, conclusion :: String, show infoPat, prelevement, prescripteur :: String, numDossier :: Int, show lineResults, nomLaborantin :: String, idResult :: Int)
+        res <- execute conn request (idAnal :: Int, interpretation :: String, conclusion :: String, idfiche :: Int, prescripteur :: String, numDossier :: Int, show lineResults, nomLaborantin :: String, idResult :: Int)
         close conn 
         print res

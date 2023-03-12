@@ -25,6 +25,18 @@ module Common.SimpleTypes where
     type IdResult = Int
     type  IdFiche = Int
 
+    data Results = MkResults{ idAnals :: Int
+    , interpretations :: String
+    , conclusions :: String
+    , ficheId :: Int
+    , prelevements :: UTCTime 
+    , prescripteurs :: String
+    , numDossiers :: Int 
+    , lineresults :: [String]
+    , nomLaborantins :: String
+    } deriving (Eq, Show)
+    $(deriveJSON defaultOptions ''Results)
+
     data InfoPatient = MkPatient {
         nom :: String,
         prenom :: String,
@@ -165,7 +177,6 @@ module Common.SimpleTypes where
         interpretation :: String,
         conclusion :: String,
         fiche' :: IdFiche,
-        prelevement :: UTCTime,
         prescripteurR :: String,
         numDossier :: Int,
         lineResults :: [LineResult],
@@ -176,7 +187,7 @@ module Common.SimpleTypes where
     $(deriveJSON defaultOptions ''Resultat)
 
     instance QueryResults Resultat where
-        convertResults [fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl] [va,vb,vc,vd,ve,vf,vg,vh,vi,vj,vk,vl] = MkResult a b c d e f g h i j k l
+        convertResults [fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk] [va,vb,vc,vd,ve,vf,vg,vh,vi,vj,vk] = MkResult a b c d e f g h i j k 
             where   !a = R.convert fa va
                     !b = R.convert fb vb
                     !c = R.convert fc vc
@@ -188,7 +199,6 @@ module Common.SimpleTypes where
                     !i = R.convert fi vi
                     !j = R.convert fj vj
                     !k = R.convert fk vk
-                    !l = R.convert fl vl
-        convertResults fs vs = convertError fs vs 12
+        convertResults fs vs = convertError fs vs 11
 
     

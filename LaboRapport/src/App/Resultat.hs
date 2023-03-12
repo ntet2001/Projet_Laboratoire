@@ -50,7 +50,7 @@ saveResult idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier
                                                 isGood <- I.saveResult leResultat
                                                 case isGood of
                                                     "Successful" -> do
-                                                        let updateContenu = 1 : (contenu currentRapport)
+                                                        let updateContenu = idOfAnalyse : (contenu currentRapport)
                                                         updateRapport numberDossier updateContenu              
                                                     "Failed" -> fail "le resultat n'a pas pu etre enregistré"
                 (x:_) -> do

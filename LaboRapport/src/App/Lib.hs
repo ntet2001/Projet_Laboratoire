@@ -27,6 +27,8 @@ import Infra.SaveResult
 import Infra.UpdateRapport
 import Infra.UpdateResult
 import App.VerificationRapport
+import Data.Time (getCurrentTime)
+import qualified App.Resultat as R
 
 -- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
 data Repport = MkRepport {
@@ -35,25 +37,12 @@ data Repport = MkRepport {
 }deriving (Show,Read,Eq,Generic)
 $(deriveJSON defaultOptions ''Repport)
 
-data Results = MkResults
-  { idAnals :: Int
-  , interpretations :: String
-  , conclusions :: String
-  , ficheId :: Int
-  , prelevements :: UTCTime 
-  , prescripteurs :: String
-  , numDossiers :: Int 
-  , lineresults :: [String]
-  , nomLaborantins :: String
-  } deriving (Eq, Show)
-$(deriveJSON defaultOptions ''Results)
-
 type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> Capture "idRapport" Int :> Get '[JSON] Rapport
   :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String 
   :<|> "rapports" :> ReqBody '[JSON] Repport :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
- -- :<|> "results" :> Get '[JSON] [Resultat] 
+  :<|> "results" :> Capture "idFiche" Int :> Get '[JSON] [Resultat] 
   :<|> "results" :> Capture "idResult" Int :> Get '[JSON] Resultat
   :<|> "results" :> ReqBody '[JSON] Results :> Post '[JSON] String 
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
@@ -75,7 +64,7 @@ server = readRapports
   :<|> registerRapports
   :<|> modifiedRapports
   :<|> deleteRapports
- -- :<|> readResults
+  :<|> readResults
   :<|> readAResults
   :<|> registerResults
   :<|> modifiedResults
@@ -115,11 +104,11 @@ deleteRapports identifiant = do
 
 
 {-========= function to read a list of results =======-}
--- readResults :: Handler [Resultat]
--- readResults =  do 
---   result <- liftIO readResult
---   liftIO $ print result 
---   return result  
+readResults :: Int -> Handler [Resultat]
+readResults idfiche =  do 
+  result <- liftIO $ readResultFiche idfiche
+  liftIO $ print result 
+  return result  
 
 {-========= function to read a result ========-}
 readAResults :: Int -> Handler Resultat 
@@ -130,8 +119,8 @@ readAResults identifiant = do
 
 {-======== function to register a result ======-}
 registerResults :: Results -> Handler String 
-registerResults resultat = do
-  sortie <- liftIO $ saveResult resultat
+registerResults resultat = do 
+  sortie <- liftIO $ R.saveResult (idAnals resultat) (interpretations resultat) (conclusions resultat) (ficheId resultat) (prescripteurs resultat) (numDossiers resultat) (lineresults resultat) (nomLaborantins resultat) 
   liftIO $ print sortie
   return sortie
 
@@ -139,8 +128,7 @@ registerResults resultat = do
 {-======== function to modified a result =====-}
 modifiedResults :: Results -> Int -> Handler String
 modifiedResults resultat identifiant = do 
-  liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) 
-    (infoPatient resultat) (prelevement resultat) (prescripteurs resultat) (numDossiers resultat) 
+  liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) (ficheId resultat) (prelevements resultat) (prescripteurs resultat) (numDossiers resultat) 
       (fmap read (lineresults resultat) :: [LineResult]) (nomLaborantins resultat)
   return "le result a ete modifie."
 
