@@ -2,6 +2,8 @@
   hash: d590b76d2d5f98f01894882dc106d920a101f52edb6a09b9a7f8dc701b075565
 ? /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.6.3.0/build/LaboRapport-exe/autogen/Paths_LaboRapport.hs
 : hash: a4071a45efb6b062fc86da68b036416f9b1ceda6a359fdc5468a9f121c831fe8
+? /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.6.3.0/build/LaboRapport-exe/autogen/cabal_macros.h
+: hash: e6491d4360b159bb7769046f869327a7fbcd04a1bf9646df6b31fb20f5c8b418
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/CHANGELOG.md:
   hash: 81ffe7d4ae0560145df385cf30b92a0536f428c5060afd1c279cddae9fe2411c
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/LaboRapport.cabal:

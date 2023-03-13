@@ -5,5 +5,8 @@ import System.IO
 -- function to build a repport who take in entries a repport
 repportBuilding :: String -> String -> IO FilePath
 repportBuilding repport idRepport =  do
-    writeFile idRepport repport
-    return $ "/home/ntetigor/Documents/" ++  idRepport
+    hdl <- openFile idRepport WriteMode
+    hPutStr hdl repport
+    hClose hdl
+    -- writeFile idRepport repport
+    return idRepport
