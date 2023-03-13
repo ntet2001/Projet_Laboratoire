@@ -32,6 +32,7 @@ import qualified App.Resultat as R
 import Control.Applicative
 import System.IO 
 import Infra.RepportBuild
+import Infra.SendRapportMail
 
 -- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
 data Repport = MkRepport {
@@ -101,7 +102,7 @@ buildrapport idRapport = do
   let listeResultsStr = ficheDansRapport ++ "\n" ++ (concat $ fmap showResultat listeResults)
   -- result <- liftIO listeResults
   chemin <- liftIO $ repportBuilding  listeResultsStr (show idRapport)
-  sendEmailRepport chemin (MkSimpleMail (email patient) (nom patient ++ " " ++ prenom patient)  "Rapport Patient" ""  "<h1> Voici le Pdf de votre rapport </h1>")
+  liftIO $ sendEmailRepport chemin (MkSimpleMail (email patient) (nom patient ++ " " ++ prenom patient)  "Rapport Patient" ""  "<h1> Voici le Pdf de votre rapport </h1>")
   return chemin 
 
 

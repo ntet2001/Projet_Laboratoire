@@ -11,6 +11,9 @@ import Data.Aeson
 import Data.Text.Encoding as TE
 import Control.Monad
 import Data.Maybe (Maybe(Nothing))
+import qualified Data.Text as T
+import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString as B
 
 data SimpleMail = MkSimpleMail{
     emailDestinataire      :: String,
@@ -27,19 +30,11 @@ instance ToJSON SimpleMail
 --     response <- NT.httpJSON request :: IO (NT.Response Value)
 --     print $ NT.getResponseBody response
 
-sendEmailRepport :: String -> SimpleMail -> IO()
-sendEmailRepport cheminFichier simpleMail = do 
-    let request = setRequestBodyJSON simpleMail "POST http://localhost:8083/report"
-    request1 <- formDataBody (Part "simplemail" Nothing (Just "multipart/form-data") simpleMail ) [ 
-        partBS "title" (encode simpleMail)
-                       ,partFileSource cheminFichier
-                        ]
-    --response <- httpJSON request :: IO (Response Value)
-    withSocketsDo $ withManager $ \m -> do
-     --Response{responseBody=cat} <- flip httpLbs m $ fromJust $ parseUrl "http://random-cat-photo.net/cat.jpg"
-     flip NT.httpLbs m =<<
-         formDataBody [partBS "title" (encode simpleMail)
-                       ,partFileSource cheminFichier
-                        ]
-            $ fromJust $ parseUrl "http://localhost:8083/report"
-    print $ getResponseBody response
+sendEmailRepport :: String -> SimpleMail -> IO ()
+sendEmailRepport chemin simplemail = do
+    let a = partBS (T.pack "data")  ( B.pack $ BL.unpack (encode simplemail)) 
+        b = partFileSource (T.pack "fichier") chemin
+        request = NT.setRequestBodyJSON simplemail "POST http://localhost:8083/report"
+    request1 <- formDataBody [a,b] request
+    response <- NT.httpJSON request1  :: IO (Response Value)    
+    print (NT.getResponseBody response)
