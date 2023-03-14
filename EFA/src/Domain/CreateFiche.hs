@@ -37,6 +37,13 @@ verifInt = parse parserInt "une date de naissance doit etre positive"
 
 {-=== fonction du domaine pour creer une fiche ===-}
 
+parserDeEmail :: Parser String
+parserDeEmail = do 
+    many anyChar
+
+verifDeEmail :: String -> Either ParseError String
+verifDeEmail = parse parserDeEmail "bad email"
+
 -- fonction qui construit les informations d'un patient
 
 patientCheck  :: Nom -> Nom -> DateOfBirth -> Genre -> String -> Either ParseError InfoPatient
@@ -45,7 +52,7 @@ patientCheck  name postName birthDay genre email =
                    verifString postName <*>
                    verifInt (show birthDay) <*>
                    verifString genre <*>
-                   verifString email 
+                   verifDeEmail email 
 -- IAM se charge de verifier en profondeur l'email, EFA verifie juste si c'est une chaine non vide
 
 -- fonction qui cree une fiche

@@ -35,6 +35,7 @@ sendEmailRepport chemin simplemail = do
     let a = partBS (T.pack "data")  ( B.pack $ BL.unpack (encode simplemail)) 
         b = partFileSource (T.pack "fichier") chemin
         request = NT.setRequestBodyJSON simplemail "POST http://localhost:8083/report"
+    print $ encode simplemail
     request1 <- formDataBody [a,b] request
     response <- NT.httpJSON request1  :: IO (Response Value)    
     print (NT.getResponseBody response)

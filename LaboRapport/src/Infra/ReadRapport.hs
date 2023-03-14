@@ -21,6 +21,7 @@ module Infra.ReadRapport where
     readRapport :: IO [Rapport]
     readRapport = do
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "codeur", connectUser = "codeur", connectPort = 3306}
+        print "11111111111111"
         res <- query_ conn requestselect
         close conn
         print res
