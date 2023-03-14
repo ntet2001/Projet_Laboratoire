@@ -97,7 +97,7 @@ buildrapport idRapport = do
   repport <- liftIO $ readARapport idRapport
   let listeResultsIO = fmap readAResult (contenu repport)
       patient = (infoPatient.fiche) repport
-      ficheDansRapport = show $ (infoPatient.fiche) repport
+      ficheDansRapport = showFiche $ (infoPatient.fiche) repport
   listeResults <-  liftIO $ sequence listeResultsIO
   let listeResultsStr = ficheDansRapport ++ "\n" ++ (concat $ fmap showResultat listeResults)
   -- result <- liftIO listeResults
@@ -109,6 +109,7 @@ buildrapport idRapport = do
 {-========= function to register an analyse ==========-}
 registerRapports :: Fiche -> Handler String
 registerRapports fiche = do
+  liftIO $ print (show fiche)
   liftIO $ createNewRepport fiche
   --return something
 

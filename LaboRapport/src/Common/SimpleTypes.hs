@@ -43,11 +43,14 @@ module Common.SimpleTypes where
         datenaissance :: Int,
         genre :: String,
         email :: String
-    } deriving (Eq, Read, Generic)
+    } deriving (Show,Eq, Read, Generic)
     $(deriveJSON defaultOptions ''InfoPatient)
     
-    instance Show InfoPatient where
-        show infoPat = "Nom : " ++ (nom infoPat) ++ " " ++ (prenom infoPat) ++ "   Date naissance :  " ++ (show $ datenaissance infoPat) ++ "\ngenre : " ++ (genre infoPat) ++ "  email : " ++ (email infoPat)
+    --instance Show InfoPatient where
+        --show infoPat = "Nom : " ++ (nom infoPat) ++ " " ++ (prenom infoPat) ++ "   Date naissance :  " ++ (show $ datenaissance infoPat) ++ "\ngenre : " ++ (genre infoPat) ++ "  email : " ++ (email infoPat)
+    showFiche :: InfoPatient -> String 
+    showFiche infoPat =  "Nom : " ++ (nom infoPat) ++ " " ++ (prenom infoPat) ++ "   Date naissance :  " ++ (show $ datenaissance infoPat) ++ "\ngenre : " ++ (genre infoPat) ++ "  email : " ++ (email infoPat)
+
 
     instance FromField InfoPatient where
         fromField = ([VarString], \xs -> do

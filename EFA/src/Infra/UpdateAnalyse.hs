@@ -31,7 +31,7 @@ instance Q.QueryResults Analyse where
 
 updateAnalyse :: Analyse -> IO ()
 updateAnalyse something = do
-    connexion <- connect defaultConnectInfo  { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
+    connexion <- connect defaultConnectInfo  { connectUser = "root",  connectPassword = "ntetigor2001", connectDatabase = "EFA"}
     numberline <- execute connexion "UPDATE analyse SET  nomAnalyse = ?, valUsuel = ?, categorie = ? WHERE idAnalyse = ?" 
         (nomAnalyse something, show $ valUsuel something, show $ categorie something, idAnalyse something )
     print numberline

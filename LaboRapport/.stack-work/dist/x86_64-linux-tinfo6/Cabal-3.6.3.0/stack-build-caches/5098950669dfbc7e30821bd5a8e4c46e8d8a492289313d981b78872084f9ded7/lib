@@ -13,13 +13,13 @@
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/package.yaml:
   hash: 24a3ab2a1a4dc0562a9c3d888355c8e529a1c13df5d61e4cd08d7c07a6ea7719
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/App/Lib.hs:
-  hash: 3b04d465df71732253cd388ce7be5c99e8c49775d863c5153350d8c6da9d2cb1
+  hash: 46dac23fdf34605af6a3efdc9334e92704d5dd4f504928fcac14ac137ed0d00e
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/App/Resultat.hs:
   hash: 6e92492866f2b8a0d6792264107b59446e438058b10b1c3d01accbab763536e5
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/App/VerificationRapport.hs:
   hash: d0e5d4a750c8d8dea5c194aad90cebae59aabc61c1eaff1c8e129d8e0cc1f48e
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Common/SimpleTypes.hs:
-  hash: fa2ab2dc966abcb2af6b4f201d144b76b9e3178c960bed86f8e24914dcceddef
+  hash: 153d5aa522fb64da97c11c8ffa4eb6b611dfc84dd08207e5b56ae96f78820db8
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Domain/AddResultToRapport.hs:
   hash: 24a24961af81f7de2c74e0a14edb321124159884d4b6e68652455f41d3bb9950
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Domain/CreateRapport.hs:
@@ -31,17 +31,17 @@
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/DeleteResult.hs:
   hash: be18a01a8ef850d4a1714e8f951a89ab71e21d90fbec288e363dda04e864cc6a
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/ReadRapport.hs:
-  hash: 66a384c8199aa4f9571da95ac824dc4700fea5418bdc90b6b7727d47b1cbbc89
+  hash: b456f96605c3573a4d276908206c59ab3a7eda980c7e76c2b11222f5fe485427
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/ReadResult.hs:
   hash: 89d0c5d5037576d66c8659dfa603c6f10e9dcb47dacf84dfffe44e9082509121
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/RepportBuild.hs:
   hash: bf44348206ee48049b45030338cfe44455fe210f0065fdee52c5d8efa4afb26a
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/SaveRapport.hs:
-  hash: 6cc6f1f2ee6d6b874b68cf59965e7ce83dbe6a9ba49538099ada314702d960f1
+  hash: 8be7289320aad3aae4a22f5956b35ca9077043fb920cda2c2c78740f1439dd33
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/SaveResult.hs:
   hash: e7aa56c694a0a9a5e5e54a35afad66bb56b46f2f9c4d75130e17a9d5d6570d90
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/SendRapportMail.hs:
-  hash: 3a5e28c8c034e7103048d29d4e62937f982d2feebe1db9daa22081ab0d5d0867
+  hash: 245fdf90dc18c20071015221d78934f61abffe8425fd16cae6e3ffff58a48254
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/UpdateRapport.hs:
   hash: 985ae30e1df2ddd01f3b6168f568e21176b6c08e159a82e62d8d07235f086231
 /home/ntetigor/Documents/labo/Projet_Laboratoire/LaboRapport/src/Infra/UpdateResult.hs:
