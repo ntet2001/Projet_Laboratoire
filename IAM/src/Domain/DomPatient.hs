@@ -22,6 +22,7 @@ data SimpleMail = MkSimpleMail
   }deriving Generic
 instance ToJSON SimpleMail
 
+-- cette fonction doit contenir le lien pour access au resultat par un client 
 sendEmailCode :: String -> String -> String -> IO()
 sendEmailCode code email nom = do 
     let simpleMail = MkSimpleMail email nom "Code du patient" (code ++ " est votre code de connexion ") "<h1>Code de Connexion App Labo</h1>" 
