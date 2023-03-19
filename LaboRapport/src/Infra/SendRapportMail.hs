@@ -3,10 +3,17 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Infra.SendRapportMail where
 
-import Data.Aeson 
-import Network.HTTP.Simple
---import Network.HTTP.Conduit.MultipartFormData
+import Network.HTTP.Conduit
+import qualified Network.HTTP.Simple as NT
+import Network.HTTP.Client.MultipartFormData
 import GHC.Generics (Generic)
+import Data.Aeson
+import Data.Text.Encoding as TE
+import Control.Monad
+import Data.Maybe (Maybe(Nothing))
+import qualified Data.Text as T
+import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString as B
 
 data SimpleMail = MkSimpleMail{
     emailDestinataire      :: String,
@@ -17,9 +24,18 @@ data SimpleMail = MkSimpleMail{
 }deriving Generic
 instance ToJSON SimpleMail
 
-sendEmailCode :: String -> String -> String -> IO()
-sendEmailCode code email nom = do 
-    let simpleMail = MkSimpleMail email nom "Code du patient" (code ++ " est votre code de connexion ") "<h1>Code de Connexion App Labo</h1>" 
-        request = setRequestBodyJSON simpleMail "POST http://localhost:8083/report"
-    response <- httpJSON request :: IO (Response Value)
-    print $ getResponseBody response
+-- sendFicheRapport :: Fiche -> IO()
+-- sendFicheRapport fiche = do 
+--     let request = NT.setRequestBodyJSON fiche "POST http://localhost:8082/rapports"
+--     response <- NT.httpJSON request :: IO (NT.Response Value)
+--     print $ NT.getResponseBody response
+
+sendEmailRepport :: String -> SimpleMail -> IO ()
+sendEmailRepport chemin simplemail = do
+    let a = partBS (T.pack "data")  ( B.pack $ BL.unpack (encode simplemail)) 
+        b = partFileSource (T.pack "fichier") chemin
+        request = NT.setRequestBodyJSON simplemail "POST http://localhost:8083/report"
+    print $ encode simplemail
+    request1 <- formDataBody [a,b] request
+    response <- NT.httpJSON request1  :: IO (Response Value)    
+    print (NT.getResponseBody response)

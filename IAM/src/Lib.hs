@@ -1,6 +1,8 @@
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module Lib
     ( startApp
     , app
@@ -33,8 +35,28 @@ import Infra.AssignRole
 import Domain.CreateRole
 import Infra.SearchRole
 import Infra.SaveRole
+import GHC.Generics
+import App.VerificationUpdate
 import qualified Data.Text as T
 
+{-here is the format to respect when you modified an operator-}
+data Operator = MKOp
+    { nom :: String
+    ,prenom :: String
+    ,matricul :: Matricule
+    ,mail :: Email
+    ,image :: Photo
+    ,statut :: Statut 
+    } deriving (Show,Eq,Read,Generic)
+$(deriveJSON defaultOptions ''Operator)
+
+{-here is the format to respect when you modified the password of an Operator-}
+data Pass = MKpass
+    { matriculepass :: String 
+    ,oldPassword :: String
+    ,newPassword :: String
+    } deriving (Show,Eq,Read,Generic)
+$(deriveJSON defaultOptions ''Pass)
 
 type API = "operateurs" :> Get '[JSON] [Operateur]
     :<|> "patients" :> Get '[JSON] [Patient]
@@ -42,14 +64,15 @@ type API = "operateurs" :> Get '[JSON] [Operateur]
     :<|> "patient" :> Capture "code" Int :> Get '[JSON] Patient
     :<|> "operateur" :> Capture "matricule" String :> DeleteNoContent
     :<|> "patient" :> Capture "code" Int :> DeleteNoContent
-    :<|> "operateur" :> ReqBody '[JSON] Operateur :> Put '[JSON] String
+    :<|> "operateur" :> ReqBody '[JSON] Operator :> Put '[JSON] String
+    :<|> "operateur" :> "password":> ReqBody '[JSON] Pass :> Put '[JSON] String
     :<|> "patient" :> ReqBody '[JSON] Patient :> Put '[JSON] String
     :<|> "operateur" :> ReqBody '[JSON] Operateur2 :> Post '[JSON] String
     :<|> "patient" :> ReqBody '[JSON] Patient2 :> Post '[JSON] String
     :<|> "operateur" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
     :<|> "patient" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
-    :<|> "operateur" :> "deconnexion" :> ReqBody '[JSON] Operateur :> Post '[JSON] String
-    :<|> "patient" :> "deconnexion" :> ReqBody '[JSON] Patient :> Post '[JSON] String
+    :<|> "operateur" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
+    :<|> "patient" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
     :<|> "role" :> Capture "name" String :> Post '[JSON] String
     :<|> "role" :> "all roles" :> Get '[JSON] [Role]
     :<|> "role" :> Capture "nomrole" String :> Get '[JSON] [User Operateur Patient]
@@ -76,6 +99,7 @@ server = operators
     :<|> deleteoperator
     :<|> deletepatient
     :<|> updateoperator
+    :<|> updatepass
     :<|> updatepatient
     :<|> createoperator
     :<|> createpatient
@@ -111,18 +135,21 @@ deleteoperator matricule = do
     return $ error ""
 
 {-========= UPDATE AN OPERATOR =======-}
-updateoperator :: Operateur -> Handler String
-updateoperator op = do
-    let nom = nomOp op
-        prenom = prenomOp op
-        mat = matricule op
-        mail = email op
-        pass = passwordOp op
-        image = photo op
-        statut = statutOp op
-    var <- (liftIO $ (updateOperator nom prenom mat mail pass image statut))
-    return "successful"
+updateoperator :: Operator -> Handler String
+updateoperator op = do 
+    let name = nom op 
+        lastname = prenom op
+        mat = matricul op 
+        email = mail op
+        photo = image op 
+        status = statut op
+    var <- liftIO $ verifUpdateInfo name lastname mat email photo status
+    return var
 
+updatepass :: Pass -> Handler String
+updatepass pass = do 
+    var <- liftIO $ verifUpdatePass (oldPassword pass) (newPassword pass) (matriculepass pass)
+    return var
 {-======= CREATE AN OPERATOR ========-}
 -- createoperator :: Operateur2 -> Handler String
 -- createoperator operateur = do 
@@ -152,13 +179,13 @@ createoperator op = do
 connectoperateur :: [String] -> Handler String
 connectoperateur [x,y] = do
     var <- liftIO $ connectOperator x y
-    return "connected"
+    return var
 
 {-======== DECONNECT AN OPERATOR =====-}
-deconnectoperateur :: Operateur -> Handler String
-deconnectoperateur op = do
-    var <- liftIO $ deconnectOperator (matricule op) (passwordOp op)
-    return "deconnected"
+deconnectoperateur :: [String] -> Handler String
+deconnectoperateur [x,y] = do 
+    var <- liftIO $ deconnectOperator x y 
+    return var
 
 
 {-========= LIST OF PATIENTS =======-}
@@ -202,17 +229,17 @@ createpatient patient = do
 connectpatient :: [String]-> Handler String
 connectpatient [code,nom] = do
     var <- liftIO $ connectPatient (read code :: Int) nom
-    return "connected"
+    return var
 
 {-======= DECONNECT A PATIENT =====-}
-deconnectpatient :: Patient -> Handler String
-deconnectpatient pat = do
-    var <- liftIO $ deconnectPatient (code pat) (nameOf pat)
-    return "deconnected"
+deconnectpatient :: [String] -> Handler String
+deconnectpatient [code,nom] = do 
+    var <- liftIO $ deconnectPatient (read code :: Int) nom
+    return var
 
 
 -- create a new role 
-roles :: String -> Handler String
+roles :: String -> Handler String 
     --createNewRole Nothing = fail "entrer un nom de role !"
 roles val = do
     let toNomRole = MkNom val

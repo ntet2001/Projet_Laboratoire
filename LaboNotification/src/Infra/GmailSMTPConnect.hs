@@ -21,7 +21,7 @@ gmailApiUsername :: String
 gmailApiUsername = "softinovplus@gmail.com"
 
 gmailApiPassword :: String
-gmailApiPassword = "ygdp mfmh urcb bihh"
+gmailApiPassword = "olyi vanv qtro ybtb"
 
 hostName :: String
 hostName = "smtp.gmail.com"

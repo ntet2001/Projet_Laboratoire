@@ -38,7 +38,7 @@ readaAnalyse  someId = do
 
 readAnalyse :: IO [Analyse]
 readAnalyse = do
-    connexiontoDb <- connect defaultConnectInfo  { connectUser = "raoul",  connectPassword = "Raoul102030!!", connectDatabase = "EFA"}
+    connexiontoDb <- connect defaultConnectInfo  { connectUser = "root",  connectPassword = "ntetigor2001", connectDatabase = "EFA"}
     databaseContent <- query_ connexiontoDb "SELECT * FROM analyse"
     close connexiontoDb
     print databaseContent

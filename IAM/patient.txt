@@ -1,2 +1,6 @@
-MkPatient {nameOf = "ntet", firstNameOf = "igor", emailOf = MkEmail {identifiant = "manyamaigor2001", domaine = "gmail", extension = "com"}, photoOf = "1111111", code = 3710, statutP = Aucun}
+MkPatient {nameOf = "Ntet Manyama", firstNameOf = "Igor", emailOf = MkEmail {identifiant = "manyamaigor2001", domaine = "gmail", extension = "com"}, photoOf = "1000000000", code = 3710, statutP = Connecter}
 MkPatient {nameOf = "Kiki", firstNameOf = "Franglish", emailOf = MkEmail {identifiant = "Franglish", domaine = "wada", extension = "org"}, photoOf = "11200012010", code = 1480, statutP = Aucun}
+MkPatient {nameOf = "noumedem", firstNameOf = "borice", emailOf = MkEmail {identifiant = "boricenoumedem4", domaine = "gmail", extension = "com"}, photoOf = "11200012010", code = 7760, statutP = Aucun}
+MkPatient {nameOf = "Neudjieu", firstNameOf = "Raoul gonzales", emailOf = MkEmail {identifiant = "elieraoulnet", domaine = "gmail", extension = "com"}, photoOf = "11200012010", code = 6945, statutP = Aucun}
+MkPatient {nameOf = "Nkalla", firstNameOf = "Raoul gonzales", emailOf = MkEmail {identifiant = "nkalla", domaine = "wada", extension = "org"}, photoOf = "11200012010", code = 3277, statutP = Deconnecter}
+MkPatient {nameOf = "Biya", firstNameOf = "Bertrand", emailOf = MkEmail {identifiant = "stephanetsaguewamba", domaine = "gmail", extension = "com"}, photoOf = "11200012010", code = 7546, statutP = Deconnecter}

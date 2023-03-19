@@ -111,6 +111,7 @@ queries someValue = do
 -- fonction d'envoie de fiche a rapport
 sendFicheRapport :: Fiche -> IO()
 sendFicheRapport fiche = do 
+    print fiche
     let request = NT.setRequestBodyJSON fiche "POST http://localhost:8082/rapports"
     response <- NT.httpJSON request :: IO (NT.Response Value)
     print $ NT.getResponseBody response
@@ -122,6 +123,8 @@ save' :: Int -> [String] -> String -> String -> String ->
     Int -> String -> String -> IO Fiche
 save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
     let decodeEmail = verificationEmail email
+    print decodeEmail
+    print "email ici 111111111"
     case decodeEmail of
         Left _ -> fail "attention, erreur sur le format de l'email"
         Right (x,y,z) -> 
@@ -135,7 +138,11 @@ save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
                             emailOfTypeEmail2 = MkEmail2 x y z
                             elementOfTypePatient2 = MkPatient2 nom prenom emailOfTypeEmail2 "11200012010" 0000 Aucun
                         someFiche <- createFiche someId listAnalyse prescripteur someInfos
+                        print someInfos
+                        print "ici some info"
                         saveFiche someFiche
+                        print someFiche
+                        print "ici someFiche"
                         --envoie de la fiche au module rapport
                         sendFicheRapport someFiche 
                         manager' <- newManager defaultManagerSettings
