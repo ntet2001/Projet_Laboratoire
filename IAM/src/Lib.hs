@@ -17,7 +17,7 @@ import Text.ParserCombinators.Parsec
 import Text.ParserCombinators.Parsec.Language()
 import Common.SimpleType
 import Infra.ReadOperateur
-import Infra.ReadPatient 
+import Infra.ReadPatient
 import Infra.DeleteOperateur
 import Infra.DeletePatient
 import Infra.UpdateOperateur
@@ -58,9 +58,9 @@ data Pass = MKpass
     } deriving (Show,Eq,Read,Generic)
 $(deriveJSON defaultOptions ''Pass)
 
-type API = "operateurs" :> Get '[JSON] [Operateur] 
-    :<|> "patients" :> Get '[JSON] [Patient] 
-    :<|> "operateur" :> Capture "matricule" String :> Get '[JSON] Operateur 
+type API = "operateurs" :> Get '[JSON] [Operateur]
+    :<|> "patients" :> Get '[JSON] [Patient]
+    :<|> "operateur" :> Capture "matricule" String :> Get '[JSON] Operateur
     :<|> "patient" :> Capture "code" Int :> Get '[JSON] Patient
     :<|> "operateur" :> Capture "matricule" String :> DeleteNoContent
     :<|> "patient" :> Capture "code" Int :> DeleteNoContent
@@ -68,17 +68,19 @@ type API = "operateurs" :> Get '[JSON] [Operateur]
     :<|> "operateur" :> "password":> ReqBody '[JSON] Pass :> Put '[JSON] String
     :<|> "patient" :> ReqBody '[JSON] Patient :> Put '[JSON] String
     :<|> "operateur" :> ReqBody '[JSON] Operateur2 :> Post '[JSON] String
-    :<|> "patient" :> ReqBody '[JSON] Patient2 :> Post '[JSON] Int
+    :<|> "patient" :> ReqBody '[JSON] Patient2 :> Post '[JSON] String
     :<|> "operateur" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
     :<|> "patient" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
     :<|> "operateur" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
     :<|> "patient" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
     :<|> "role" :> Capture "name" String :> Post '[JSON] String
+    :<|> "role" :> "all roles" :> Get '[JSON] [Role]
+    :<|> "role" :> Capture "nomrole" String :> Get '[JSON] [User Operateur Patient]
     :<|> "operateur" :> Capture "matricule" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
     :<|> "patient" :> Capture "code" Int :> "role" :> Capture "nomrole" String :> Put '[JSON] String
     :<|> "operateur" :> Capture "matricule" String :> "roles" :> Get '[JSON] [String]
     :<|> "patient" :> Capture "code" Int :> "roles" :> Get '[JSON] [String]
-   
+
 
 startApp :: IO ()
 startApp = run 8080 app
@@ -90,11 +92,11 @@ api :: Proxy API
 api = Proxy
 
 server :: Server API
-server = operators 
-    :<|> patients 
-    :<|> operator 
-    :<|> patient 
-    :<|> deleteoperator 
+server = operators
+    :<|> patients
+    :<|> operator
+    :<|> patient
+    :<|> deleteoperator
     :<|> deletepatient
     :<|> updateoperator
     :<|> updatepass
@@ -105,7 +107,9 @@ server = operators
     :<|> connectpatient
     :<|> deconnectoperateur
     :<|> deconnectpatient
-    :<|> roles 
+    :<|> roles
+    :<|> allroles
+    :<|> listOfUser
     :<|> operateurs
     :<|> patients'
     :<|> opList
@@ -113,20 +117,20 @@ server = operators
 
 {-========= LIST OF OPERATORS =======-}
 operators ::  Handler [Operateur]
-operators = do 
+operators = do
     var <- (liftIO readOperator)
     liftIO $ print var
     return var
 
 {-========= TAKE AN OPERATOR =======-}
 operator :: String -> Handler Operateur
-operator matricule = do 
+operator matricule = do
     var <- (liftIO $ readAOperator matricule)
     return $ head var
 
 {-========= DELETE AN OPERATOR =======-}
 deleteoperator :: String -> Handler NoContent
-deleteoperator matricule = do 
+deleteoperator matricule = do
     var <- (liftIO $ deleteOperator matricule)
     return $ error ""
 
@@ -160,20 +164,20 @@ updatepass pass = do
 --             return "fail"
 
 createoperator :: Operateur2 -> Handler String
-createoperator op = do 
+createoperator op = do
     let operateur = createOperator (nomOp2 op) (prenomOp2 op) (matricule2 op) (show $ email2 op) (passwordOp2 op) (T.unpack (photo2 op))
     case operateur of
-        Right a -> do 
+        Right a -> do
             liftIO $ print a
             sav <- liftIO $ saveOperator a
             return "successful"
-        Left b -> do 
+        Left b -> do
             sav <- liftIO $ putStrLn "Register Failed"
             fail "fail"
 
 {-=========CONNECT AN OPERATOR =====-}
 connectoperateur :: [String] -> Handler String
-connectoperateur [x,y] = do 
+connectoperateur [x,y] = do
     var <- liftIO $ connectOperator x y
     return var
 
@@ -186,44 +190,44 @@ deconnectoperateur [x,y] = do
 
 {-========= LIST OF PATIENTS =======-}
 patients :: Handler [Patient]
-patients = do 
+patients = do
     pat <- (liftIO readPatient)
-    return pat 
+    return pat
 
 {-========= TAKE A PATIENT =======-}
 patient :: Int -> Handler Patient
-patient code = do 
+patient code = do
     var <- (liftIO $ readAPatient code)
-    return $ head var 
+    return $ head var
 
 {-========= DELETE A PATIENT =======-}
 deletepatient :: Int -> Handler NoContent
-deletepatient code = do 
+deletepatient code = do
     var <- (liftIO $ deletePatient code)
     return $ error ""
 
 {-========= UPDATE A PATIENT =======-}
 updatepatient :: Patient -> Handler String
-updatepatient pat = do 
-    let nom = nameOf pat 
+updatepatient pat = do
+    let nom = nameOf pat
         prenom = firstNameOf pat
         mail = emailOf pat
-        codepas = code pat 
-        image = photoOf pat 
-        statut = statutP pat 
+        codepas = code pat
+        image = photoOf pat
+        statut = statutP pat
     var <- (liftIO $ (updatePatient codepas nom prenom mail image statut))
     return "successful"
 
 {-========= CREATE A PATIENT ======-}
-createpatient :: Patient2 -> Handler Int
-createpatient patient = do 
+createpatient :: Patient2 -> Handler String
+createpatient patient = do
     liftIO $ print $ (nameOf2 patient) ++ " " ++ (firstNameOf2 patient) ++ " " ++ (show $ emailOf2 patient) ++ " " ++ (T.unpack $ photoOf2 patient)
     pat <- liftIO $ createPatient (nameOf2 patient) (firstNameOf2 patient) (show $ emailOf2 patient) (T.unpack $ photoOf2 patient)
-    return pat
+    return "le patient a ete cree avec succes"
 
 {-======== CONNECT A PATIENT =======-}
 connectpatient :: [String]-> Handler String
-connectpatient [code,nom] = do 
+connectpatient [code,nom] = do
     var <- liftIO $ connectPatient (read code :: Int) nom
     return var
 
@@ -242,16 +246,25 @@ roles val = do
         newrole = createRole toNomRole
     liftIO $ print "ca marche"
     liftIO $ saveRole newrole "roles.txt" >> return "successful"
-    
+
+
+allroles :: Handler [Role]
+allroles = liftIO listOfRoles
+
+listOfUser :: String -> Handler [User Operateur Patient]
+listOfUser nameOfRole = liftIO $ userRoles (MkNom nameOfRole)
+
+
+
 -- assign a role to an operator, given his matricule 
-operateurs :: String -> String -> Handler String 
+operateurs :: String -> String -> Handler String
 operateurs  mat nom = do
     let nomRole = MkNom  nom
-    operatorFounded <- liftIO $ foundOperator mat 
+    operatorFounded <- liftIO $ foundOperator mat
     assignedRoleTo <- liftIO $ asignRole nomRole (Operateur operatorFounded)
         --liftIO $ print assignedRoleTo
-    return $ "successful"
-    
+    return  "successful"
+
 -- assign a role to a patient, given his access's code
 patients' :: Int -> String -> Handler String
 patients' someCode someName = do
@@ -259,22 +272,22 @@ patients' someCode someName = do
     patientFounded <- liftIO $ foundPatient someCode
         --liftIO $ print patientFounded
     assignedRoleTo <- liftIO $ asignRole nomrole (Patient patientFounded)
-    return $ "successful"
-    
+    return  "successful"
+
     -- search list of all the role played by an operator 
 opList :: String -> Handler [String]
 opList mat = do
-    operatorFounded <- liftIO $ foundOperator mat 
+    operatorFounded <- liftIO $ foundOperator mat
     roleList <- liftIO $ searchRole (Operateur operatorFounded) "roles.txt"
-    case roleList of 
+    case roleList of
         [] -> fail "fail"
         xs -> return $ fmap getNom xs
-    
+
     --  search list of all the role played by a patient 
 paList :: Int -> Handler [String]
 paList code = do
-    patientFounded <- liftIO $ foundPatient code 
+    patientFounded <- liftIO $ foundPatient code
     roleList <- liftIO $ searchRole (Patient patientFounded) "roles.txt"
     case roleList of
         [] -> fail "fail"
-        something -> return $ fmap getNom something 
+        something -> return $ fmap getNom something

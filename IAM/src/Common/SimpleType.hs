@@ -1,3 +1,4 @@
+
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
@@ -98,7 +99,9 @@ module Common.SimpleType where
     
     newtype NomRole = MkNom {getNom :: String}  deriving (Show, Read, Eq, Generic)
     $(deriveJSON defaultOptions ''NomRole)
+
     data User a b  = Operateur a   | Patient b  deriving (Show , Read , Eq, Generic)
+    $(deriveJSON defaultOptions ''User)
 
     data Role = MkRole {nameRole :: NomRole, roleUserList :: [Access Matricule AccessCode] } deriving (Show, Read, Eq, Generic)
     $(deriveJSON defaultOptions ''Role)
@@ -108,6 +111,6 @@ module Common.SimpleType where
     --instance ToJSON Role
     --instance ToJSON NomRole
     --instance ToJSON (Access Matricule AccessCode) 
-    instance FromHttpApiData NomRole
+    --instance FromHttpApiData NomRole
 
 
