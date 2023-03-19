@@ -11,19 +11,19 @@ module Domain.DeconnexionOperateur where
     import Domain.CreationOperateur
 
     {-------------------------==== Function to connect an Operator ====--------------------------------}
-    deconnectOperator :: Matricule -> PasswordOp -> IO ()
+    deconnectOperator :: Matricule -> PasswordOp -> IO String
     deconnectOperator mat pass = do 
         let newMat = verificationMatricule mat
             newPass = verificationPassword pass
         case newMat of 
-            Left errMat -> putStrLn "Matricule incorrect"
+            Left errMat -> return "Matricule incorrect"
             Right mat1 -> do 
                 op <- readAOperator mat1
                 case op of
-                    [] -> putStrLn []
+                    [] -> return "l'operateur n'existe pas"
                     xs -> do 
                         case newPass of 
-                            Left errPass -> putStrLn "Mot de passe incorrect"
+                            Left errPass -> return "Mot de passe invalide"
                             Right pass1 -> do
                                 let opFinal = head xs
                                     nom = nomOp opFinal
@@ -32,6 +32,8 @@ module Domain.DeconnexionOperateur where
                                     photo1 = photo opFinal
                                     statut = Deconnecter 
                                 if passwordOp opFinal == pass1 then
-                                    updateOperator nom prenom mat1 email1 pass1 photo1 statut
+                                    do
+                                        updateOperator nom prenom mat1 email1 photo1 statut
+                                        return "Deconnected"
                                 else
-                                    putStrLn "Echec de connexion"
+                                    return "Echec de connexion le mot de passe n'existe pas"

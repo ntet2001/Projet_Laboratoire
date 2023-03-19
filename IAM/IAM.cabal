@@ -27,6 +27,7 @@ library
   exposed-modules:
       App.AppPatient
       App.CommonVerification
+      App.VerificationUpdate
       Common.SimpleType
       Domain.ConnexionOperateur
       Domain.ConnexionPatient
