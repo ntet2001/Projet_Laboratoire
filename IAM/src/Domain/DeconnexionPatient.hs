@@ -12,19 +12,19 @@ module Domain.DeconnexionPatient where
     import App.AppPatient
     
     {-------------------------==== Function to connect a Patient ====--------------------------------}
-    deconnectPatient :: Int -> Nom -> IO()
+    deconnectPatient :: Int -> Nom -> IO String
     deconnectPatient code nom = do 
         let newCode = verifCode code
             newNom = verificationNom nom
         case newCode of 
-            Left errCode -> putStrLn "Matricule incorrect"
+            Left errCode -> return "Code incorrect"
             Right code1 -> do 
                 pat <- readAPatient code1
                 case pat of
-                    [] -> putStrLn []
+                    [] -> return "le Patient n'existe pas"
                     xs -> do 
                         case newNom of 
-                            Left errPass -> putStrLn "Mot de passe incorrect"
+                            Left errPass -> return "Le Nom est invalide"
                             Right nom1 -> do
                                 let patFinal = head xs
                                     nom = nameOf patFinal
@@ -32,7 +32,9 @@ module Domain.DeconnexionPatient where
                                     email1 = emailOf patFinal
                                     photo1 = photoOf patFinal
                                     statut = Deconnecter 
-                                if nom == nom1 then
-                                    updatePatient code1 nom prenom email1 photo1 statut
+                                if (nom ++ " " ++ prenom) == nom1 then
+                                    do 
+                                        updatePatient code1 nom prenom email1 photo1 statut
+                                        return "Deconnected"
                                 else
-                                    putStrLn "Echec de connexion"
+                                    return "Echec de connexion le nom n'existe pas"
