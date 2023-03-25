@@ -89,7 +89,6 @@ module Common.SimpleType where
         ,firstNameOf2 :: Nom
         ,emailOf2 :: Email2
         ,photoOf2 :: Photo
-        ,code2 :: Int
         ,statutP2 :: Statut
         } deriving (Show, Read,Eq,Generic)
     $(deriveJSON defaultOptions ''Patient2)

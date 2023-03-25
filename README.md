@@ -1,3 +1,4 @@
+# Projet_Laboratoire
 
 ## Objectifs
 
@@ -21,9 +22,8 @@ Afficher les détails d’un rapport sur une page (nombre de tests positifs, nom
 Exporter le rapport sous le format PDF
 Envoyer le rapport par email (joindre le fichier PDF)
 
-
-# Projet_Laboratoire
-## Module IAM (Identity Access Management) Added  
-## Module EFA (Enregistrement Fiche Analyse) Added 
-## Module Notification added
-## Module Rapport added
+## Project modules 
+   1. Module IAM (Identity Access Management) Added  
+   2. Module EFA (Enregistrement Fiche Analyse) Added 
+   3. Module Notification added
+   4. Module Rapport added

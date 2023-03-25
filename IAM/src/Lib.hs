@@ -58,28 +58,50 @@ data Pass = MKpass
     } deriving (Show,Eq,Read,Generic)
 $(deriveJSON defaultOptions ''Pass)
 
+{-Here the first endpoint return the list of operators in a json format-}
 type API = "operateurs" :> Get '[JSON] [Operateur]
+-- this endpoint return the list of patient in a json format
     :<|> "patients" :> Get '[JSON] [Patient]
-    :<|> "operateur" :> Capture "matricule" String :> Get '[JSON] Operateur
-    :<|> "patient" :> Capture "code" Int :> Get '[JSON] Patient
-    :<|> "operateur" :> Capture "matricule" String :> DeleteNoContent
-    :<|> "patient" :> Capture "code" Int :> DeleteNoContent
-    :<|> "operateur" :> ReqBody '[JSON] Operator :> Put '[JSON] String
-    :<|> "operateur" :> "password":> ReqBody '[JSON] Pass :> Put '[JSON] String
-    :<|> "patient" :> ReqBody '[JSON] Patient :> Put '[JSON] String
-    :<|> "operateur" :> ReqBody '[JSON] Operateur2 :> Post '[JSON] String
-    :<|> "patient" :> ReqBody '[JSON] Patient2 :> Post '[JSON] String
-    :<|> "operateur" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
-    :<|> "patient" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
-    :<|> "operateur" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
-    :<|> "patient" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
+-- this endpoint take a matricule of string an return an operator in a json format
+    :<|> "operateurs" :> Capture "matricule" String :> Get '[JSON] Operateur
+-- this endpoint take a code of Int an return a patient in a json format
+    :<|> "patients" :> Capture "code" Int :> Get '[JSON] Patient
+-- this endpoint take a matricule of string an Delete an Operator
+    :<|> "operateurs" :> Capture "matricule" String :> DeleteNoContent
+-- this endpoint take a code of Int an Delete a patient
+    :<|> "patients" :> Capture "code" Int :> DeleteNoContent
+-- this endpoint take an operator of json an return a string modified to an operator update
+    :<|> "operateurs" :> ReqBody '[JSON] Operator :> Put '[JSON] String
+-- this endpoint take a password of json an return a string modified to a password update
+    :<|> "operateurs" :> "password":> ReqBody '[JSON] Pass :> Put '[JSON] String
+-- this endpoint take a patient of json an return a string modified to a patient update
+    :<|> "patients" :> ReqBody '[JSON] Patient :> Put '[JSON] String
+-- this endpoint take an operator2 of json an return a string successful to an operator created
+    :<|> "operateurs" :> ReqBody '[JSON] Operateur2 :> Post '[JSON] String
+-- this endpoint take an Patient2 of json an return a string successful to a patient created
+    :<|> "patients" :> ReqBody '[JSON] Patient2 :> Post '[JSON] String
+-- this endpoint take login = "matricule" and login = "password" as query params an return a string connected to an operator connexion
+    :<|> "operateurs" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
+-- this endpoint take login = "code" and login = "name" as query params an return a string connected to a patient connexion
+    :<|> "patients" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
+-- this endpoint take login = "matricule" and login = "password" as query params an return a string deconnected to an operator deconnexion
+    :<|> "operateurs" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
+-- this endpoint take login = "code" and login = "name" as query params an return a string deconnected to a patient deconnexion
+    :<|> "patients" :> "deconnexion" :> QueryParams "login" String :> Post '[JSON] String
+-- this endpoint take a name of string an return a string success to create a role
     :<|> "role" :> Capture "name" String :> Post '[JSON] String
+-- this endpoint return all the roles
     :<|> "role" :> "all roles" :> Get '[JSON] [Role]
+-- this endpoint take a nomrole of string an return all the users that play that role
     :<|> "role" :> Capture "nomrole" String :> Get '[JSON] [User Operateur Patient]
-    :<|> "operateur" :> Capture "matricule" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
-    :<|> "patient" :> Capture "code" Int :> "role" :> Capture "nomrole" String :> Put '[JSON] String
-    :<|> "operateur" :> Capture "matricule" String :> "roles" :> Get '[JSON] [String]
-    :<|> "patient" :> Capture "code" Int :> "roles" :> Get '[JSON] [String]
+-- this endpoint take a matricule of string a nomrole of string an return string successful for the update of an operator role
+    :<|> "operateurs" :> Capture "matricule" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
+-- this endpoint take a code of int and a nomrole of string an return successful for the update of a patient role
+    :<|> "patients" :> Capture "code" Int :> "role" :> Capture "nomrole" String :> Put '[JSON] String
+-- this endpoint take a matricule of string an return all the role play by an operator
+    :<|> "operateurs" :> Capture "matricule" String :> "roles" :> Get '[JSON] [String]
+-- this endpoint take a code of int an return all the role play by a patient
+    :<|> "patients" :> Capture "code" Int :> "roles" :> Get '[JSON] [String]
 
 
 startApp :: IO ()
