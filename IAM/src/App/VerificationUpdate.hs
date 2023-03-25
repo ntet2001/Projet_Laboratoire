@@ -3,6 +3,8 @@ module App.VerificationUpdate where
     import Infra.UpdateOperateur
     import Common.SimpleType
     import Control.Monad.IO.Class
+    import Text.Parsec
+    import Domain.CreationOperateur
 
     --function to verify that not null parameters are send to update an operator
 
@@ -21,5 +23,13 @@ module App.VerificationUpdate where
              return "remplissez toutes les informations pour mettre a jour un mot de passe"
         else 
             do
-                var <- liftIO $ updatePassword oldPassword newPassword matriculepass
-                return var
+                let verifiedParam = checkFunction oldPassword newPassword matriculepass 
+                case verifiedParam of
+                    Left msg -> return $ show msg
+                    Right (a,b,c) -> do 
+                        liftIO $ updatePassword a b c 
+
+                    where checkFunction :: String -> String -> String -> Either ParseError (PasswordOp, PasswordOp, Matricule)
+                          checkFunction i j k = (,,) <$> verificationPassword i <*> 
+                                                         verificationPassword j <*>
+                                                         verificationMatricule k
