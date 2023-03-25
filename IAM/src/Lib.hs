@@ -61,12 +61,12 @@ $(deriveJSON defaultOptions ''Pass)
 type API = "operateurs" :> Get '[JSON] [Operateur]
     :<|> "patients" :> Get '[JSON] [Patient]
     :<|> "operateur" :> Capture "matricule" String :> Get '[JSON] Operateur
-    :<|> "patient" :> Capture "code" Int :> Get '[JSON] Patient
+    :<|> "patient" :> Capture "name" String :> Get '[JSON] Patient
     :<|> "operateur" :> Capture "matricule" String :> DeleteNoContent
-    :<|> "patient" :> Capture "code" Int :> DeleteNoContent
+    :<|> "patient" :> Capture "name" String :> DeleteNoContent
     :<|> "operateur" :> ReqBody '[JSON] Operator :> Put '[JSON] String
     :<|> "operateur" :> "password":> ReqBody '[JSON] Pass :> Put '[JSON] String
-    :<|> "patient" :> ReqBody '[JSON] Patient :> Put '[JSON] String
+    :<|> "patient" :> ReqBody '[JSON] Together :> Put '[JSON] String
     :<|> "operateur" :> ReqBody '[JSON] Operateur2 :> Post '[JSON] String
     :<|> "patient" :> ReqBody '[JSON] Patient2 :> Post '[JSON] String
     :<|> "operateur" :> "connexion" :> QueryParams "login" String :> Post '[JSON] String
@@ -77,9 +77,9 @@ type API = "operateurs" :> Get '[JSON] [Operateur]
     :<|> "role" :> "all roles" :> Get '[JSON] [Role]
     :<|> "role" :> Capture "nomrole" String :> Get '[JSON] [User Operateur Patient]
     :<|> "operateur" :> Capture "matricule" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
-    :<|> "patient" :> Capture "code" Int :> "role" :> Capture "nomrole" String :> Put '[JSON] String
+    :<|> "patient" :> Capture "name" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
     :<|> "operateur" :> Capture "matricule" String :> "roles" :> Get '[JSON] [String]
-    :<|> "patient" :> Capture "code" Int :> "roles" :> Get '[JSON] [String]
+    :<|> "patient" :> Capture "name" String :> "roles" :> Get '[JSON] [String]
 
 
 startApp :: IO ()
@@ -191,33 +191,29 @@ deconnectoperateur [x,y] = do
 {-========= LIST OF PATIENTS =======-}
 patients :: Handler [Patient]
 patients = do
-    pat <- (liftIO readPatient)
-    return pat
+   liftIO readPatient
+    
 
 {-========= TAKE A PATIENT =======-}
-patient :: Int -> Handler Patient
-patient code = do
-    var <- (liftIO $ readAPatient code)
-    return $ head var
+patient :: String -> Handler Patient
+patient name = do
+    liftIO $ readByName name
+    
 
 {-========= DELETE A PATIENT =======-}
-deletepatient :: Int -> Handler NoContent
-deletepatient code = do
-    var <- (liftIO $ deletePatient code)
-    return $ error ""
+deletepatient :: String  -> Handler NoContent
+deletepatient nom = do
+    var <- liftIO $ deleteByName nom
+    return $ error var
 
 {-========= UPDATE A PATIENT =======-}
-updatepatient :: Patient -> Handler String
+updatepatient :: Together -> Handler String
 updatepatient pat = do
-    let nom = nameOf pat
-        prenom = firstNameOf pat
-        mail = emailOf pat
-        codepas = code pat
-        image = photoOf pat
-        statut = statutP pat
-    var <- (liftIO $ (updatePatient codepas nom prenom mail image statut))
-    return "successful"
+    let someName = nomPatient pat
+        infos = newParams pat
+    liftIO $ updateByName someName (newNom infos) (newPrenom infos) (newMail infos)
 
+    
 {-========= CREATE A PATIENT ======-}
 createpatient :: Patient2 -> Handler String
 createpatient patient = do
@@ -266,10 +262,10 @@ operateurs  mat nom = do
     return  "successful"
 
 -- assign a role to a patient, given his access's code
-patients' :: Int -> String -> Handler String
-patients' someCode someName = do
+patients' :: String -> String -> Handler String
+patients' nameOfPatient someName = do
     let nomrole = MkNom someName
-    patientFounded <- liftIO $ foundPatient someCode
+    patientFounded <- liftIO $ readByName nameOfPatient
         --liftIO $ print patientFounded
     assignedRoleTo <- liftIO $ asignRole nomrole (Patient patientFounded)
     return  "successful"
@@ -284,10 +280,10 @@ opList mat = do
         xs -> return $ fmap getNom xs
 
     --  search list of all the role played by a patient 
-paList :: Int -> Handler [String]
-paList code = do
-    patientFounded <- liftIO $ foundPatient code
+paList :: String -> Handler [String]
+paList name = do
+    patientFounded <- liftIO $ readByName name
     roleList <- liftIO $ searchRole (Patient patientFounded) "roles.txt"
     case roleList of
-        [] -> fail "fail"
+        [] -> fail $ name ++ " ne joue aucun role"
         something -> return $ fmap getNom something

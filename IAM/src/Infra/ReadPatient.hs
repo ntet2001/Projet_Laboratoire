@@ -41,15 +41,18 @@ module Infra.ReadPatient where
                     hClose handle
                     return contenu3
 
-   
 
-    -- found a patient with the access code given 
 
-    foundPatient :: AccessCode -> IO Patient 
-    foundPatient someCode = do
-        fileContent <- readFile "patient.txt"
-        let linePerline = lines fileContent
-            toPa = fmap read linePerline :: [Patient]
-            liste = [patient | patient <- toPa, code patient == someCode]
-        if null liste then fail "ce code ne correspond a aucun patient enregistré"
-        else return $ head liste 
+    -- founction to get a patient with the given name 
+
+    readByName :: String -> IO Patient 
+    readByName oneName = do 
+        handle <- openFile "patient.txt" ReadMode
+        contents <- contenuOp handle
+        if null oneName then fail "le nom ne doit pas etre nul"
+        else do
+            let contenu2 = fmap read contents :: [Patient]
+                someList = [patient | patient <- contenu2, oneName == (nameOf patient ++ " " ++ firstNameOf patient)]
+            if null someList then fail $ oneName ++ " ne correspond a aucun patient"
+            else return $ head someList
+

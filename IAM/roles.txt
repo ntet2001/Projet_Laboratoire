@@ -1,4 +1,4 @@
 MkRole {nameRole = MkNom {getNom = "Administrateur"}, roleUserList = [ConsMatricule "RANGER123",ConsMatricule "MOIIGOR",ConsMatricule "MOIMEME"]}
-MkRole {nameRole = MkNom {getNom = "laborantin"}, roleUserList = []}
+MkRole {nameRole = MkNom {getNom = "laborantin"}, roleUserList = [ConsAccessCode "Neudjieu Raoul"]}
 MkRole {nameRole = MkNom {getNom = "Infirmiere"}, roleUserList = []}
 MkRole {nameRole = MkNom {getNom = "Sage femme"}, roleUserList = [ConsMatricule "KOAH123"]}

@@ -33,12 +33,12 @@ paSearchRoleHelper y file = do
     fileContent <- readFile file
     let lignes = lines fileContent
         toRole = fmap read lignes :: [Role]
-        lookingforRole = fmap (g (code y)) toRole
+        lookingforRole = fmap (g (nameOf y ++ " " ++ firstNameOf y)) toRole
     return $ concat lookingforRole
-    where g :: AccessCode -> Role -> [NomRole] 
-          g code role = do
+    where g :: String -> Role -> [NomRole] 
+          g name role = do
             let var = roleUserList role  
-            if ConsAccessCode code `elem` var 
+            if ConsAccessCode name `elem` var 
                 then return $ nameRole role
             else []
 
