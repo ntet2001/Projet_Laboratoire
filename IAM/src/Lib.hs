@@ -247,7 +247,12 @@ createpatient patient = do
 connectpatient :: [String]-> Handler String
 connectpatient [code,nom] = do
     var <- liftIO $ connectPatient (read code :: Int) nom
-    return var
+    if var == "Connected" then 
+        do
+        liftIO $ getRapport nom
+    else
+        do 
+            return var
 
 {-======= DECONNECT A PATIENT =====-}
 deconnectpatient :: [String] -> Handler String

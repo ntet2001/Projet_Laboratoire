@@ -17,8 +17,12 @@ module Infra.DeleteFiche where
     request :: Query 
     request = "DELETE FROM fiche WHERE idFiche = ?"
 
-    deleteFiche :: Int -> IO ()
+    deleteFiche :: Int -> IO String
     deleteFiche idFiche = do
         conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "ntetigor2001", connectDatabase = "haskell"}
         res <- execute conn request (Only idFiche)
         close conn
+        if res == 1 then 
+            return "Successful delete"
+        else 
+            return "Delete Failed"
