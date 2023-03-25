@@ -27,7 +27,7 @@ asignRole someName (Patient pa ) = do
     contenu <- contenuOp handle1
     hClose handle1
     checkRole' <- matchRole someName "roles.txt"
-    let assignedRolePa = paRole checkRole' (code pa)
+    let assignedRolePa = paRole checkRole' (nameOf pa ++ " " ++ firstNameOf pa)
         toRole' = fmap read contenu :: [Role]
         updateFile' = f assignedRolePa toRole'
     print updateFile'
@@ -43,10 +43,10 @@ opRole r m = if  ConsMatricule m `elem` roleUserList r
     
 --fonction qui donne un role a un utilisateur type Patient 
 
-paRole :: Role -> AccessCode -> Role
-paRole role code =  if ConsAccessCode code `elem` roleUserList role  
+paRole :: Role -> String -> Role
+paRole role name =  if ConsAccessCode name `elem` roleUserList role  
                         then role  
-                    else MkRole {nameRole = nameRole role , roleUserList = ConsAccessCode code : roleUserList role}
+                    else MkRole {nameRole = nameRole role , roleUserList = ConsAccessCode name : roleUserList role}
 
 
 --fonction qui met a jour le contenu du fichier 

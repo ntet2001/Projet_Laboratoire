@@ -65,17 +65,17 @@ type API = "operateurs" :> Get '[JSON] [Operateur]
 -- this endpoint take a matricule of string an return an operator in a json format
     :<|> "operateurs" :> Capture "matricule" String :> Get '[JSON] Operateur
 -- this endpoint take a code of Int an return a patient in a json format
-    :<|> "patients" :> Capture "code" Int :> Get '[JSON] Patient
+    :<|> "patients" :> Capture "name" String  :> Get '[JSON] Patient
 -- this endpoint take a matricule of string an Delete an Operator
     :<|> "operateurs" :> Capture "matricule" String :> DeleteNoContent
 -- this endpoint take a code of Int an Delete a patient
-    :<|> "patients" :> Capture "code" Int :> DeleteNoContent
+    :<|> "patients" :> Capture "name" String  :> DeleteNoContent
 -- this endpoint take an operator of json an return a string modified to an operator update
     :<|> "operateurs" :> ReqBody '[JSON] Operator :> Put '[JSON] String
 -- this endpoint take a password of json an return a string modified to a password update
     :<|> "operateurs" :> "password":> ReqBody '[JSON] Pass :> Put '[JSON] String
 -- this endpoint take a patient of json an return a string modified to a patient update
-    :<|> "patients" :> ReqBody '[JSON] Patient :> Put '[JSON] String
+    :<|> "patients" :> ReqBody '[JSON] Together :> Put '[JSON] String
 -- this endpoint take an operator2 of json an return a string successful to an operator created
     :<|> "operateurs" :> ReqBody '[JSON] Operateur2 :> Post '[JSON] String
 -- this endpoint take an Patient2 of json an return a string successful to a patient created
@@ -97,11 +97,11 @@ type API = "operateurs" :> Get '[JSON] [Operateur]
 -- this endpoint take a matricule of string a nomrole of string an return string successful for the update of an operator role
     :<|> "operateurs" :> Capture "matricule" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
 -- this endpoint take a code of int and a nomrole of string an return successful for the update of a patient role
-    :<|> "patients" :> Capture "code" Int :> "role" :> Capture "nomrole" String :> Put '[JSON] String
+    :<|> "patients" :> Capture "name" String :> "role" :> Capture "nomrole" String :> Put '[JSON] String
 -- this endpoint take a matricule of string an return all the role play by an operator
     :<|> "operateurs" :> Capture "matricule" String :> "roles" :> Get '[JSON] [String]
 -- this endpoint take a code of int an return all the role play by a patient
-    :<|> "patients" :> Capture "code" Int :> "roles" :> Get '[JSON] [String]
+    :<|> "patients" :> Capture "name" String :> "roles" :> Get '[JSON] [String]
 
 
 startApp :: IO ()
@@ -213,33 +213,29 @@ deconnectoperateur [x,y] = do
 {-========= LIST OF PATIENTS =======-}
 patients :: Handler [Patient]
 patients = do
-    pat <- (liftIO readPatient)
-    return pat
+   liftIO readPatient
+    
 
 {-========= TAKE A PATIENT =======-}
-patient :: Int -> Handler Patient
-patient code = do
-    var <- (liftIO $ readAPatient code)
-    return $ head var
+patient :: String -> Handler Patient
+patient name = do
+    liftIO $ readByName name
+    
 
 {-========= DELETE A PATIENT =======-}
-deletepatient :: Int -> Handler NoContent
-deletepatient code = do
-    var <- (liftIO $ deletePatient code)
-    return $ error ""
+deletepatient :: String  -> Handler NoContent
+deletepatient nom = do
+    var <- liftIO $ deleteByName nom
+    return $ error var
 
 {-========= UPDATE A PATIENT =======-}
-updatepatient :: Patient -> Handler String
+updatepatient :: Together -> Handler String
 updatepatient pat = do
-    let nom = nameOf pat
-        prenom = firstNameOf pat
-        mail = emailOf pat
-        codepas = code pat
-        image = photoOf pat
-        statut = statutP pat
-    var <- (liftIO $ (updatePatient codepas nom prenom mail image statut))
-    return "successful"
+    let someName = nomPatient pat
+        infos = newParams pat
+    liftIO $ updateByName someName (newNom infos) (newPrenom infos) (newMail infos)
 
+    
 {-========= CREATE A PATIENT ======-}
 createpatient :: Patient2 -> Handler String
 createpatient patient = do
@@ -288,10 +284,10 @@ operateurs  mat nom = do
     return  "successful"
 
 -- assign a role to a patient, given his access's code
-patients' :: Int -> String -> Handler String
-patients' someCode someName = do
+patients' :: String -> String -> Handler String
+patients' nameOfPatient someName = do
     let nomrole = MkNom someName
-    patientFounded <- liftIO $ foundPatient someCode
+    patientFounded <- liftIO $ readByName nameOfPatient
         --liftIO $ print patientFounded
     assignedRoleTo <- liftIO $ asignRole nomrole (Patient patientFounded)
     return  "successful"
@@ -306,10 +302,10 @@ opList mat = do
         xs -> return $ fmap getNom xs
 
     --  search list of all the role played by a patient 
-paList :: Int -> Handler [String]
-paList code = do
-    patientFounded <- liftIO $ foundPatient code
+paList :: String -> Handler [String]
+paList name = do
+    patientFounded <- liftIO $ readByName name
     roleList <- liftIO $ searchRole (Patient patientFounded) "roles.txt"
     case roleList of
-        [] -> fail "fail"
+        [] -> fail $ name ++ " ne joue aucun role"
         something -> return $ fmap getNom something

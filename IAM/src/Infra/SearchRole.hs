@@ -45,7 +45,7 @@ userRoles namerole = do
                          op <- foundOperator x
                          return $ Operateur op
                     ConsAccessCode y -> do 
-                         pt <- foundPatient y
+                         pt <- readByName y
                          return $ Patient pt) listOfAccess
      sequence listOfUserIO    
-      
+    

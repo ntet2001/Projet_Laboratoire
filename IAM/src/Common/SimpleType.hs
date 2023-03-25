@@ -92,6 +92,14 @@ module Common.SimpleType where
         ,statutP2 :: Statut
         } deriving (Show, Read,Eq,Generic)
     $(deriveJSON defaultOptions ''Patient2)
+
+
+    data SemiPatient = ConsP {newNom :: String, newPrenom :: String , newMail :: String} deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''SemiPatient)
+
+    data Together = ConsT {nomPatient :: String , newParams :: SemiPatient} deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''Together)
+
     
     data Access e f = ConsMatricule e | ConsAccessCode  f deriving (Show, Read, Eq, Generic)
     $(deriveJSON defaultOptions ''Access)
@@ -102,14 +110,8 @@ module Common.SimpleType where
     data User a b  = Operateur a   | Patient b  deriving (Show , Read , Eq, Generic)
     $(deriveJSON defaultOptions ''User)
 
-    data Role = MkRole {nameRole :: NomRole, roleUserList :: [Access Matricule AccessCode] } deriving (Show, Read, Eq, Generic)
+    data Role = MkRole {nameRole :: NomRole, roleUserList :: [Access Matricule String] } deriving (Show, Read, Eq, Generic)
     $(deriveJSON defaultOptions ''Role)
 
     
-
-    --instance ToJSON Role
-    --instance ToJSON NomRole
-    --instance ToJSON (Access Matricule AccessCode) 
-    --instance FromHttpApiData NomRole
-
 

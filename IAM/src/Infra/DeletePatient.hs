@@ -16,3 +16,15 @@ module Infra.DeletePatient where
             contenu3 = fmap (\x -> if accessCode == code x then x { statutP = Supprimer } else x) contenu2
         hClose handle
         resavePatient contenu3
+
+-- function to delete a patient with his given name
+
+    deleteByName :: String -> IO String 
+    deleteByName someName = do
+        handle <- openFile "patient.txt" ReadMode
+        contents <- contenuOp handle
+        let contenu2 = fmap read contents :: [Patient]
+            contenu3 = fmap (\x -> if someName == (nameOf x ++ " " ++ firstNameOf x) then x { statutP = Supprimer } else x) contenu2
+        hClose handle
+        resavePatient contenu3
+        return $ "le statur de " ++ someName ++ " est" ++ " Supprimer"
