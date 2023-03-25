@@ -52,6 +52,7 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "results" :> ReqBody '[JSON] Results :> Post '[JSON] String 
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
   :<|> "results" :> Capture "idResult" Int :> Delete '[JSON] String
+  :<|> "rapports" :> "contenus" :> Capture "idRapport" Int :> Get '[JSON] [Int]
 
 
 startApp :: IO ()
@@ -75,6 +76,7 @@ server = readRapports
   :<|> registerResults
   :<|> modifiedResults
   :<|> deleteResults
+  :<|> readARapportsContenu
 
 {-========= function to read a list of Repports ==========-}
 readRapports :: Handler [Rapport]
@@ -90,8 +92,19 @@ readARapports identifiant = do
   liftIO $ print result 
   return result 
 
+{-========= function to read a content Repport ==========-}
+readARapportsContenu :: Int -> Handler [IdResult]
+readARapportsContenu identifiant = do
+  result <- liftIO $ readARapport identifiant
+  return $ contenu result
 
-{--}
+{-======== function to get all the Repports for a patient by a given name ========-}
+readRapportName :: String -> [Rapport]
+readRapportName name = undefined --igor je suis bloque au niveau de la reflexion sur l'id de fiche dans rapport.
+
+
+
+{-======== function to read a repport and send it to a patient ======-}
 buildrapport :: Int -> Handler String
 buildrapport idRapport = do
   repport <- liftIO $ readARapport idRapport
