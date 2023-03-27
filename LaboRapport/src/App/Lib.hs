@@ -33,6 +33,7 @@ import Control.Applicative
 import System.IO 
 import Infra.RepportBuild
 import Infra.SendRapportMail
+import App.Fonction
 
 -- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
 data Repport = MkRepport {
@@ -52,6 +53,7 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "results" :> ReqBody '[JSON] Results :> Post '[JSON] String 
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
   :<|> "results" :> Capture "idResult" Int :> Delete '[JSON] String
+  :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
   :<|> "rapports" :> "contenus" :> Capture "idRapport" Int :> Get '[JSON] [Int]
   :<|> "rapport" :> "fiche" :> ReqBody '[JSON] Fiche :> Put '[JSON] String
 
@@ -77,6 +79,7 @@ server = readRapports
   :<|> registerResults
   :<|> modifiedResults
   :<|> deleteResults
+  :<|> registeranalyse
   :<|> readARapportsContenu
   :<|> updateRapportByIdFiche
 
@@ -174,7 +177,12 @@ deleteResults :: Int -> Handler String
 deleteResults identifiant = do 
   liftIO $ deleteResult identifiant
 
-
+{-========= function to register an analyse ==========-}
+registeranalyse :: Analyse2 -> Handler String
+registeranalyse analyse = do
+  result <- liftIO $ save (nomAnalyse2 analyse) (show $ valUsuel2 analyse) (show $ categorie2 analyse)
+  return "analyse a ete enregistré"    
+  
 -- function to get a report by the given id of fiche 
 
 updateRapportByIdFiche :: Fiche -> Handler String 

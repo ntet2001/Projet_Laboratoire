@@ -17,7 +17,7 @@ module Infra.DeleteRapport where
 
     deleteRapport :: Int -> IO String 
     deleteRapport idRapport = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "codeur", connectPassword = "codeur", connectDatabase = "labo_rapport"}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "Borice1999#", connectDatabase = "labo_rapport"}
         res <- execute conn request (Only idRapport)
         close conn
         if res == 1 then 
