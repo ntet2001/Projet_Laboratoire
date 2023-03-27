@@ -7,6 +7,9 @@ import Infra.ReadResult
 import Infra.UpdateRapport
 import Domain.CreateResultat
 import qualified Infra.SaveResult as I
+import Infra.LaboRefactory
+import Domain.CreateRapport
+import Infra.SaveRapport
 
 
 saveResult :: Int -> String-> String -> Int -> String -> Int -> [String] -> String -> IO String
@@ -59,6 +62,24 @@ saveResult idOfAnalyse interpret conclusion oneIdFiche prescriptor numberDossier
 
     else return $ "la fiche dont l'id est : " ++ show oneIdFiche ++ 
         " ne correspond pas celle presente dans le rapport dont l'id est : " ++ show numberDossier
+
+
+
+
+-- funtion to update the fiche in a report using the given id of fiche 
+
+updateFicheIntoReport :: Fiche -> IO String 
+updateFicheIntoReport uneFiche = do
+    -- ressort le rapport de la fiche dont l'id est passee en parametre
+    lerapport <- getRapport (idFiche uneFiche)
+    -- mettre a jour le rapport : modifiant la fiche correspondante
+    let modifiedRapport = changeFicheIntoReport lerapport uneFiche
+    -- enregistrer le nouveau rapport 
+    saveRapport modifiedRapport 
+
+
+
+
 
 
 
