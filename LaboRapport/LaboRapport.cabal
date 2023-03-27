@@ -25,21 +25,27 @@ source-repository head
 
 library
   exposed-modules:
+      App.Fonction
       App.Lib
       App.Resultat
       App.VerificationRapport
       Common.SimpleTypes
       Domain.AddResultToRapport
+      Domain.CreateAnalyse
       Domain.CreateRapport
       Domain.CreateResultat
+      Infra.DeleteAnalyse
       Infra.DeleteRapport
       Infra.DeleteResult
+      Infra.ReadAnalyse
       Infra.ReadRapport
       Infra.ReadResult
       Infra.RepportBuild
+      Infra.SaveAnalyse
       Infra.SaveRapport
       Infra.SaveResult
       Infra.SendRapportMail
+      Infra.UpdateAnalyse
       Infra.UpdateRapport
       Infra.UpdateResult
   other-modules:

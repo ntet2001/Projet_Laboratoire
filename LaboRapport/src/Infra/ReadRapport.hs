@@ -20,7 +20,7 @@ module Infra.ReadRapport where
     {-======== Function to read a list of Results =========-}
     readRapport :: IO [Rapport]
     readRapport = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "codeur", connectUser = "codeur", connectPort = 3306}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "Borice1999#", connectUser = "root", connectPort = 3306}
         print "11111111111111"
         res <- query_ conn requestselect
         close conn
@@ -30,7 +30,7 @@ module Infra.ReadRapport where
     {-======= Function to read a Result who takes an id =========-}
     readARapport :: Int -> IO Rapport
     readARapport idRapport = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "codeur", connectUser = "codeur", connectPort = 3306}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "Borice1999#", connectUser = "root", connectPort = 3306}
         res <- query conn requestselect'(Only idRapport) 
         close conn
         print $ head res

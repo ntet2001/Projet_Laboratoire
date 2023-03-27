@@ -17,7 +17,7 @@ module Infra.SaveResult where
 
     saveResult :: Resultat -> IO String
     saveResult resultat = do 
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "codeur", connectPassword = "codeur", connectDatabase = "labo_rapport"}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "Borice1999#", connectDatabase = "labo_rapport"}
         res <- execute conn request (idAnal resultat :: Int, interpretation resultat :: String, conclusion resultat :: String, 
             fiche' resultat , prescripteurR resultat :: String, numDossier resultat :: Int, show $ lineResults resultat, nomLaborantin resultat :: String)
         close conn 

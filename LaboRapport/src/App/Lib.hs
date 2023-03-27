@@ -33,6 +33,7 @@ import Control.Applicative
 import System.IO 
 import Infra.RepportBuild
 import Infra.SendRapportMail
+import App.Fonction
 
 -- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
 data Repport = MkRepport {
@@ -52,6 +53,7 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "results" :> ReqBody '[JSON] Results :> Post '[JSON] String 
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
   :<|> "results" :> Capture "idResult" Int :> Delete '[JSON] String
+  :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
 
 
 startApp :: IO ()
@@ -75,6 +77,7 @@ server = readRapports
   :<|> registerResults
   :<|> modifiedResults
   :<|> deleteResults
+  :<|> registeranalyse
 
 {-========= function to read a list of Repports ==========-}
 readRapports :: Handler [Rapport]
@@ -158,3 +161,10 @@ modifiedResults resultat identifiant = do
 deleteResults :: Int -> Handler String 
 deleteResults identifiant = do 
   liftIO $ deleteResult identifiant
+
+
+{-========= function to register an analyse ==========-}
+registeranalyse :: Analyse2 -> Handler String
+registeranalyse analyse = do
+  result <- liftIO $ save (nomAnalyse2 analyse) (show $ valUsuel2 analyse) (show $ categorie2 analyse)
+  return "analyse a ete enregistré"    
