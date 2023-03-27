@@ -38,6 +38,7 @@ library
       Infra.DeleteRapport
       Infra.DeleteResult
       Infra.ReadAnalyse
+      Infra.LaboRefactory
       Infra.ReadRapport
       Infra.ReadResult
       Infra.RepportBuild

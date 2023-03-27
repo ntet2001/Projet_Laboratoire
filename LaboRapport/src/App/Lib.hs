@@ -54,6 +54,8 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
   :<|> "results" :> Capture "idResult" Int :> Delete '[JSON] String
   :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
+  :<|> "rapports" :> "contenus" :> Capture "idRapport" Int :> Get '[JSON] [Int]
+  :<|> "rapport" :> "fiche" :> ReqBody '[JSON] Fiche :> Put '[JSON] String
 
 
 startApp :: IO ()
@@ -78,6 +80,8 @@ server = readRapports
   :<|> modifiedResults
   :<|> deleteResults
   :<|> registeranalyse
+  :<|> readARapportsContenu
+  :<|> updateRapportByIdFiche
 
 {-========= function to read a list of Repports ==========-}
 readRapports :: Handler [Rapport]
@@ -92,9 +96,20 @@ readARapports identifiant = do
   result <- liftIO $ readARapport identifiant
   liftIO $ print result 
   return result 
+  
+{-========= function to read a content Repport ==========-}
+readARapportsContenu :: Int -> Handler [IdResult]
+readARapportsContenu identifiant = do
+  result <- liftIO $ readARapport identifiant
+  return $ contenu result
+
+{-======== function to get all the Repports for a patient by a given name ========-}
+readRapportName :: String -> [Rapport]
+readRapportName name = undefined --igor je suis bloque au niveau de la reflexion sur l'id de fiche dans rapport.
 
 
-{--}
+
+{-======== function to read a repport and send it to a patient ======-}
 buildrapport :: Int -> Handler String
 buildrapport idRapport = do
   repport <- liftIO $ readARapport idRapport
@@ -162,9 +177,14 @@ deleteResults :: Int -> Handler String
 deleteResults identifiant = do 
   liftIO $ deleteResult identifiant
 
-
 {-========= function to register an analyse ==========-}
 registeranalyse :: Analyse2 -> Handler String
 registeranalyse analyse = do
   result <- liftIO $ save (nomAnalyse2 analyse) (show $ valUsuel2 analyse) (show $ categorie2 analyse)
   return "analyse a ete enregistré"    
+  
+-- function to get a report by the given id of fiche 
+
+updateRapportByIdFiche :: Fiche -> Handler String 
+updateRapportByIdFiche lafiche = do
+  liftIO $ R.updateFicheIntoReport lafiche

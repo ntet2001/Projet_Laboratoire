@@ -25,6 +25,8 @@ import qualified Servant.Client.Streaming as S
 import Domain.CreateFiche (patientCheck, createFiche)
 import Infra.SaveFiche (saveFiche)
 import Control.Monad (Monad(return))
+import Infra.UpdateFiche
+
 
 
 
@@ -153,7 +155,23 @@ save' someId listAnalyse prescripteur  nom prenom dayOfBirth genre email = do
                             Right something -> do 
                                 print $ show something
                                 return someFiche
-            
+
+-- propagation de la mise a jour de la fiche dans le systeme : appel de impactIAM et impactLaboRapport
+
+newUpdateFiche :: Int -> [String] -> String -> InfoPatient -> IO String
+newUpdateFiche  idFiche analyses prescripteur infoPatient = do
+    -- verification au niveau applicatif : les parametres ne doivent pas etre nuls
+    if L.null analyses || L.null prescripteur || L.null (nom infoPatient) || L.null (prenom infoPatient) || L.null (genre infoPatient) || L.null (email infoPatient) || (datenaissance infoPatient < 0) then
+        return "les nouveaux parametres ne doivent pas etre nuls"
+    else do
+        --d'abord l'impact dans IAM  : mis a jour des infos du patient 
+        impactIAM idFiche analyses prescripteur infoPatient
+        -- creation de la nouvelle fiche a jour a envoyer a laboRapport
+        newFiche <- createFiche idFiche analyses prescripteur infoPatient 
+        -- contact de laboRapport via end-point
+        impactLaboRapport newFiche
+
+
 
 
 

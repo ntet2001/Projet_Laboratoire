@@ -30,6 +30,7 @@ dependencies:
 - aeson
 - text
 - http-conduit
+- urlencoded
 
 ghc-options:
 - -Wall

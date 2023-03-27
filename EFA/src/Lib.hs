@@ -26,6 +26,7 @@ import Infra.DeleteFiche
 import Infra.DeleteAnalyse
 import Infra.ReadFiche 
 import Infra.ReadAnalyse 
+import App.AppDeleteFiche
 
 data FicheLib = MkFIcheLib {
   idFicheLib :: Int,
@@ -48,7 +49,7 @@ type API = "Analyses" :> Get '[JSON] [Analyse]
     :<|> "Fiche" :> Capture "idFiche" Int :> Get '[JSON] Fiche
     :<|> "Fiche" :> ReqBody '[JSON] FicheLib :> Post '[JSON] Fiche
     :<|> "Fiche" :> ReqBody '[JSON] FicheLib :> Put '[JSON] String
-    :<|> "Fiche" :> Capture "idFiche" Int :> DeleteNoContent
+    :<|> "Fiche" :> Capture "idFiche" Int :> Delete '[JSON] String
 
 startApp :: IO ()
 startApp = run 8081 app
@@ -125,14 +126,13 @@ registerfiche fiche = do
   liftIO $ F.save' (idFicheLib fiche) (analysesLib fiche) (prescripteurLib fiche) (nomLib fiche) (prenomLib fiche) (dateBirthPatient fiche) (genreLib fiche) (emailLib fiche)
 
 
-{-======== function to modified a fiche =====-}
+{-======== function to update a fiche =====-}
 modifiedfiche :: FicheLib -> Handler String
 modifiedfiche fiche = do 
-  result <- liftIO $ updateFiche (idFicheLib fiche) (analysesLib fiche) (prescripteurLib fiche) (MkPatient (nomLib fiche) (prenomLib fiche) (dateBirthPatient fiche) (genreLib fiche) (emailLib fiche))
+  result <- liftIO $ F.newUpdateFiche (idFicheLib fiche) (analysesLib fiche) (prescripteurLib fiche) (MkPatient (nomLib fiche) (prenomLib fiche) (dateBirthPatient fiche) (genreLib fiche) (emailLib fiche))
   return "successful"
 
 {-====== function to delete a fiche =======-}
-deletefiche :: Int -> Handler NoContent 
+deletefiche :: Int -> Handler String 
 deletefiche idfiche = do 
-  result <- liftIO $ deleteFiche idfiche
-  return $ error ""
+  liftIO $ appDeleteFiche idfiche
