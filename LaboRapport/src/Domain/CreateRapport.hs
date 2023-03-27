@@ -19,3 +19,15 @@ module Domain.CreateRapport where
 
     createRapportHelper :: Int -> [Int] -> Fiche -> UTCTime -> UTCTime -> Rapport 
     createRapportHelper = MkRapport
+
+
+    -- fonction pour changer la fiche dans un rapport 
+
+    changeFicheIntoReport :: Rapport -> Fiche -> Rapport 
+    changeFicheIntoReport rapport unefiche = 
+        let a = idRapport rapport
+            b = contenu rapport 
+            c = fiche rapport
+            d = dateCreatedRapport rapport
+            e = dateUpdatedRapport rapport 
+        in createRapportHelper a b unefiche d e

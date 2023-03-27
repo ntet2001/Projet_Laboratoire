@@ -28,6 +28,13 @@ module Common.SimpleTypes where
 
     type IdAnalyse = String 
 
+    data SemiPatient = ConsP {newNom :: String, newPrenom :: String , newMail :: String} deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''SemiPatient)
+
+    data Together = ConsT {nomPatient :: String , newParams :: SemiPatient} deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''Together)
+
+
     data ValUsuel  = Vide | UneVal Float  | Interval Float Float deriving (Eq, Read, Show)
     $(deriveJSON defaultOptions ''ValUsuel)
 
@@ -59,7 +66,7 @@ module Common.SimpleTypes where
         analyses :: [String],
         prescripteur :: String,
         date :: UTCTime,
-        infoPatient :: InfoPatient,
+        patientInfos :: InfoPatient,
         dateUpdate :: UTCTime
     } deriving (Show, Eq, Read, Generic)
     $(deriveJSON defaultOptions ''Fiche)

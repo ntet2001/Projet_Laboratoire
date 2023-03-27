@@ -13,7 +13,7 @@ module Infra.ReadResult where
     
     requestselect :: Query
     requestselect = "SELECT * FROM resultat WHERE fiche = ?" 
-    -- fiche' est permet de connaitre l'id de la fiche contenue dans le resultat
+    -- fiche' est la fonction qui permet de connaitre l'id de la fiche contenue dans le resultat
 
     requestselect' :: Query
     requestselect' = "SELECT * FROM resultat WHERE idResult = ?"

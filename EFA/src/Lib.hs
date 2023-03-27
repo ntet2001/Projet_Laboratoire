@@ -126,10 +126,10 @@ registerfiche fiche = do
   liftIO $ F.save' (idFicheLib fiche) (analysesLib fiche) (prescripteurLib fiche) (nomLib fiche) (prenomLib fiche) (dateBirthPatient fiche) (genreLib fiche) (emailLib fiche)
 
 
-{-======== function to modified a fiche =====-}
+{-======== function to update a fiche =====-}
 modifiedfiche :: FicheLib -> Handler String
 modifiedfiche fiche = do 
-  result <- liftIO $ updateFiche (idFicheLib fiche) (analysesLib fiche) (prescripteurLib fiche) (MkPatient (nomLib fiche) (prenomLib fiche) (dateBirthPatient fiche) (genreLib fiche) (emailLib fiche))
+  result <- liftIO $ F.newUpdateFiche (idFicheLib fiche) (analysesLib fiche) (prescripteurLib fiche) (MkPatient (nomLib fiche) (prenomLib fiche) (dateBirthPatient fiche) (genreLib fiche) (emailLib fiche))
   return "successful"
 
 {-====== function to delete a fiche =======-}

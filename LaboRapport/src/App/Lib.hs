@@ -53,6 +53,7 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String 
   :<|> "results" :> Capture "idResult" Int :> Delete '[JSON] String
   :<|> "rapports" :> "contenus" :> Capture "idRapport" Int :> Get '[JSON] [Int]
+  :<|> "rapport" :> "fiche" :> ReqBody '[JSON] Fiche :> Put '[JSON] String
 
 
 startApp :: IO ()
@@ -77,6 +78,7 @@ server = readRapports
   :<|> modifiedResults
   :<|> deleteResults
   :<|> readARapportsContenu
+  :<|> updateRapportByIdFiche
 
 {-========= function to read a list of Repports ==========-}
 readRapports :: Handler [Rapport]
@@ -91,7 +93,7 @@ readARapports identifiant = do
   result <- liftIO $ readARapport identifiant
   liftIO $ print result 
   return result 
-
+  
 {-========= function to read a content Repport ==========-}
 readARapportsContenu :: Int -> Handler [IdResult]
 readARapportsContenu identifiant = do
@@ -171,3 +173,10 @@ modifiedResults resultat identifiant = do
 deleteResults :: Int -> Handler String 
 deleteResults identifiant = do 
   liftIO $ deleteResult identifiant
+
+
+-- function to get a report by the given id of fiche 
+
+updateRapportByIdFiche :: Fiche -> Handler String 
+updateRapportByIdFiche lafiche = do
+  liftIO $ R.updateFicheIntoReport lafiche
