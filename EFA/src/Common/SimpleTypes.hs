@@ -51,6 +51,13 @@ module Common.SimpleTypes where
     } deriving (Show, Eq, Read)
     $(deriveJSON defaultOptions ''Analyse)
 
+    data Analyse2  = MkAnalyse2 {
+        nomAnalyse2 :: String,
+        valUsuel2 :: ValUsuel,
+        categorie2 :: Categorie
+    } deriving (Show, Eq, Read)
+    $(deriveJSON defaultOptions ''Analyse2)
+
     
     data InfoPatient = MkPatient { 
         nom :: String,

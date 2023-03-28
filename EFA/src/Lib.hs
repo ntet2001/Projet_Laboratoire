@@ -42,9 +42,9 @@ $(deriveJSON defaultOptions ''FicheLib)
 
 type API = "Analyses" :> Get '[JSON] [Analyse]
     :<|> "Analyse" :> Capture "idAnalyse" String :> Get '[JSON] Analyse 
-    :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Post '[JSON] String
+    :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
     :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Put '[JSON] String
-    :<|> "Analyse" :> Capture "idAnalyse" String :> DeleteNoContent
+    :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Delete '[JSON] String
     :<|> "Fiches" :> Get '[JSON] [Fiche]
     :<|> "Fiche" :> Capture "idFiche" Int :> Get '[JSON] Fiche
     :<|> "Fiche" :> ReqBody '[JSON] FicheLib :> Post '[JSON] Fiche
@@ -88,22 +88,23 @@ readanalyse identifiant = do
 
 
 {-========= function to register an analyse ==========-}
-registeranalyse :: Analyse -> Handler String
+registeranalyse :: Analyse2 -> Handler String
 registeranalyse analyse = do
-  result <- liftIO $ save (idAnalyse analyse) (nomAnalyse analyse) (show $ valUsuel analyse) (show $ categorie analyse)
+  result <- liftIO $ save (nomAnalyse2 analyse) (show $ valUsuel2 analyse) (show $ categorie2 analyse)
   return "analyse a ete enregistré" 
 
 {-========= function to modified an analyse ==========-}
 modifiedanalyse :: Analyse -> Handler String 
 modifiedanalyse analyse = do
-  result <- liftIO $ updateAnalyse analyse
+  liftIO $ update (nomAnalyse analyse) (show $ valUsuel analyse) (show $ categorie analyse)  
+  liftIO $ updateAnalyse analyse
   return "successful"
 
 {-====== function to delete an analyse =======-}
-deleteanalyse :: String -> Handler NoContent 
-deleteanalyse identifiant = do
-  result <- liftIO $ deleteAnalyse identifiant
-  return $ error ""
+deleteanalyse :: Analyse -> Handler String 
+deleteanalyse anlyse = do
+  liftIO $ deleteAnalyse ( idAnalyse anlyse)
+  return "Suppression reussie"
 
 
 {-========= function to read a list of fiches =======-}

@@ -22,7 +22,7 @@ module Infra.UpdateFiche where
 
     updateFiche :: Int -> [String] -> String -> InfoPatient -> IO ()
     updateFiche idFiche analyses prescripteur infoPatient = do 
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "ntetigor2001", connectDatabase = "haskell"}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "Borice1999#", connectDatabase = "EFA"}
         res <- execute conn request (show analyses :: String, prescripteur :: String, show infoPatient, idFiche)
         close conn 
         print res
@@ -49,7 +49,7 @@ module Infra.UpdateFiche where
                     return $ "le patient dont le nom est " ++ currentName ++ " n'est pas enregistre"    
                 else do
                     -- requette pour mise a jour des infos dans la bd
-                    conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "raoul", connectPassword = "Raoul102030!!", connectDatabase = "haskell"}
+                    conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "Borice1999#", connectDatabase = "EFA"}
                     res <- execute conn request (show analyses :: String, prescripteur :: String, show infoPatient, idFiche)
                 -- construit le type semiPatient avec les nouvelles infos sur la patient en parametres de updateFiche 
                     let someSemiPatient = ConsP (nom infoPatient) (prenom infoPatient) (email infoPatient)

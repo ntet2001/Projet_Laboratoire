@@ -28,8 +28,6 @@ instance Q.QueryResults Analyse where
                   !d = R.convert fd vd
     convertResults fs vs  = Q.convertError fs vs 4
 
-
-
 deleteAnalyse :: IdAnalyse -> IO ()
 deleteAnalyse someId = do
     connexion <- connect defaultConnectInfo  { connectUser = "root",  connectPassword = "Borice1999#", connectDatabase = "labo_rapport"}
