@@ -34,6 +34,8 @@ import System.IO
 import Infra.RepportBuild
 import Infra.SendRapportMail
 import App.Fonction
+import Infra.UpdateAnalyse
+import Infra.DeleteAnalyse
 
 -- Format a respecter pour l'update de Rapport afin d'y metttre les resultats
 data Repport = MkRepport {
@@ -56,6 +58,8 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
   :<|> "rapports" :> "contenus" :> Capture "idRapport" Int :> Get '[JSON] [Int]
   :<|> "rapport" :> "fiche" :> ReqBody '[JSON] Fiche :> Put '[JSON] String
+  :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Put '[JSON] String
+  :<|> "Analyse" :> Capture "idAnalyse" String :> Delete '[JSON] String
 
 
 startApp :: IO ()
@@ -82,6 +86,8 @@ server = readRapports
   :<|> registeranalyse
   :<|> readARapportsContenu
   :<|> updateRapportByIdFiche
+  :<|> modifiedanalyse
+  :<|> deleteanalyse
 
 {-========= function to read a list of Repports ==========-}
 readRapports :: Handler [Rapport]
@@ -188,3 +194,19 @@ registeranalyse analyse = do
 updateRapportByIdFiche :: Fiche -> Handler String 
 updateRapportByIdFiche lafiche = do
   liftIO $ R.updateFicheIntoReport lafiche
+
+modifiedanalyse :: Analyse -> Handler String 
+modifiedanalyse analyse = do
+  liftIO $ update (nomAnalyse analyse) (show $ valUsuel analyse) (show $ categorie analyse)  
+  result <- liftIO $ updateAnalyse analyse
+  liftIO $ sendAnalyseFicheUpdate analyse
+  return "successful"
+
+{-====== function to delete an analyse =======-}
+deleteanalyse :: String -> Handler String 
+deleteanalyse identifiant = do
+  result <- liftIO $ deleteAnalyse identifiant
+  liftIO $ sendAnalyseFicheDelete identifiant
+  return "successful"
+
+

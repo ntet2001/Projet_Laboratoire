@@ -32,7 +32,7 @@ instance Q.QueryResults Analyse where
 
 deleteAnalyse :: IdAnalyse -> IO ()
 deleteAnalyse someId = do
-    connexion <- connect defaultConnectInfo  { connectUser = "root",  connectPassword = "ntetigor2001", connectDatabase = "EFA"}
+    connexion <- connect defaultConnectInfo  { connectUser = "root",  connectPassword = "Borice1999#", connectDatabase = "EFA"}
     someNumber <- execute connexion "DELETE FROM analyse WHERE idAnalyse = ?" (Only someId)
     print someNumber
 

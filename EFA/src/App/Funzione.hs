@@ -10,14 +10,14 @@ import Data.Aeson
 import Data.Aeson.TH
 import Data.Proxy
 import GHC.Generics
-import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Servant.API
 import Servant.Client
 import qualified Data.Text as T
 import Servant.Types.SourceT (foreach)
 import Data.ByteString.Lazy
 import Text.ParserCombinators.Parsec
-import qualified Data.List as L 
+import qualified Data.List as L
+import Network.HTTP.Client (newManager, defaultManagerSettings) 
 import qualified Network.HTTP.Simple as NT
 import Common.SimpleTypes
 

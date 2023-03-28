@@ -19,7 +19,7 @@ module Infra.SaveFiche where
 
     saveFiche :: Fiche -> IO ()
     saveFiche fiche = do 
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "ntetigor2001", connectDatabase = "haskell"}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "Borice1999#", connectDatabase = "haskell"}
         res <- execute conn request (show $ patientInfos fiche, show $ analyses fiche :: String, prescripteur fiche :: String)
         close conn 
         print res

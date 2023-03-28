@@ -9,9 +9,9 @@ import System.IO.Error
 {- verifications au niveau applicatif : verifier que les parametres 
 d'entre ne  sont pas vides-}
 
-save :: String -> String -> String -> String -> IO Analyse
-save identifiant nom value somecategory = do
-    if null identifiant || null nom || null value || null somecategory 
+save :: String -> String -> String -> IO String
+save nom value somecategory = do
+    if null nom || null value || null somecategory 
         then fail "les parametres d'entree ne doivent pas etre vides"
     else do 
         let checkedValue = verifValUsuel value
@@ -22,9 +22,26 @@ save identifiant nom value somecategory = do
                 case checkedCategorie of 
                     Left msg2 -> fail $ msg2 ++ ": " ++ show somecategory
                     Right someCategorie -> do
-                        let result = createAnalyse' identifiant nom someValue someCategorie
+                        let identifiant = "A-" ++ take 3 (nom)
+                            result = createAnalyse' identifiant nom someValue someCategorie
                         saveAnalyse result
-                        return result
+                        return "Analyse enregistree avec success"
+--------------Update Analyse------------------------------------
+update :: String -> String -> String -> IO Analyse2
+update nom value somecategory = do
+    if null nom || null value || null somecategory 
+        then fail "les parametres d'entree ne doivent pas etre vides"
+    else do 
+        let checkedValue = verifValUsuel value
+        case checkedValue of
+            Left msg1 -> fail $ msg1 ++ ": " ++ show value
+            Right someValue -> do 
+                let checkedCategorie = verifCategorie somecategory
+                case checkedCategorie of 
+                    Left msg2 -> fail $ msg2 ++ ": " ++ show somecategory
+                    Right someCategorie -> do
+                        let analyse = MkAnalyse2 nom someValue someCategorie
+                        return analyse                        
 
     --         something = createAnalyse identifiant nom (read value :: ValUsuel) (read somecategory :: Categorie)
     -- case something of

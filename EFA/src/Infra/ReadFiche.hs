@@ -23,7 +23,7 @@ module Infra.ReadFiche where
     {-======== Function to read a list of fiche =========-}
     readFiche :: IO [Fiche]
     readFiche = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "haskell", connectPassword = "ntetigor2001", connectUser = "root", connectPort = 3306}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "EFA", connectPassword = "Borice1999#", connectUser = "root", connectPort = 3306}
         res <- query_ conn requestselect
         close conn
         print res
@@ -32,7 +32,7 @@ module Infra.ReadFiche where
     {-======= Function to read a fiche =========-}
     readAFiche :: Int -> IO Fiche
     readAFiche idFiche = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "haskell", connectPassword = "ntetigor2001", connectUser = "root", connectPort = 3306}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "EFA", connectPassword = "Borice1999#", connectUser = "root", connectPort = 3306}
         res <- query conn requestselect'(Only idFiche) 
         close conn
         print $ head res

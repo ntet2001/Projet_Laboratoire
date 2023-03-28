@@ -31,7 +31,7 @@ instance Q.QueryResults Analyse where
 
 saveAnalyse  :: Analyse -> IO () 
 saveAnalyse analyse = do
-    connectToDatabase <- connect defaultConnectInfo { connectUser = "root",  connectPassword = "ntetigor2001", connectDatabase = "EFA"}
+    connectToDatabase <- connect defaultConnectInfo { connectUser = "root",  connectPassword = "Borice1999#", connectDatabase = "EFA"}
     numberofline <- execute connectToDatabase "INSERT INTO analyse (idAnalyse, nomAnalyse, valUsuel, categorie) VALUES (?,?,?,?)" 
             (idAnalyse analyse, nomAnalyse analyse, show $ valUsuel analyse, show $ categorie analyse) 
     close connectToDatabase
