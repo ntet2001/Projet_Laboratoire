@@ -51,10 +51,10 @@ type API = "rapports" :> Get '[JSON] [Rapport]
   :<|> "rapports" :> ReqBody '[JSON] Fiche :> Post '[JSON] String
   :<|> "rapports" :> ReqBody '[JSON] Repport :> Put '[JSON] String
   :<|> "rapports" :> Capture "idRapport" Int :> Delete '[JSON] String
-  :<|> "results" :> Capture "idFiche" Int :> Get '[JSON] [Resultat]
+  :<|> "fiches" :> Capture "idFiche" Int :> Get '[JSON] [Resultat]
   :<|> "results" :> Capture "idResult" Int :> Get '[JSON] Resultat
   :<|> "results" :> ReqBody '[JSON] Results :> Post '[JSON] String
-  :<|> "results" :> ReqBody '[JSON] Results :> Capture "idResult" Int :> Put '[JSON] String
+  :<|> "results" :> Capture "idResult" Int :> ReqBody '[JSON] Results :> Put '[JSON] String
   :<|> "results" :> Capture "idResult" Int :> Delete '[JSON] String
   :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
   :<|> "rapports" :> "contenus" :> Capture "idRapport" Int :> Get '[JSON] [Int]
@@ -184,10 +184,14 @@ registerResults resultat = do
 
 
 {-======== function to modified a result =====-}
-modifiedResults :: Results -> Int -> Handler String
-modifiedResults resultat identifiant = do
-  liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) (ficheId resultat) (prelevements resultat) (prescripteurs resultat) (numDossiers resultat)
-      (fmap read (lineresults resultat) :: [LineResult]) (nomLaborantins resultat)
+modifiedResults :: Int -> Results -> Handler String
+modifiedResults identifiant resultat = do
+  --liftIO $ print resultat
+  let lr = fmap read (lineresults resultat)
+  liftIO $ print lr 
+  --Int -> Int -> String -> String -> IdFiche -> UTCTime -> String -> Int -> [LineResult] -> String -> IO ()
+  liftIO $ updateResult identifiant (idAnals resultat) (interpretations resultat) (conclusions resultat) (ficheId resultat) (prescripteurs resultat) (numDossiers resultat)
+      ( lr :: [LineResult]) (nomLaborantins resultat)
   return "le result a ete modifie."
 
 {-====== function to delete a result =======-}

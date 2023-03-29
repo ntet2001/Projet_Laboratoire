@@ -15,9 +15,11 @@ module Infra.UpdateResult where
     request :: Query 
     request = "UPDATE resultat SET idAnal = ?, interpretation = ?, conclusion = ?, fiche = ?, prescripteur = ?, numDossier = ?, lineResults = ?, nomLaborantin = ? WHERE idResult = ?"
 
-    updateResult :: Int -> Int -> String -> String -> IdFiche -> UTCTime -> String -> Int -> [LineResult] -> String -> IO ()
-    updateResult idResult idAnal interpretation conclusion idfiche prelevement prescripteur numDossier lineResults nomLaborantin = do 
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "root", connectPassword = "Borice1999#", connectDatabase = "labo_rapport"}
+    updateResult :: Int -> Int -> String -> String -> IdFiche  -> String -> Int -> [LineResult] -> String -> IO ()
+    updateResult idResult idAnal interpretation conclusion idfiche  prescripteur numDossier lineResults nomLaborantin = do 
+        print "1111111111111111"
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectPort = 3306, connectUser = "raoul", connectPassword = "Raoul102030!!", connectDatabase = "labo_rapport"}
         res <- execute conn request (idAnal :: Int, interpretation :: String, conclusion :: String, idfiche :: Int, prescripteur :: String, numDossier :: Int, show lineResults, nomLaborantin :: String, idResult :: Int)
+        print "222222222222222222222"
         close conn 
         print res

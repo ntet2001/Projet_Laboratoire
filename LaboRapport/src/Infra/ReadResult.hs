@@ -23,7 +23,7 @@ module Infra.ReadResult where
 
     readResultFiche :: Int -> IO [Resultat]
     readResultFiche idDeLaFiche = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "Borice1999#", connectUser = "root", connectPort = 3306}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "Raoul102030!!", connectUser = "raoul", connectPort = 3306}
         res <- query conn requestselect (Only idDeLaFiche)
         close conn
         print res
