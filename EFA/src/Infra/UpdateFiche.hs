@@ -65,7 +65,7 @@ module Infra.UpdateFiche where
             _ -> return "erreur, mis a jour impossible "
 
     
-            -- update de le fiche qui se propage dans IAM 
+            -- update de le fiche qui se propage dans LaboRapport 
 
     impactLaboRapport :: Fiche -> IO String
     impactLaboRapport uneFiche = do 

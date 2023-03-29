@@ -34,7 +34,7 @@ module Infra.ReadResult where
 
     readAResult:: Int -> IO Resultat
     readAResult idResult = do
-        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "Borice1999#", connectUser = "root", connectPort = 3306}
+        conn <- connect defaultConnectInfo {connectHost = "localhost", connectDatabase = "labo_rapport", connectPassword = "Raoul102030!!", connectUser = "raoul", connectPort = 3306}
         res <- query conn requestselect'(Only idResult) 
         close conn
         print $ head res
