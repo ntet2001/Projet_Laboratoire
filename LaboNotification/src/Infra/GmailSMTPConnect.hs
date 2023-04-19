@@ -18,10 +18,10 @@ import System.IO.Error
 
 -- Configuration
 gmailApiUsername :: String
-gmailApiUsername = "softinovplus@gmail.com"
+gmailApiUsername = "manyamaigor2001@gmail.com"
 
 gmailApiPassword :: String
-gmailApiPassword = "olyi vanv qtro ybtb"
+gmailApiPassword = "qfst biup aivp lnxs"
 
 hostName :: String
 hostName = "smtp.gmail.com"

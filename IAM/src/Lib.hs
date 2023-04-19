@@ -241,6 +241,7 @@ createpatient :: Patient2 -> Handler String
 createpatient patient = do
     liftIO $ print $ (nameOf2 patient) ++ " " ++ (firstNameOf2 patient) ++ " " ++ (show $ emailOf2 patient) ++ " " ++ (T.unpack $ photoOf2 patient)
     pat <- liftIO $ createPatient (nameOf2 patient) (firstNameOf2 patient) (show $ emailOf2 patient) (T.unpack $ photoOf2 patient)
+    liftIO $ print pat
     return "le patient a ete cree avec succes"
 
 {-======== CONNECT A PATIENT =======-}

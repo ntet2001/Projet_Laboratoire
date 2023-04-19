@@ -58,6 +58,7 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       aeson
+    , amqp
     , base >=4.7 && <5
     , bytestring
     , http-conduit
@@ -80,6 +81,7 @@ executable IAM-exe
   build-depends:
       IAM
     , aeson
+    , amqp
     , base >=4.7 && <5
     , bytestring
     , http-conduit
@@ -103,6 +105,7 @@ test-suite IAM-test
   build-depends:
       IAM
     , aeson
+    , amqp
     , base >=4.7 && <5
     , bytestring
     , http-conduit

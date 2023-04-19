@@ -9,6 +9,8 @@ import Infra.SavePatient
 import Common.SimpleType
 import Text.ParserCombinators.Parsec
 import Data.Aeson 
+import Network.AMQP
+import qualified Data.ByteString.Lazy.Char8 as BL
 import Network.HTTP.Simple
 import GHC.Generics (Generic)
 
@@ -25,10 +27,25 @@ instance ToJSON SimpleMail
 -- cette fonction doit contenir le lien pour access au resultat par un client 
 sendEmailCode :: String -> String -> String -> IO()
 sendEmailCode code email nom = do 
-    let simpleMail = MkSimpleMail email nom "Code du patient" (code ++ " est votre code de connexion ") "<h1>Code de Connexion App Labo</h1>" 
-        request = setRequestBodyJSON simpleMail "POST http://localhost:8083/code"
-    response <- httpJSON request :: IO (Response Value)
-    print $ getResponseBody response
+    -- open the network connection
+    conn <- openConnection "127.0.0.1" "/" "guest" "guest"
+    chan <- openChannel conn
+    -- here i create the mail to send true the queue
+    let simpleMail = MkSimpleMail email nom "Code du patient" (code ++ " est votre code de connexion ") "<h1>Code de Connexion App Labo</h1>"
+        encodedMail = encode simpleMail
+
+    -- declare a queue, exchange and binding
+    declareQueue chan newQueue {queueName = "myQueueCode"} -- create a queue and is parameters
+
+-- create an exchange and is parameters
+    declareExchange chan newExchange {exchangeName = "myExchangeCode", exchangeType = "direct"}
+    bindQueue chan "myQueueCode" "myExchangeCode" "myKeyCode"
+
+    -- publish a message to our new exchange
+    publishMsg chan "myExchangeCode" "myKeyCode" newMsg {msgBody = encodedMail,msgDeliveryMode = Just Persistent} -- mykey is the routing key
+
+    --closeConnection conn  --here i close the connection
+    putStrLn "connection closed"
 
 
 -- function to create patient 

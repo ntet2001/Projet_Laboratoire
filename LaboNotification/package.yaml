@@ -28,6 +28,7 @@ dependencies:
 - smtp-mail
 - mime-mail
 - network
+- amqp
 #- HaskellNet
 #- HaskellNet-SSL
 - bytestring

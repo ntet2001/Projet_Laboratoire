@@ -15,7 +15,7 @@ nomExpediteur :: String
 nomExpediteur = "SOFT INNOV ++"
 
 emailExpediteur :: String
-emailExpediteur = "softinovplus@gmail.com"
+emailExpediteur = "manyamaigor2001@gmail.com"
 
 sendMailReport :: String -> String -> T.Text -> TT.Text ->  TT.Text -> B8.ByteString -> String -> IO Bool
 sendMailReport nomdestinataire emaildestinataire sujet plaintext htmltext filecontent filename = do

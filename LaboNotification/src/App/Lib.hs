@@ -1,10 +1,7 @@
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
-module App.Lib
-    ( startApp
-    , app
-    ) where
+module App.Lib where
 
 import qualified Data.Text.Lazy as TT
 import qualified Data.Text as T
@@ -13,13 +10,15 @@ import Data.Aeson.TH
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
+import Network.AMQP
+import qualified Data.ByteString.Lazy.Char8 as BL
 -------------------------------------------------------------------------------------
 import Control.Monad.IO.Class
 import Servant.Multipart
 -------------------------------------------------------------------------------------
 import Domain.Domain
 
-import           qualified  Data.ByteString.Lazy.Internal as B8 
+import qualified  Data.ByteString.Lazy.Internal as B8 
 
 
 data SimpleMail = MkSimpleMail
@@ -29,37 +28,45 @@ data SimpleMail = MkSimpleMail
     subject                :: String,
     plainText              :: String,
     htmlText              :: String
-  }
+  } deriving (Show) 
 $(deriveJSON defaultOptions ''SimpleMail)
 -- 
-type API = 
-  -- Endpoint permettant 
-  "code" :> ReqBody '[JSON] SimpleMail :> Post '[JSON] Bool
 
-  :<|> "report" :> MultipartForm Mem (MultipartData Mem) :> Post '[JSON] Bool
-  {-ReqBody '[JSON] SimpleMail :> Post '[JSON] Bool
-  :<|> "multipart" :> MultipartForm Mem (MultipartData Mem) :> Post '[JSON] Bool-}
+myCallback :: (Message,Envelope) -> IO ()
+myCallback (msg, env) = do
+    let messageSend = msgBody msg 
+        messageSendConvert = decode messageSend :: Maybe SimpleMail  -- here i convert the message 
 
-startApp :: IO ()
-startApp = run 8083 app
+    print messageSendConvert
+    -- here i call the function to send mail
+    handleEmailDataCode messageSendConvert
+    print "2222222222222222222222"
+-- acknowledge receiving the message
+    ackEnv env
 
-app :: Application
-app = serve api server
 
-api :: Proxy API
-api = Proxy
+mqconnectionR :: IO()
+mqconnectionR = do
 
-server :: Server API
-{-server = forwardToSendEmail
-  :<|>  handleEmailData -}
-server = handleEmailDataCode 
-  :<|> handleEmailDataReport 
+-- open the network connection
+  conn <- openConnection "127.0.0.1" (T.pack "/") (T.pack "guest") (T.pack "guest")
+  chan <- openChannel conn
+
+-- subscribe to the queue
+  consumeMsgs chan (T.pack "myQueueCode") Ack myCallback
+
+  print "11111111"
+  getLine -- wait for keypress
+  closeConnection conn
+  putStrLn "connection closed"
   
-handleEmailDataCode :: SimpleMail -> Handler Bool
+handleEmailDataCode :: Maybe SimpleMail -> IO Bool
 handleEmailDataCode simplemail = do 
-  result <- liftIO $ sendMailCode (nomDestinataire simplemail) (emailDestinataire simplemail) (T.pack $ subject simplemail) (TT.pack $ plainText simplemail) (TT.pack $ htmlText simplemail)
-  return result
-  
+  case simplemail of
+    Just mail -> do 
+      sendMailCode (nomDestinataire mail) (emailDestinataire mail) (T.pack $ subject mail) (TT.pack $ plainText mail) (TT.pack $ htmlText mail)
+    Nothing -> return False 
+    
 handleEmailDataReport :: MultipartData Mem -> Handler Bool
 handleEmailDataReport multipartDataInMe = do
   let jsonDataKeyVal = inputs multipartDataInMe

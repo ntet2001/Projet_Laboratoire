@@ -4,4 +4,4 @@ import App.Lib
 
 main :: IO ()
 main = do
-  startApp
+  mqconnectionR
