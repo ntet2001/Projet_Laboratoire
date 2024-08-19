@@ -1,0 +1,14 @@
+- creer le fichier dockerfile contenant les differentes etapes 
+    de build de l'image
+
+- creer un reseau de communication docker 
+
+- lancer le conteneur mysql-simple, utilisé dans efa
+
+- creer les differentes tables dans la bd
+
+- monter un volume pour avoir acces au donnée du conteneur
+
+- rmq : etant donné que efa a besoin de deux conteneurs, je vais utiliser
+    compose.yml a la place des docker run
+    pour se faire je dois d'abord construire l'image de efa avant

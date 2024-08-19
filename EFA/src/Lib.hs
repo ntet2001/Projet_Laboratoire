@@ -40,7 +40,20 @@ data FicheLib = MkFIcheLib {
 } deriving (Show, Eq, Read, Generic)
 $(deriveJSON defaultOptions ''FicheLib)
 
-type API = "Analyses" :> Get '[JSON] [Analyse]
+newtype Welcome
+  = Welcome {
+        greeting :: String
+    }
+  deriving (Generic, Eq, Show)
+
+instance ToJSON Welcome
+instance FromJSON Welcome
+
+welcomeMesg :: Welcome
+welcomeMesg = Welcome "EFA Module: Mbote mpangui!"
+
+type API = "home" :> Get '[JSON] Welcome
+    :<|> "Analyses" :> Get '[JSON] [Analyse]
     :<|> "Analyse" :> Capture "idAnalyse" String :> Get '[JSON] Analyse 
     :<|> "Analyse" :> ReqBody '[JSON] Analyse2 :> Post '[JSON] String
     :<|> "Analyse" :> ReqBody '[JSON] Analyse :> Put '[JSON] String
@@ -61,7 +74,8 @@ api :: Proxy API
 api = Proxy
 
 server :: Server API
-server = readanalyses
+server = return welcomeMesg
+  :<|> readanalyses
   :<|> readanalyse
   :<|> registeranalyse
   :<|> modifiedanalyse

@@ -72,9 +72,9 @@ module Common.SimpleTypes where
         idFiche :: Int,
         analyses :: [String],
         prescripteur :: String,
-        date :: UTCTime,
+        date :: String,
         patientInfos :: InfoPatient,
-        dateUpdate :: UTCTime
+        dateUpdate :: String
     } deriving (Show, Eq, Read, Generic)
     $(deriveJSON defaultOptions ''Fiche)
 
@@ -109,8 +109,7 @@ module Common.SimpleTypes where
             let xs1 = C.unpack xs
             case xs1 of
                 [] -> Left "erreur de Convertion sql d'analyse"
-                ys -> Right (read ys :: [String])
-            )
+                ys -> Right (read ys :: [String]))
 
 
 
